@@ -11,10 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.dadada.onecloset.presentation.ui.theme.OneClosetTheme
+import com.dadada.onecloset.presentation.ui.account.SignInScreen
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity  : ComponentActivity() {
+class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var googleSignInClient: GoogleSignInClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -24,7 +31,7 @@ class MainActivity  : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    SignInScreen(googleSignInClient = googleSignInClient)
                 }
             }
         }

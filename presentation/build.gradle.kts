@@ -52,6 +52,20 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
 
+    // account
+    implementation("com.kakao.sdk:v2-user:2.15.0")
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+    // viewmodel
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.2")

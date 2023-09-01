@@ -3,14 +3,14 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.dadada.onecloset.di"
+    namespace = "com.dadada.onecloset"
     compileSdk = 33
-
     defaultConfig {
-        applicationId = "com.dadada.onecloset.di"
+        applicationId = "com.dadada.onecloset"
         minSdk = 24
         targetSdk = 33
         versionCode = 1
@@ -48,6 +48,13 @@ dependencies {
     // hilt
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
+
+    implementation("com.kakao.sdk:v2-user:2.15.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation ("com.google.code.gson:gson:2.10.1")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
