@@ -1,18 +1,19 @@
 package com.dadada.onecloset.presentation.ui.account
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dadada.onecloset.domain.model.AccountInfo
 import com.dadada.onecloset.presentation.R
@@ -34,20 +36,20 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.navercorp.nid.NaverIdLoginSDK
 
-private const val TAG = "LogInScreen"
-
+private const val TAG = "SignInScreen"
 @Composable
 fun SignInScreen(
     accountViewModel: AccountViewModel = hiltViewModel(),
-    googleSignInClient: GoogleSignInClient
+    googleSignInClient: GoogleSignInClient,
 ) {
     val accountInfo by accountViewModel.accountInfo.collectAsState()
     val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     val context = LocalContext.current
-    val startForResult =
+    val startForResultGoogle =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == RESULT_OK) {
                 val indent = result.data
                 if (indent != null) {
                     val task: Task<GoogleSignInAccount> =
@@ -56,6 +58,13 @@ fun SignInScreen(
                 }
             }
         }
+    val startForResultNaver = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        when(result.resultCode) {
+            RESULT_OK -> {
+
+            }
+        }
+    }
     val kakaoCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         when {
             error != null -> {
@@ -76,16 +85,25 @@ fun SignInScreen(
         if (accountInfo != null) {
             // 자동 로그인 처리
         }
+        Image(
+            modifier = Modifier.clickable { startForResultGoogle.launch(googleSignInClient.signInIntent) },
+            painter = painterResource(id = R.drawable.ic_google),
+            contentDescription = "구글 로그인"
+        )
+        Spacer(modifier = Modifier.size(12.dp))
 
-        Image(painter = painterResource(id = R.drawable.ic_google), contentDescription = "구글 로그인")
-        Image(painter = painterResource(id = R.drawable.ic_kakao), contentDescription = "카카오 로그인")
-        Image(painter = painterResource(id = R.drawable.ic_naver), contentDescription = "네이버 로그인")
-        Button(onClick = { startForResult.launch(googleSignInClient.signInIntent) }) {
-            Text(text = "구글 로그인")
-        }
-        Button(onClick = { logInKakao(context, kakaoCallback) }) {
-            Text(text = "카카오 로그인")
-        }
+        Image(
+            modifier = Modifier.clickable { logInKakao(context, kakaoCallback) },
+            painter = painterResource(id = R.drawable.ic_kakao),
+            contentDescription = "카카오 로그인"
+        )
+        Spacer(modifier = Modifier.size(12.dp))
+
+        Image(
+            modifier = Modifier.clickable { NaverIdLoginSDK.authenticate(context, startForResultNaver) },
+            painter = painterResource(id = R.drawable.ic_naver),
+            contentDescription = "네이버 로그인"
+        )
     }
 }
 

@@ -5,6 +5,7 @@ import com.dadada.onecloset.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.navercorp.nid.NaverIdLoginSDK
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,4 +26,5 @@ object AppModule {
             .build()
         return GoogleSignIn.getClient(context, gso)
     }
-}
+
+ }

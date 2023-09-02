@@ -49,7 +49,7 @@ dependencies {
     implementation(project(":domain"))
 
     // hilt
-    implementation("com.google.dagger:hilt-android:2.44.2")
+    implementation("com.google.dagger:hilt-android:2.45")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
 
     // account
@@ -58,6 +58,7 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation ("com.google.code.gson:gson:2.10.1")
+    implementation("com.navercorp.nid:oauth:5.7.0")
 
     // viewmodel
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")

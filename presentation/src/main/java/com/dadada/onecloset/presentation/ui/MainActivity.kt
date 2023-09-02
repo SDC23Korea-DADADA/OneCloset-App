@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.dadada.onecloset.presentation.ui.theme.OneClosetTheme
 import com.dadada.onecloset.presentation.ui.account.SignInScreen
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.navercorp.nid.NaverIdLoginSDK
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
