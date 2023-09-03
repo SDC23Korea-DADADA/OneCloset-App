@@ -50,6 +50,7 @@ dependencies {
 
     // hilt
     implementation("com.google.dagger:hilt-android:2.45")
+    implementation("androidx.compose.material3:material3")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
 
     // account
@@ -63,9 +64,13 @@ dependencies {
     // viewmodel
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
 
-    // Navigation
+    // navigation
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+    // Tab Layout
+    implementation("com.google.accompanist:accompanist-pager:0.30.1")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.30.1")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
@@ -74,7 +79,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
