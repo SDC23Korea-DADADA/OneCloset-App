@@ -1,6 +1,7 @@
 package com.dadada.onecloset.presentation.ui.common
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,12 +21,13 @@ import com.dadada.onecloset.presentation.ui.theme.LottieBackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @Composable
-fun CardWithAnimation(title: String, content: String, animation: Int) {
+fun CardWithAnimation(title: String, content: String, animation: Int, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(26.dp))
             .background(Color.White)
+            .clickable { onClick() }
             .padding(16.dp)
     ) {
         Text(text = title, style = Typography.titleMedium)
