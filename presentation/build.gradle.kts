@@ -81,9 +81,6 @@ dependencies {
     // permission
     implementation ("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
 
-    // step
-    implementation("com.github.maryamrzdh:compose-stepper:1.0.0-beta01")
-
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.2")
