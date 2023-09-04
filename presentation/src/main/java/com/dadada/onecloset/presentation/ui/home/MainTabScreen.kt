@@ -3,7 +3,6 @@ package com.dadada.onecloset.presentation.ui.home
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,13 +32,14 @@ import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.ClosetNav
 import com.dadada.onecloset.presentation.ui.HomeNav
 import com.dadada.onecloset.presentation.ui.closet.ClosetScreen
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainTabScreen() {
+fun MainTabScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()
     var selectedTabIndex by remember { mutableStateOf(0) }
     val tabs = listOf(HomeNav.title, ClosetNav.title)
@@ -52,9 +52,9 @@ fun MainTabScreen() {
         tabWidthStateList
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         when (selectedTabIndex) {
-            0 -> HomeScreen()
+            0 -> HomeScreen(navController)
             else -> ClosetScreen()
         }
 
@@ -73,7 +73,8 @@ fun MainTabScreen() {
                     color = Color.Black
                 )
             },
-            divider = {}
+            divider = {},
+            containerColor = Color.Transparent
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(

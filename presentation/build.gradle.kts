@@ -54,12 +54,12 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
 
     // account
-    implementation("com.kakao.sdk:v2-user:2.15.0")
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation ("com.google.code.gson:gson:2.10.1")
     implementation("com.navercorp.nid:oauth:5.7.0")
+    implementation("com.kakao.sdk:v2-user:2.15.0")
 
     // viewmodel
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
@@ -68,9 +68,21 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
-    // Tab Layout
+    // tab
     implementation("com.google.accompanist:accompanist-pager:0.30.1")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.30.1")
+
+    // lottie
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
+
+    // camera
+    implementation("io.github.ujizin:camposer:0.3.0")
+
+    // permission
+    implementation ("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
+
+    // step
+    implementation("com.github.maryamrzdh:compose-stepper:1.0.0-beta01")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
