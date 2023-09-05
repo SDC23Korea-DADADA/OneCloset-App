@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
@@ -59,7 +60,7 @@ fun HomeScreen(navController: NavHostController) {
         navController.navigate(CameraNav.route)
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().padding(top = 24.dp)) {
         LargeRoundedShapeWithAnimation(
             title = "Care",
             content = "의류 이미지로 세탁기, 건조기, 에어 드레서\n코스를 추천 받으세요!",
