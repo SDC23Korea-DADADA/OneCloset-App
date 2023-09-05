@@ -20,7 +20,10 @@ object CameraNav: Destination {
     override val title: String = NavigationTitle.CAMERA
 }
 
-
+object ClosetDetailNav: Destination {
+    override val route: String = NavigationRouteName.CLOSET_DETAIL
+    override val title: String = NavigationTitle.CLOSET_DETAIL
+}
 
 
 interface Destination {
@@ -33,6 +36,7 @@ object NavigationRouteName {
     const val HOME = "home"
     const val CLOSET = "closet"
     const val CAMERA = "camera"
+    const val CLOSET_DETAIL = "closet_detail"
 }
 
 object NavigationTitle {
@@ -40,4 +44,5 @@ object NavigationTitle {
     const val HOME = "빠른 실행"
     const val CLOSET = "옷장"
     const val CAMERA = "카메라"
+    const val CLOSET_DETAIL = "옷장 상세"
 }

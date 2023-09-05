@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,14 +37,13 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.ClosetNav
 import com.dadada.onecloset.presentation.ui.HomeNav
 import com.dadada.onecloset.presentation.ui.closet.ClosetScreen
+import com.dadada.onecloset.presentation.ui.component.CustomTabRow
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainTabScreen(navController: NavHostController) {
-    val coroutineScope = rememberCoroutineScope()
-    var selectedTabIndex by remember { mutableStateOf(0) }
+fun MainTabScreen(navHostController: NavHostController) {
+    val selectedTabIndex = rememberSaveable { mutableStateOf(0) }
     val tabs = listOf(HomeNav.title, ClosetNav.title)
-    val density = LocalDensity.current
     val tabWidths = remember {
         val tabWidthStateList = mutableStateListOf<Dp>()
         repeat(tabs.size) {
@@ -52,76 +52,22 @@ fun MainTabScreen(navController: NavHostController) {
         tabWidthStateList
     }
 
-    Box(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
-        when (selectedTabIndex) {
-            0 -> HomeScreen(navController)
-            else -> ClosetScreen()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+        when (selectedTabIndex.value) {
+            0 -> HomeScreen(navHostController)
+            else -> ClosetScreen(navHostController)
         }
-
-        TabRow(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 12.dp),
+        CustomTabRow(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            tabs = tabs,
             selectedTabIndex = selectedTabIndex,
-            indicator = { tabPositions ->
-                TabRowDefaults.Indicator(
-                    modifier = Modifier
-                        .customTabIndicatorOffset(
-                            tabPositions[selectedTabIndex],
-                            tabWidths[selectedTabIndex]
-                        ),
-                    color = Color.Black
-                )
-            },
-            divider = {},
-            containerColor = Color.Transparent
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-                    selected = selectedTabIndex == index,
-                    onClick = {
-                        coroutineScope.launch {
-                            selectedTabIndex = index
-                        }
-                    },
-                    text = {
-                        Text(
-                            text = title,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            fontWeight = if (selectedTabIndex == index) FontWeight.ExtraBold else FontWeight.Normal,
-                            onTextLayout = { textLayoutResult ->
-                                tabWidths[index] =
-                                    with(density) { textLayoutResult.size.width.toDp() }
-                            }
-                        )
-                    }
-                )
-            }
-        }
-
+            tabWidths = tabWidths
+        )
     }
 }
 
-fun Modifier.customTabIndicatorOffset(
-    currentTabPosition: TabPosition,
-    tabWidth: Dp
-): Modifier = composed(
-    inspectorInfo = debugInspectorInfo {
-        name = "customTabIndicatorOffset"
-        value = currentTabPosition
-    }
-) {
-    val currentTabWidth by animateDpAsState(
-        targetValue = tabWidth,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing), label = ""
-    )
-    val indicatorOffset by animateDpAsState(
-        targetValue = ((currentTabPosition.left + currentTabPosition.right - tabWidth) / 2),
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing), label = ""
-    )
-    fillMaxWidth()
-        .wrapContentSize(Alignment.BottomStart)
-        .offset(x = indicatorOffset)
-        .width(currentTabWidth)
-}
 
