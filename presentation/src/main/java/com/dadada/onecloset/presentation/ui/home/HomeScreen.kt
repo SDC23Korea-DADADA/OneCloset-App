@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.CameraNav
-import com.dadada.onecloset.presentation.ui.common.AlertDialogWithTwoButton
-import com.dadada.onecloset.presentation.ui.common.LargeRoundedShapeWithAnimation
+import com.dadada.onecloset.presentation.ui.component.AlertDialogWithTwoButton
+import com.dadada.onecloset.presentation.ui.component.LargeRoundedShapeWithAnimation
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted

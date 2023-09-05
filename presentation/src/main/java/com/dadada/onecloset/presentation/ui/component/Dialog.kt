@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.common
+package com.dadada.onecloset.presentation.ui.component
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
