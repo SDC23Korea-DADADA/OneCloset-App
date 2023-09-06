@@ -21,13 +21,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.presentation.ui.CameraNav
+import com.dadada.onecloset.presentation.ui.ClothCreateNav
+import com.dadada.onecloset.presentation.ui.GalleryNav
 import com.dadada.onecloset.presentation.ui.component.ClothItemView
 import com.dadada.onecloset.presentation.ui.component.CustomTabRow
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 
 @Composable
-fun ClosetDetailScreen() {
+fun ClosetDetailScreen(navHostController: NavHostController) {
     var selectedTabIndex = remember { mutableStateOf(0) }
     val tabs = listOf("전체", "상의", "하의", "외투", "한벌옷")
     val tabWidths = remember {
@@ -50,7 +54,7 @@ fun ClosetDetailScreen() {
                 modifier = Modifier.padding(bottom = 16.dp),
                 contentColor = Color.White,
                 containerColor = PrimaryBlack,
-                onClick = { }
+                onClick = { navHostController.navigate(GalleryNav.route) }
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "fab")
             }

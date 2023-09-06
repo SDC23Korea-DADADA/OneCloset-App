@@ -25,8 +25,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dadada.onecloset.presentation.ui.closet.ClosetDetailScreen
-import com.dadada.onecloset.presentation.ui.course.CameraScreen
+import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.home.MainTabScreen
+import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 
 @Composable
 fun MainScreen() {
@@ -88,7 +89,10 @@ fun MainNavigationScreen(
             CameraScreen()
         }
         composable(route = ClosetDetailNav.route) {
-            ClosetDetailScreen()
+            ClosetDetailScreen(navController)
+        }
+        composable(route = GalleryNav.route) {
+            GalleryScreen()
         }
     }
 }
