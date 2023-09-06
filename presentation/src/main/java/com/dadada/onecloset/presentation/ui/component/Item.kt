@@ -10,11 +10,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -24,7 +27,6 @@ import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.theme.iconNavy
 
 @Composable
 fun ClosetItemView(item: Closet, onClick: () -> Unit) {
@@ -64,4 +66,14 @@ fun ClothItemView(item: Cloth, onClick: () -> Unit) {
             contentDescription = "의류 사진"
         )
     }
+}
+
+@Composable
+fun ColorIconItem(color: Color, selectedColor: MutableState<Color>) {
+    Box(modifier = Modifier
+        .padding(4.dp)
+        .clip(CircleShape)
+        .size(32.dp)
+        .background(color)
+        .clickable { selectedColor.value = color })
 }

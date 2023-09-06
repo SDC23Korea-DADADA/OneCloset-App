@@ -1,17 +1,18 @@
 package com.dadada.onecloset.presentation.ui.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,10 +26,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.theme.iconBlue
+import com.dadada.onecloset.presentation.ui.utils.ColorEnum
+import com.dadada.onecloset.presentation.ui.utils.IconEnum
 
 @Composable
 fun BottomSheetAddCloset() {
+    val iconResIds = IconEnum.values().map { it.resId }
+    val colors = ColorEnum.values().map { it.color }
+
     var textValue by remember { mutableStateOf("") }
+    var showDialog = remember { mutableStateOf(false) }
+    var selectedIconIdx = remember { mutableStateOf(0) }
+    val selectedColor = remember { mutableStateOf(iconBlue) }
+
+    if (showDialog.value) {
+        AlertDialogIcons(
+            showDialog = showDialog,
+            selectedIconIdx = selectedIconIdx,
+            selectedColor = selectedColor,
+            iconResIds = iconResIds,
+            colors = colors
+        )
+    }
+
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -37,19 +58,37 @@ fun BottomSheetAddCloset() {
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.size(16.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(text = "대표 아이콘", style = Typography.titleSmall.copy(fontWeight = FontWeight.Bold))
-            Spacer(modifier = Modifier.size(12.dp))
-            Icon(imageVector = Icons.Default.Face, contentDescription = "User Icon") // 예시 아이콘
-            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "Edit Icon") // 수정 아이콘
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                ClosetIcon(
+                    modifier = Modifier,
+                    icon = iconResIds[selectedIconIdx.value],
+                    color = selectedColor.value
+                )
+                IconButton(onClick = { showDialog.value = true }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "Edit Icon"
+                    ) // 수정 아이콘
+                }
+            }
         }
         Spacer(modifier = Modifier.size(12.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(text = "이름", style = Typography.titleSmall.copy(fontWeight = FontWeight.Bold))
             OutlinedTextField(
                 value = textValue,
                 onValueChange = { textValue = it },
-                modifier = Modifier.width(200.dp) // 원하는 너비 지정
+                modifier = Modifier.fillMaxWidth(0.5f) // 원하는 너비 지정
             )
         }
         Spacer(modifier = Modifier.size(16.dp))
