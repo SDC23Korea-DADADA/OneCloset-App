@@ -7,12 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,17 +31,18 @@ fun BottomSheetAddCloset() {
     val colors = ColorEnum.values().map { it.color }
 
     var textValue by remember { mutableStateOf("") }
-    var showDialog = remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
     var selectedIconIdx = remember { mutableStateOf(0) }
     val selectedColor = remember { mutableStateOf(iconBlue) }
 
-    if (showDialog.value) {
-        AlertDialogIcons(
-            showDialog = showDialog,
+
+    if (showDialog) {
+        SelectClosetIconDialog(
             selectedIconIdx = selectedIconIdx,
             selectedColor = selectedColor,
             iconResIds = iconResIds,
-            colors = colors
+            colors = colors,
+            onDismissRequest = { showDialog = !showDialog },
         )
     }
 
@@ -57,28 +53,30 @@ fun BottomSheetAddCloset() {
             style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
             textAlign = TextAlign.Center
         )
+
         Spacer(modifier = Modifier.size(16.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(text = "대표 아이콘", style = Typography.titleSmall.copy(fontWeight = FontWeight.Bold))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                ClosetIcon(
-                    modifier = Modifier,
-                    icon = iconResIds[selectedIconIdx.value],
-                    color = selectedColor.value
-                )
-                IconButton(onClick = { showDialog.value = true }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = "Edit Icon"
-                    ) // 수정 아이콘
-                }
-            }
+            DropDownRow(
+                component = {
+                    ClosetItem(
+                        modifier = Modifier,
+                        icon = iconResIds[selectedIconIdx.value],
+                        color = selectedColor.value
+                    )
+                },
+                reverse = showDialog,
+                onClick = { showDialog = !showDialog }
+            )
         }
+
         Spacer(modifier = Modifier.size(12.dp))
+
         Row(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -91,7 +89,9 @@ fun BottomSheetAddCloset() {
                 modifier = Modifier.fillMaxWidth(0.5f) // 원하는 너비 지정
             )
         }
+
         Spacer(modifier = Modifier.size(16.dp))
+
         Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
             Text(text = "등록")
         }

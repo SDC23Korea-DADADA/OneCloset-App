@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -36,7 +37,7 @@ import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @Composable
-fun ClosetItemView(item: Closet, onClick: () -> Unit) {
+fun ClosetItemViewWithName(item: Closet, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .aspectRatio(1f)
@@ -46,7 +47,7 @@ fun ClosetItemView(item: Closet, onClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        ClosetIcon(modifier = Modifier, icon = R.drawable.ic_date, color = Color(item.iconColor))
+        ClosetItem(modifier = Modifier, icon = R.drawable.ic_date, color = Color(item.iconColor))
         Spacer(modifier = Modifier.size(2.dp))
         Text(
             text = item.name,
@@ -56,21 +57,38 @@ fun ClosetItemView(item: Closet, onClick: () -> Unit) {
 }
 
 @Composable
-fun ClothItemView(item: Cloth, onClick: () -> Unit) {
-    Box(modifier = Modifier
+fun ClosetItem(modifier: Modifier = Modifier, icon: Int, color: Color) {
+    Box(
+        modifier = modifier
+            .padding(4.dp)
+            .size(48.dp)
+            .aspectRatio(1f)
+            .clip(RoundedCornerShape(8.dp))
+            .background(color)
+    ) {
+        Icon(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(4.dp),
+            painter = painterResource(id = icon),
+            contentDescription = "아이콘",
+            tint = Color.White
+        )
+    }
+}
+
+@Composable
+fun ClothItemView(modifier: Modifier, imageUri: Uri, onClick: () -> Unit) {
+    Box(modifier = modifier
         .background(Color.White)
-        .padding(4.dp)
         .aspectRatio(1f)
-        .border(1.dp, BackGround, RoundedCornerShape(20.dp))
         .clickable {
             onClick()
         }) {
         AsyncImage(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .padding(4.dp),
-            model = item.thumbnailImg,
-            contentDescription = "의류 사진"
+            model = imageUri,
+            contentDescription = "의류 사진",
+            contentScale = ContentScale.Crop
         )
     }
 }

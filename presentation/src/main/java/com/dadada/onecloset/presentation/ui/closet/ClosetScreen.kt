@@ -33,7 +33,8 @@ import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.ClosetDetailNav
 import com.dadada.onecloset.presentation.ui.component.BottomSheetAddCloset
-import com.dadada.onecloset.presentation.ui.component.ClosetItemView
+import com.dadada.onecloset.presentation.ui.component.ClosetItem
+import com.dadada.onecloset.presentation.ui.component.ClosetItemViewWithName
 import com.dadada.onecloset.presentation.ui.component.SmallRoundedShape
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.iconBlue
@@ -119,7 +120,7 @@ fun ClosetScreen(navHostController: NavHostController) {
                     columns = GridCells.Fixed(3),
                 ) {
                     items(arr.size) { idx ->
-                        ClosetItemView(
+                        ClosetItemViewWithName(
                             item = arr[idx]
                         ) { navHostController.navigate(ClosetDetailNav.route) }
                     }

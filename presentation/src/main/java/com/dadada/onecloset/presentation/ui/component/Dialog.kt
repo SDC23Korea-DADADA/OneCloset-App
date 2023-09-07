@@ -1,6 +1,9 @@
 package com.dadada.onecloset.presentation.ui.component
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,11 +34,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.utils.ColorEnum
-import com.dadada.onecloset.presentation.ui.utils.IconEnum
 
 @Composable
 fun AlertDialogWithTwoButton(
@@ -65,83 +65,96 @@ fun AlertDialogWithTwoButton(
 }
 
 @Composable
-fun AlertDialogIcons(
-    showDialog: MutableState<Boolean>,
+fun SelectClosetIconDialog(
     selectedIconIdx: MutableState<Int>,
     selectedColor: MutableState<Color>,
     iconResIds: List<Int>,
-    colors: List<Color>
+    colors: List<Color>,
+    onDismissRequest: () -> Unit,
 ) {
-    val iconResIds = IconEnum.values().map { it.resId }
-    val colors = ColorEnum.values().map { it.color }
     var showPalette by remember { mutableStateOf(true) }
-
     AlertDialog(containerColor = BackGround,
-        onDismissRequest = { showDialog.value = false },
+        onDismissRequest = { onDismissRequest() },
         title = {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.padding(end = 4.dp),
-                    text = "아이콘 선택",
-                    style = Typography.titleMedium
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    ColorIconItem(color = selectedColor.value, selectedColor = selectedColor)
-                    IconButton(onClick = { showPalette = !showPalette }) {
-                        Icon(
-                            painterResource(id = if (showPalette) R.drawable.ic_arrow_drop_up else R.drawable.ic_arrow_drop_down),
-                            contentDescription = "Edit Icon"
-                        ) // 수정 아이콘
-                    }
-                }
+            SelectClosetIconDialogHeader(showPalette = showPalette, selectedColor = selectedColor) {
+                showPalette = !showPalette
             }
         },
         text = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-            ) {
-                LazyVerticalGrid(columns = GridCells.Fixed(5)) {
-                    items(iconResIds.size) {
-                        IconButton(modifier = Modifier
-                            .padding(4.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(selectedColor.value)
-                            .aspectRatio(1f),
-                            onClick = {
-                                selectedIconIdx.value = it
-                            }) {
-                            Icon(
-                                modifier = Modifier.padding(4.dp),
-                                painter = painterResource(id = iconResIds[it]),
-                                contentDescription = "Icon Option",
-                                tint = Color.White
-                            )
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.size(12.dp))
-                if (showPalette) {
-                    LazyVerticalGrid(columns = GridCells.Fixed(6)) {
-                        items(colors.size) {
-                            ColorIconItem(color = colors[it], selectedColor)
-                        }
-                    }
-                } else {
-                    LazyVerticalGrid(columns = GridCells.Fixed(6)) {
-                        items(colors.size) {
-                            ColorIconItem(color = BackGround, selectedColor)
-                        }
-                    }
-                }
-            }
+            SelectClosetIconDialogBody(
+                showPalette = showPalette,
+                selectedIconIdx = selectedIconIdx,
+                selectedColor = selectedColor,
+                iconResIds = iconResIds,
+                colors = colors,
+            )
         },
         confirmButton = {
 
         })
+}
+
+@Composable
+fun SelectClosetIconDialogHeader(
+    showPalette: Boolean,
+    selectedColor: MutableState<Color>,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            modifier = Modifier.padding(end = 4.dp),
+            text = "아이콘 선택",
+            style = Typography.titleMedium
+        )
+        DropDownRow(
+            component = {
+                ColorIconItem(color = selectedColor.value, selectedColor = selectedColor)
+            },
+            reverse = showPalette,
+            onClick = { onClick() }
+        )
+    }
+}
+
+@Composable
+fun SelectClosetIconDialogBody(
+    showPalette: Boolean,
+    selectedIconIdx: MutableState<Int>,
+    selectedColor: MutableState<Color>,
+    iconResIds: List<Int>,
+    colors: List<Color>,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        LazyVerticalGrid(columns = GridCells.Fixed(5)) {
+            items(iconResIds.size) {
+                ClosetItem(
+                    modifier = Modifier.clickable { selectedIconIdx.value = it },
+                    icon = iconResIds[it],
+                    color = selectedColor.value
+                )
+            }
+        }
+        Spacer(modifier = Modifier.size(12.dp))
+        if (showPalette) {
+            LazyVerticalGrid(columns = GridCells.Fixed(6)) {
+                items(colors.size) {
+                    ColorIconItem(color = colors[it], selectedColor)
+                }
+            }
+        } else {
+            LazyVerticalGrid(columns = GridCells.Fixed(6)) {
+                items(colors.size) {
+                    ColorIconItem(color = BackGround, selectedColor)
+                }
+            }
+        }
+    }
 }
