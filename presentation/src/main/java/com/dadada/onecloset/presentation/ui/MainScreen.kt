@@ -1,5 +1,7 @@
 package com.dadada.onecloset.presentation.ui
 
+import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -19,16 +21,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dadada.onecloset.presentation.ui.closet.ClosetDetailScreen
-import com.dadada.onecloset.presentation.ui.photo.CameraScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothCreateScreen
 import com.dadada.onecloset.presentation.ui.home.MainTabScreen
+import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 
+private const val TAG = "MainScreen"
 @Composable
 fun MainScreen() {
     val scaffoldState = rememberScrollState()
@@ -37,16 +42,24 @@ fun MainScreen() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        topBar = { MainHeader(navController = navController, currentRoute = currentRoute) }
+        topBar = {
+            MainHeader(
+                navController = navController,
+                currentRoute = currentRoute,
+            )
+        }
     ) {
-        MainNavigationScreen(innerPaddings = it, navController = navController)
+        MainNavigationScreen(
+            innerPaddings = it,
+            navController = navController,
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainHeader(navController: NavHostController, currentRoute: String?) {
-    if(currentRoute == CameraNav.route) {
+    if (currentRoute == CameraNav.route || currentRoute == GalleryNav.route) {
         return
     }
     TopAppBar(
@@ -75,7 +88,7 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
 @Composable
 fun MainNavigationScreen(
     innerPaddings: PaddingValues,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     NavHost(
         modifier = Modifier.padding(innerPaddings),
@@ -92,7 +105,15 @@ fun MainNavigationScreen(
             ClosetDetailScreen(navController)
         }
         composable(route = GalleryNav.route) {
-            GalleryScreen()
+            GalleryScreen(navController)
+        }
+        composable(route = "${ClothCreateNav.route}/{photoUri}") {
+            val uriArg = it.arguments?.getString("photoUri")
+            if (uriArg != null) {
+                val decodedUri = Uri.decode(uriArg)
+                Log.d(TAG, "MainNavigationScreen: $decodedUri")
+                ClothCreateScreen(photoUri = decodedUri.toUri())
+            }
         }
     }
 }
