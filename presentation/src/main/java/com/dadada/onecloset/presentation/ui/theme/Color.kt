@@ -14,6 +14,7 @@ val PrimaryBlack = Color(0xFF191919)
 val BackGround = Color(0xFFF6F6F6)
 val PrimaryBlue = Color(0xFF005CB9)
 val LottieBackGroundGray = Color(0xFFF2F2F2)
+val PointGreen = Color(0xFF3AD088)
 
 val iconBlue = Color(0xFF75A4F4)
 val iconGreen = Color(0xFF7FD1A1)

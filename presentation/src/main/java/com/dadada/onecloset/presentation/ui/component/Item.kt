@@ -36,6 +36,7 @@ import coil.compose.AsyncImage
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.BackGround
+import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @Composable
@@ -65,7 +66,7 @@ fun ClosetItem(modifier: Modifier = Modifier, icon: Int, color: Color) {
             .padding(4.dp)
             .size(48.dp)
             .aspectRatio(1f)
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(12.dp))
             .background(color)
     ) {
         Icon(
@@ -155,6 +156,25 @@ fun ListItem(content: String, onClick: () -> Unit) {
                 containerColor = Color.White
             ),
 
+            )
+    }
+}
+
+@Composable
+fun IconWithName(modifier: Modifier, name: String, icon: Int, color: Color, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier.padding(8.dp)
+            .clickable {
+                onClick()
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        ClosetItem(icon = icon, color = color)
+        Spacer(modifier = Modifier.size(2.dp))
+        Text(
+            text = name,
+            style = Typography.titleSmall.copy(fontWeight = FontWeight.ExtraBold)
         )
     }
 }

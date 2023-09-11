@@ -40,8 +40,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.BackGround
+import com.dadada.onecloset.presentation.ui.theme.PointGreen
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
+import com.dadada.onecloset.presentation.ui.theme.PrimaryBlue
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.theme.iconBlue
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
@@ -264,6 +267,45 @@ fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: MutableState<C
                         }
                     )
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SelectPhotoBottomSheet(
+    onClickCamera: () -> Unit,
+    onClickGallery: () -> Unit,
+    onClick: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState()
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = { onClick() },
+        containerColor = BackGround
+    ) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp, top = 8.dp, start = 16.dp, end = 16.dp),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            IconWithName(
+                modifier = Modifier.size(44.dp),
+                name = "카메라",
+                icon = R.drawable.ic_camera,
+                color = PrimaryBlue
+            ) {
+                onClickCamera()
+            }
+            IconWithName(
+                modifier = Modifier.size(44.dp),
+                name = "갤러리",
+                icon = R.drawable.ic_gallery,
+                color = PointGreen
+            ) {
+                onClickGallery()
             }
         }
     }
