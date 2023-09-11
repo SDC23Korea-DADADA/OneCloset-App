@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.dadada.onecloset.presentation.ui.ClothCourseNav
 import com.dadada.onecloset.presentation.ui.component.ChipEditRow
 import com.dadada.onecloset.presentation.ui.component.ClothItemView
 import com.dadada.onecloset.presentation.ui.component.ColorEditRow
@@ -33,7 +35,7 @@ import com.dadada.onecloset.presentation.ui.utils.Material
 import com.dadada.onecloset.presentation.ui.utils.Type
 
 @Composable
-fun ClothCreateScreen(photoUri: Uri) {
+fun ClothAnalysisScreen(navHostController: NavHostController, photoUri: Uri) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +55,8 @@ fun ClothCreateScreen(photoUri: Uri) {
         Text(text = "*분석 결과가 정확한가요? 버튼을 클릭하면 수정할 수 있어요!", style = Typography.titleSmall.copy(color = iconGray))
         Spacer(modifier = Modifier.weight(1f))
         RowWithTwoButtons(left = "다시하기", right = "다음", onClickLeft = { /*TODO*/ }) {
-            
+            val encodedUri = Uri.encode(photoUri.toString())
+            navHostController.navigate("${ClothCourseNav.route}/${encodedUri}")
         }
     }
 }

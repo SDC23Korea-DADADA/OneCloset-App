@@ -96,12 +96,13 @@ fun ColorEditRow(title: String, content: Color, reverse: MutableState<Boolean>) 
 
 @Composable
 fun RowWithTwoButtons(
+    modifier: Modifier = Modifier,
     left: String,
     right: String,
     onClickLeft: () -> Unit,
     onClickRight: () -> Unit
 ) {
-    Row(modifier = Modifier.fillMaxWidth().padding()) {
+    Row(modifier = modifier.fillMaxWidth().padding()) {
         Text(modifier = Modifier
             .clickable { onClickLeft() }
             .weight(1f).padding(vertical = 12.dp), text = left, style = Typography.titleLarge, textAlign = TextAlign.Center)

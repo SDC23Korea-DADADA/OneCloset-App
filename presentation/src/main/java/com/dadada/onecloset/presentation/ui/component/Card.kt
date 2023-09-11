@@ -95,3 +95,23 @@ fun SmallRoundedShape(title: String, content: String, icon: Int, onClick: () -> 
         )
     }
 }
+
+@Composable
+fun RoundedShape(title: String, content: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(26.dp))
+            .background(Color.White)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+
+        Spacer(modifier = Modifier.size(4.dp))
+        Column {
+            Text(text = title, fontWeight = FontWeight.Bold)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(text = content, color = Color.DarkGray)
+        }
+    }
+}

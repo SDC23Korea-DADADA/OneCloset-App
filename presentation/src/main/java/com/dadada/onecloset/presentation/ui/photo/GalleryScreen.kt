@@ -31,7 +31,7 @@ import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.dadada.onecloset.domain.model.Photo
-import com.dadada.onecloset.presentation.ui.ClothCreateNav
+import com.dadada.onecloset.presentation.ui.ClothAnalysisNav
 import com.dadada.onecloset.presentation.ui.component.GalleryPhotoItem
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.iconGray
@@ -101,7 +101,7 @@ fun GalleryHeader(
                 onClick = {
                     val encodedUri = Uri.encode(pagingPhotos[isCheckedIdx.value]?.uri.toString())
                     Log.d(TAG, "GalleryHeader: $encodedUri")
-                    navController.navigate("${ClothCreateNav.route}/${encodedUri}")
+                    navController.navigate("${ClothAnalysisNav.route}/${encodedUri}")
                 }) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
             }

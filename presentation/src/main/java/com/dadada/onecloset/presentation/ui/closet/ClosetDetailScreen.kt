@@ -1,7 +1,6 @@
 package com.dadada.onecloset.presentation.ui.closet
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,12 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
-import com.dadada.onecloset.presentation.ui.CameraNav
-import com.dadada.onecloset.presentation.ui.ClothCreateNav
 import com.dadada.onecloset.presentation.ui.GalleryNav
 import com.dadada.onecloset.presentation.ui.component.ClothItemView
 import com.dadada.onecloset.presentation.ui.component.CustomTabRow
-import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 
 @Composable

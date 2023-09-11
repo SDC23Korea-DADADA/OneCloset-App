@@ -1,7 +1,6 @@
 package com.dadada.onecloset.presentation.ui
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -28,7 +27,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dadada.onecloset.presentation.ui.closet.ClosetDetailScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothCreateScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
 import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
@@ -107,12 +107,18 @@ fun MainNavigationScreen(
         composable(route = GalleryNav.route) {
             GalleryScreen(navController)
         }
-        composable(route = "${ClothCreateNav.route}/{photoUri}") {
+        composable(route = "${ClothAnalysisNav.route}/{photoUri}") {
             val uriArg = it.arguments?.getString("photoUri")
             if (uriArg != null) {
                 val decodedUri = Uri.decode(uriArg)
-                Log.d(TAG, "MainNavigationScreen: $decodedUri")
-                ClothCreateScreen(photoUri = decodedUri.toUri())
+                ClothAnalysisScreen(navController, photoUri = decodedUri.toUri())
+            }
+        }
+        composable(route = "${ClothCourseNav.route}/{photoUri}") {
+            val uriArg = it.arguments?.getString("photoUri")
+            if (uriArg != null) {
+                val decodedUri = Uri.decode(uriArg)
+                ClothCourseScreen(navController, photoUri = decodedUri.toUri())
             }
         }
     }

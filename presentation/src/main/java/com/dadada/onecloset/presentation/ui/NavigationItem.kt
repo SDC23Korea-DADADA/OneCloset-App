@@ -25,14 +25,19 @@ object ClosetDetailNav: Destination {
     override val title: String = NavigationTitle.CLOSET_DETAIL
 }
 
-object ClothCreateNav: Destination {
-    override val route: String = NavigationRouteName.CLOTH_CREATE
-    override val title: String = NavigationTitle.CLOTH_CREATE
+object ClothAnalysisNav: Destination {
+    override val route: String = NavigationRouteName.CLOTH_ANALYSIS
+    override val title: String = NavigationTitle.CLOTH_ANALYSIS
+}
+
+object ClothCourseNav: Destination {
+    override val route: String = NavigationRouteName.CLOTH_COURSE
+    override val title: String = NavigationTitle.CLOTH_COURSE
 }
 
 object GalleryNav: Destination {
-    override val route: String = NavigationRouteName.CLOTH_CREATE
-    override val title: String = NavigationTitle.CLOTH_CREATE
+    override val route: String = NavigationRouteName.CLOTH_ANALYSIS
+    override val title: String = NavigationTitle.CLOTH_ANALYSIS
 }
 
 interface Destination {
@@ -46,7 +51,8 @@ object NavigationRouteName {
     const val CLOSET = "closet"
     const val CAMERA = "camera"
     const val CLOSET_DETAIL = "closet_detail"
-    const val CLOTH_CREATE = "cloth_create"
+    const val CLOTH_ANALYSIS = "cloth_analysis"
+    const val CLOTH_COURSE = "cloth_course"
     const val GALLERY = "gallery"
 }
 
@@ -56,6 +62,7 @@ object NavigationTitle {
     const val CLOSET = "옷장"
     const val CAMERA = "카메라"
     const val CLOSET_DETAIL = "옷장 상세"
-    const val CLOTH_CREATE = "의류 등록"
+    const val CLOTH_ANALYSIS = "의류 등록"
+    const val CLOTH_COURSE = "코스 추천"
     const val GALLERY = "갤러리"
 }
