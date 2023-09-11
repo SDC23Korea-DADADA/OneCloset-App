@@ -10,14 +10,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -31,7 +34,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.dadada.onecloset.domain.model.Closet
-import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Typography
@@ -132,5 +134,27 @@ fun GalleryPhotoItem(url: Uri, idx: Int, isChecked: Boolean, onClick: () -> Unit
             contentDescription = "Checked",
         )
 
+    }
+}
+
+@Composable
+fun ListItem(content: String, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier.clickable { onClick() }
+    ) {
+        ListItem(
+            headlineContent = { Text(content) },
+            trailingContent = {
+                Icon(
+                    imageVector = Icons.Filled.KeyboardArrowRight,
+                    contentDescription = "",
+                    tint = BackGround
+                )
+            },
+            colors = ListItemDefaults.colors(
+                containerColor = Color.White
+            ),
+
+        )
     }
 }
