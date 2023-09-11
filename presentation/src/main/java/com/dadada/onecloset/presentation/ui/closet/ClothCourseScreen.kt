@@ -15,7 +15,7 @@ import com.dadada.onecloset.presentation.ui.component.RoundedShape
 import com.dadada.onecloset.presentation.ui.component.RowWithTwoButtons
 
 @Composable
-fun ClothCourseScreen(navHostController: NavHostController, photoUri: Uri) {
+fun ClothCourseScreen(navHostController: NavHostController) {
     val list = listOf("세탁", "건조", "에어드레서")
     val contentList = listOf(
         "울 소재의 옷은 울 전용 세제를 넣어 울 전용 코스를 이용해보세요!",

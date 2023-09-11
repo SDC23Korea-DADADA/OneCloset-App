@@ -33,6 +33,7 @@ import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.ui.CameraNav
+import com.dadada.onecloset.presentation.ui.ClothNav
 import com.dadada.onecloset.presentation.ui.GalleryNav
 import com.dadada.onecloset.presentation.ui.component.AlertDialogWithTwoButton
 import com.dadada.onecloset.presentation.ui.component.ClothItemView
@@ -142,7 +143,7 @@ fun ClosetDetailScreen(navHostController: NavHostController) {
                             .clip(RoundedCornerShape(20.dp)),
                         imageUri = list[it].thumbnailImg.toUri()
                     ) {
-
+                        navHostController.navigate(ClothNav.route)
                     }
                 }
             }

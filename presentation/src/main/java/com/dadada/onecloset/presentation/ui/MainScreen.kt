@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.dadada.onecloset.presentation.ui.closet.ClosetDetailScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothScreen
 import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
@@ -118,8 +119,11 @@ fun MainNavigationScreen(
             val uriArg = it.arguments?.getString("photoUri")
             if (uriArg != null) {
                 val decodedUri = Uri.decode(uriArg)
-                ClothCourseScreen(navController, photoUri = decodedUri.toUri())
+                ClothCourseScreen(navController)
             }
+        }
+        composable(route = ClothNav.route) {
+            ClothScreen(navHostController = navController)
         }
     }
 }
