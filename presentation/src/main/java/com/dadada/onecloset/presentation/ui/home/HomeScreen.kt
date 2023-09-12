@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.CameraNav
+import com.dadada.onecloset.presentation.ui.FittingNav
 import com.dadada.onecloset.presentation.ui.GalleryNav
 import com.dadada.onecloset.presentation.ui.component.AlertDialogWithTwoButton
 import com.dadada.onecloset.presentation.ui.component.LargeRoundedShapeWithAnimation
@@ -70,7 +71,7 @@ fun HomeScreen(navHostController: NavHostController) {
             content = "옷장 속 의류 사진으로 나만의 가상 코디를\n만들어보세요!",
             animation = R.raw.animation_fitting
         ) {
-            //showSelectPhotoBottomSheet = !showSelectPhotoBottomSheet
+            navHostController.navigate(FittingNav.route)
         }
     }
 }
