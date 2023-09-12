@@ -39,7 +39,6 @@ import com.dadada.onecloset.presentation.ui.component.AlertDialogWithTwoButton
 import com.dadada.onecloset.presentation.ui.component.ClothItemView
 import com.dadada.onecloset.presentation.ui.component.CustomTabRow
 import com.dadada.onecloset.presentation.ui.component.SelectPhotoBottomSheet
-import com.dadada.onecloset.presentation.ui.home.checkCameraPermission
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -69,12 +68,7 @@ fun ClosetDetailScreen(navHostController: NavHostController) {
 
     if (showSelectPhotoBottomSheet) {
         SelectPhotoBottomSheet(onClickCamera = {
-            checkCameraPermission(
-                navHostController,
-                cameraPermissionState,
-                isPermissionRequested,
-                openAlertDialog
-            )
+            navHostController.navigate(CameraNav.route)
         }, onClickGallery = {
             navHostController.navigate(GalleryNav.route)
         }) {

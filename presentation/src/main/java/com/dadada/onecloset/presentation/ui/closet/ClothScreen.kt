@@ -28,7 +28,9 @@ fun ClothScreen(navHostController: NavHostController) {
     )
 
     val item = Cloth()
-    Column {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .padding(horizontal = 16.dp)) {
         ClothItemView(
             modifier = Modifier
                 .fillMaxWidth()
@@ -39,8 +41,7 @@ fun ClothScreen(navHostController: NavHostController) {
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabPosition
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.text.font.FontWeight
@@ -49,7 +51,16 @@ fun CustomTabRow(
                     .customTabIndicatorOffset(
                         tabPositions[selectedTabIndex.value],
                         tabWidths[selectedTabIndex.value]
-                    ),
+                    )
+                    .graphicsLayer {
+                        shape = RoundedCornerShape(
+                            topStart = 16.dp,
+                            topEnd = 16.dp,
+                            bottomStart = 16.dp,
+                            bottomEnd = 16.dp
+                        )
+                        clip = true
+                    },
                 color = PrimaryBlack
             )
         },
@@ -99,7 +110,7 @@ fun Modifier.customTabIndicatorOffset(
         animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing), label = ""
     )
     fillMaxWidth()
-        .wrapContentSize(Alignment.BottomStart)
+        .wrapContentSize(Alignment.BottomStart) // indicator 표시 위치
         .offset(x = indicatorOffset)
         .width(currentTabWidth)
 }

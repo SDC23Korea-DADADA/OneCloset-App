@@ -38,20 +38,11 @@ private const val TAG = "HomeScreen"
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(navHostController: NavHostController) {
-    val context = LocalContext.current
-    val cameraPermissionState: PermissionState = rememberPermissionState(Manifest.permission.CAMERA)
-    val openAlertDialog = remember { mutableStateOf(false) }
-    val isPermissionRequested = remember { mutableStateOf(false) }
     var showSelectPhotoBottomSheet by remember { mutableStateOf(false) }
 
     if (showSelectPhotoBottomSheet) {
         SelectPhotoBottomSheet(onClickCamera = {
-            checkCameraPermission(
-                navHostController,
-                cameraPermissionState,
-                isPermissionRequested,
-                openAlertDialog
-            )
+            navHostController.navigate(CameraNav.route)
         }, onClickGallery = {
             navHostController.navigate(GalleryNav.route)
         }) {
@@ -59,26 +50,6 @@ fun HomeScreen(navHostController: NavHostController) {
         }
     }
 
-    if (openAlertDialog.value) {
-        AlertDialogWithTwoButton(
-            onDismissRequest = { openAlertDialog.value = false },
-            onConfirmation = {
-                openAlertDialog.value = false
-                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                    data = Uri.fromParts("package", context.packageName, null)
-                }
-                context.startActivity(intent)
-            },
-            dialogTitle = "서비스 이용 알림",
-            dialogText = "카메라에 대한 권한 사용을 거부하였습니다. 기능 사용을 원하실 경우 휴대폰 설정 > 애플리케이션 관리자에서 해당 앱의 권한을 허용해주세요.",
-            icon = Icons.Default.Info
-        )
-    }
-
-    if (isPermissionRequested.value && cameraPermissionState.status.isGranted) {
-        isPermissionRequested.value = false
-        navHostController.navigate(CameraNav.route)
-    }
 
     Column(
         modifier = Modifier
@@ -101,24 +72,5 @@ fun HomeScreen(navHostController: NavHostController) {
         ) {
             //showSelectPhotoBottomSheet = !showSelectPhotoBottomSheet
         }
-    }
-}
-
-@OptIn(ExperimentalPermissionsApi::class)
-fun checkCameraPermission(
-    navController: NavHostController,
-    cameraPermissionState: PermissionState,
-    isPermissionRequested: MutableState<Boolean>,
-    openAlertDialog: MutableState<Boolean>,
-    route: String = ""
-) {
-    if (cameraPermissionState.status.isGranted) {
-        navController.navigate(CameraNav.route)
-    } else if (cameraPermissionState.status.shouldShowRationale) {
-        openAlertDialog.value = true
-        isPermissionRequested.value = true
-    } else {
-        cameraPermissionState.launchPermissionRequest()
-        isPermissionRequested.value = true
     }
 }

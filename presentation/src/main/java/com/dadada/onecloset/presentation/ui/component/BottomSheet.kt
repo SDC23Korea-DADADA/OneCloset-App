@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -35,7 +36,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +51,8 @@ import com.dadada.onecloset.presentation.ui.utils.ClothColor
 import com.dadada.onecloset.presentation.ui.utils.ColorEnum
 import com.dadada.onecloset.presentation.ui.utils.IconEnum
 import com.dadada.onecloset.presentation.ui.utils.Material
+import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
+import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.ui.utils.Type
 import kotlinx.coroutines.launch
 
@@ -272,6 +274,7 @@ fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: MutableState<C
     }
 }
 
+private const val TAG = "BottomSheet"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectPhotoBottomSheet(
@@ -280,6 +283,28 @@ fun SelectPhotoBottomSheet(
     onClick: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
+    var cameraClick by remember {
+        mutableStateOf(false)
+    }
+    if (cameraClick) {
+        PermissionRequester(
+            permission = Permissions.cameraPermission,
+            onDismissRequest = { cameraClick = !cameraClick },
+            onPermissionGranted = { onClickCamera() }) {
+
+        }
+    }
+    var galleryClick by remember {
+        mutableStateOf(false)
+    }
+    if (galleryClick) {
+        PermissionRequester(
+            permission = Permissions.readExternalStoragePermission,
+            onDismissRequest = { galleryClick = !galleryClick },
+            onPermissionGranted = { onClickGallery() }) {
+
+        }
+    }
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = { onClick() },
@@ -297,7 +322,7 @@ fun SelectPhotoBottomSheet(
                 icon = R.drawable.ic_camera,
                 color = PrimaryBlue
             ) {
-                onClickCamera()
+                cameraClick = !cameraClick
             }
             IconWithName(
                 modifier = Modifier.size(44.dp),
@@ -305,7 +330,7 @@ fun SelectPhotoBottomSheet(
                 icon = R.drawable.ic_gallery,
                 color = PointGreen
             ) {
-                onClickGallery()
+                galleryClick = !galleryClick
             }
         }
     }
