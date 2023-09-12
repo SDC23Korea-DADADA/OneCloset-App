@@ -1,6 +1,5 @@
 package com.dadada.onecloset.presentation.ui.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -172,7 +171,7 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: MutableState<Typ
                     .background(Color.White)
             ) {
                 items(list.size) {
-                    ListItem(
+                    CustomListItem(
                         content = list[it].name,
                         onClick = {
                             curType.value = list[it]
@@ -214,7 +213,7 @@ fun SelectMaterialBottomSheet(show: MutableState<Boolean>, curMaterial: MutableS
                     .background(Color.White)
             ) {
                 items(list.size) {
-                    ListItem(
+                    CustomListItem(
                         content = list[it].name,
                         onClick = {
                             curMaterial.value = list[it]

@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
@@ -18,13 +21,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.utils.ClothColor
+import com.dadada.onecloset.presentation.ui.theme.iconGray
+import com.dadada.onecloset.presentation.ui.theme.iconGreen
 
 @Composable
 fun DropDownRow(component: @Composable () -> Unit, reverse: Boolean, onClick: () -> Unit) {
@@ -102,13 +105,56 @@ fun RowWithTwoButtons(
     onClickLeft: () -> Unit,
     onClickRight: () -> Unit
 ) {
-    Row(modifier = modifier.fillMaxWidth().padding()) {
+    Row(modifier = modifier
+        .fillMaxWidth()
+        .padding()) {
         Text(modifier = Modifier
             .clickable { onClickLeft() }
-            .weight(1f).padding(vertical = 12.dp), text = left, style = Typography.titleLarge, textAlign = TextAlign.Center)
+            .weight(1f)
+            .padding(vertical = 12.dp),
+            text = left,
+            style = Typography.titleLarge,
+            textAlign = TextAlign.Center)
         Text(modifier = Modifier
             .clickable { onClickRight() }
-            .weight(1f).padding(vertical = 12.dp), text = right, style = Typography.titleLarge, textAlign = TextAlign.Center)
+            .weight(1f)
+            .padding(vertical = 12.dp),
+            text = right,
+            style = Typography.titleLarge,
+            textAlign = TextAlign.Center)
+    }
+}
+
+@Composable
+fun ClickableRow(content: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = content)
+        Icon(
+            imageVector = Icons.Filled.KeyboardArrowRight,
+            contentDescription = "",
+            tint = Color.LightGray
+        )
+    }
+}
+
+@Composable
+fun LicenseRow(content: String, version: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = content)
+        Text(modifier = Modifier.padding(end = 4.dp), text = version, style = Typography.titleSmall.copy(iconGray))
     }
 }
 

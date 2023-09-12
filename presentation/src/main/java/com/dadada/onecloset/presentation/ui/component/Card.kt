@@ -3,6 +3,7 @@ package com.dadada.onecloset.presentation.ui.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -112,6 +114,23 @@ fun RoundedShape(title: String, content: String) {
             Text(text = title, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = content, color = Color.DarkGray)
+        }
+    }
+}
+
+@Composable
+fun ListRoundedShape(list: List<String>) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(26.dp))
+            .background(Color.White)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    ) {
+        list.forEach {
+            ClickableRow(it) {
+
+            }
         }
     }
 }
