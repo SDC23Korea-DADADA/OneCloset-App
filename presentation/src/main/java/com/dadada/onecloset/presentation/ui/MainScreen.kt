@@ -26,6 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.dadada.onecloset.presentation.ui.account.MyPageScreen
 import com.dadada.onecloset.presentation.ui.closet.ClosetDetailScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
@@ -77,7 +78,7 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
         },
         actions = {
             if (currentRoute == MainTabNav.route) {
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(AccountNav.route) }) {
                     Icon(Icons.Filled.AccountCircle, contentDescription = "account")
                 }
             }
@@ -124,6 +125,9 @@ fun MainNavigationScreen(
         }
         composable(route = ClothNav.route) {
             ClothScreen(navHostController = navController)
+        }
+        composable(route = AccountNav.route) {
+            MyPageScreen()
         }
     }
 }

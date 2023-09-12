@@ -15,9 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
@@ -36,8 +34,8 @@ import coil.compose.AsyncImage
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.BackGround
-import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.theme.iconGray
 
 @Composable
 fun ClosetItemViewWithName(item: Closet, onClick: () -> Unit) {
@@ -139,31 +137,29 @@ fun GalleryPhotoItem(url: Uri, idx: Int, isChecked: Boolean, onClick: () -> Unit
 }
 
 @Composable
-fun ListItem(content: String, onClick: () -> Unit) {
-    Column(
-        modifier = Modifier.clickable { onClick() }
-    ) {
-        ListItem(
-            headlineContent = { Text(content) },
-            trailingContent = {
-                Icon(
-                    imageVector = Icons.Filled.KeyboardArrowRight,
-                    contentDescription = "",
-                    tint = BackGround
-                )
-            },
-            colors = ListItemDefaults.colors(
-                containerColor = Color.White
-            ),
-
+fun CustomListItem(content: String, onClick: () -> Unit) {
+    ListItem(
+        modifier = Modifier.clickable { onClick() },
+        headlineContent = { Text(content) },
+        trailingContent = {
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowRight,
+                contentDescription = "",
+                tint = Color.LightGray
             )
-    }
+        },
+        colors = ListItemDefaults.colors(
+            containerColor = Color.White
+        ),
+    )
 }
+
 
 @Composable
 fun IconWithName(modifier: Modifier, name: String, icon: Int, color: Color, onClick: () -> Unit) {
     Column(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier
+            .padding(8.dp)
             .clickable {
                 onClick()
             },
@@ -175,6 +171,23 @@ fun IconWithName(modifier: Modifier, name: String, icon: Int, color: Color, onCl
         Text(
             text = name,
             style = Typography.titleSmall.copy(fontWeight = FontWeight.ExtraBold)
+        )
+    }
+}
+
+@Composable
+fun CircleImageView(modifier: Modifier = Modifier, url: String) {
+    Box(
+        modifier = modifier
+            .clip(CircleShape)
+            .background(Color.White)
+    ) {
+        AsyncImage(
+            modifier = Modifier
+                .align(Alignment.Center),
+            model = url,
+            contentDescription = "사진",
+            contentScale = ContentScale.Crop
         )
     }
 }
