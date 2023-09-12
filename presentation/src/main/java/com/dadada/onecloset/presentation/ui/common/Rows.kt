@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.component
+package com.dadada.onecloset.presentation.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,8 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.theme.iconGray
-import com.dadada.onecloset.presentation.ui.theme.iconGreen
+import com.dadada.onecloset.presentation.ui.theme.Gray
 
 @Composable
 fun DropDownRow(component: @Composable () -> Unit, reverse: Boolean, onClick: () -> Unit) {
@@ -154,7 +153,7 @@ fun LicenseRow(content: String, version: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = content)
-        Text(modifier = Modifier.padding(end = 4.dp), text = version, style = Typography.titleSmall.copy(iconGray))
+        Text(modifier = Modifier.padding(end = 4.dp), text = version, style = Typography.titleSmall.copy(Gray))
     }
 }
 

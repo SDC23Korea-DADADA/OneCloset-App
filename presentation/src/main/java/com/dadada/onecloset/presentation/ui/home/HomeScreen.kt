@@ -1,38 +1,25 @@
 package com.dadada.onecloset.presentation.ui.home
 
-import android.Manifest
-import android.content.Intent
-import android.net.Uri
-import android.provider.Settings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.CameraNav
 import com.dadada.onecloset.presentation.ui.FittingNav
 import com.dadada.onecloset.presentation.ui.GalleryNav
-import com.dadada.onecloset.presentation.ui.component.AlertDialogWithTwoButton
-import com.dadada.onecloset.presentation.ui.component.LargeRoundedShapeWithAnimation
-import com.dadada.onecloset.presentation.ui.component.SelectPhotoBottomSheet
+import com.dadada.onecloset.presentation.ui.common.LargeRoundedShapeWithAnimation
+import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
 
 private const val TAG = "HomeScreen"
 

@@ -1,6 +1,5 @@
 package com.dadada.onecloset.presentation.ui.closet
 
-import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.presentation.ui.component.RoundedShape
-import com.dadada.onecloset.presentation.ui.component.RowWithTwoButtons
+import com.dadada.onecloset.presentation.ui.common.RoundedShape
+import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 
 @Composable
 fun ClothCourseScreen(navHostController: NavHostController) {

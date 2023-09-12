@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
-import com.dadada.onecloset.presentation.ui.component.ClothItemView
-import com.dadada.onecloset.presentation.ui.component.RoundedShape
+import com.dadada.onecloset.presentation.ui.common.ClothItemView
+import com.dadada.onecloset.presentation.ui.common.RoundedShape
 
 @Composable
 fun ClothScreen(navHostController: NavHostController) {

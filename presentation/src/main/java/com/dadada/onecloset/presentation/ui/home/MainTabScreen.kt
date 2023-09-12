@@ -18,7 +18,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.ClosetNav
 import com.dadada.onecloset.presentation.ui.HomeNav
 import com.dadada.onecloset.presentation.ui.closet.ClosetScreen
-import com.dadada.onecloset.presentation.ui.component.CustomTabRow
+import com.dadada.onecloset.presentation.ui.common.CustomTabRow
 
 @Composable
 fun MainTabScreen(navHostController: NavHostController) {

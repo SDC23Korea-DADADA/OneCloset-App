@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,12 +11,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.dadada.onecloset.domain.model.Cloth
-import com.dadada.onecloset.presentation.ui.component.ClothItemView
+import com.dadada.onecloset.presentation.ui.common.ClothItemView
 
 @Composable
-fun FittingSelectedClothListView() {
+fun FittingSelectedClothListView(modifier: Modifier = Modifier) {
     val list = listOf(Cloth(), Cloth(), Cloth())
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceAround) {
         list.forEach {
             ClothItemView(
                 modifier = Modifier

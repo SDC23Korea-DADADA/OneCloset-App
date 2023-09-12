@@ -1,11 +1,8 @@
 package com.dadada.onecloset.presentation.ui.account
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,15 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.component.CircleImageView
-import com.dadada.onecloset.presentation.ui.component.ClickableRow
-import com.dadada.onecloset.presentation.ui.component.LicenseRow
-import com.dadada.onecloset.presentation.ui.component.ListRoundedShape
-import com.dadada.onecloset.presentation.ui.component.RoundedShape
+import com.dadada.onecloset.presentation.ui.common.CircleImageView
+import com.dadada.onecloset.presentation.ui.common.ClickableRow
+import com.dadada.onecloset.presentation.ui.common.LicenseRow
+import com.dadada.onecloset.presentation.ui.common.ListRoundedShape
+import com.dadada.onecloset.presentation.ui.common.RoundedShape
 import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.theme.iconGray
+import com.dadada.onecloset.presentation.ui.theme.Gray
 
 @Composable
 fun MyPageScreen() {
@@ -83,5 +79,5 @@ fun MyPageScreen() {
 fun SmallTitle(title: String) = Text(
     modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp),
     text = title,
-    style = Typography.titleSmall.copy(color = iconGray),
+    style = Typography.titleSmall.copy(color = Gray),
 )

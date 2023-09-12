@@ -19,7 +19,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.CameraNav
 import com.dadada.onecloset.presentation.ui.GalleryNav
 import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
-import com.dadada.onecloset.presentation.ui.component.SelectPhotoBottomSheet
+import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 
 @Composable
