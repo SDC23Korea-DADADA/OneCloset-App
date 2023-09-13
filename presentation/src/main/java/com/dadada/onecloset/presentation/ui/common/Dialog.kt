@@ -128,7 +128,7 @@ fun SelectClosetIconDialogBody(
         LazyVerticalGrid(columns = GridCells.Fixed(5)) {
             items(iconResIds.size) {
                 RoundedSquareIconItem(
-                    modifier = roundedShapeSmallModifier.clickable { selectedIconIdx.value = it },
+                    modifier = roundedSquareSmallModifier.clickable { selectedIconIdx.value = it },
                     icon = iconResIds[it],
                     backGroundTint = selectedColor.value
                 )

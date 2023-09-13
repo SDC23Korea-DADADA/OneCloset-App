@@ -5,12 +5,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -22,6 +20,8 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,24 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Typography
-
-@Composable
-fun ClothItemView(modifier: Modifier, imageUri: Uri, onClick: () -> Unit) {
-    Box(modifier = modifier
-        .background(Color.White)
-        .aspectRatio(1f)
-        .clickable {
-            onClick()
-        }) {
-        AsyncImage(
-            model = imageUri,
-            contentDescription = "의류 사진",
-            contentScale = ContentScale.Crop
-        )
-    }
-}
 
 @Composable
 fun ColorIconItem(color: Color, selectedColor: MutableState<Color>) {
@@ -63,7 +46,6 @@ fun ColorIconItem(color: Color, selectedColor: MutableState<Color>) {
 
 @Composable
 fun GalleryPhotoItem(url: Uri, idx: Int, isChecked: Boolean, onClick: () -> Unit) {
-
     Box(modifier = Modifier
         .background(Color.White)
         .aspectRatio(1f)
@@ -129,7 +111,11 @@ fun CircleImageView(modifier: Modifier = Modifier, url: String) {
 }
 
 @Composable
-fun RoundedSquareIconItem(modifier: Modifier = roundedShapeSmallModifier, icon: Int, backGroundTint: Color) {
+fun RoundedSquareIconItem(
+    modifier: Modifier = roundedSquareSmallModifier,
+    icon: Int,
+    backGroundTint: Color
+) {
     Box(
         modifier = modifier
             .size(48.dp)
@@ -164,5 +150,39 @@ fun RoundedSquareIconWithTitleItem(
             text = title,
             style = Typography.titleSmall.copy(fontWeight = FontWeight.ExtraBold)
         )
+    }
+}
+
+@Composable
+fun RoundedSquareImageItem(
+    modifier: Modifier = Modifier,
+    imageUri: Uri,
+    icon: Int?,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .aspectRatio(1f)
+            .border(1.dp, Color.White)
+            .clickable(onClick = onClick)
+
+    ) {
+        AsyncImage(
+            modifier = Modifier.align(Alignment.Center),
+            model = imageUri,
+            contentDescription = "의류 사진",
+            contentScale = ContentScale.Crop
+        )
+
+
+        icon?.let {
+            Image(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(4.dp),
+                painter = painterResource(id = it),
+                contentDescription = "Checked",
+            )
+        }
     }
 }

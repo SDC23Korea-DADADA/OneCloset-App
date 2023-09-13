@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.common.CircleImageView
 import com.dadada.onecloset.presentation.ui.common.ClickableRow
 import com.dadada.onecloset.presentation.ui.common.LicenseRow
-import com.dadada.onecloset.presentation.ui.common.ListRoundedShape
-import com.dadada.onecloset.presentation.ui.common.RoundedShape
+import com.dadada.onecloset.presentation.ui.common.ListRoundedSquare
+import com.dadada.onecloset.presentation.ui.common.RoundedSquare
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.theme.Gray
 
@@ -41,18 +41,18 @@ fun MyPageScreen() {
         Spacer(modifier = Modifier.size(36.dp))
         Column {
             SmallTitle(title = "계정")
-            RoundedShape(title = "카카오 계정", content = "juyong4190@gmail.com")
+            RoundedSquare(title = "카카오 계정", content = "juyong4190@gmail.com")
         }
         Spacer(modifier = Modifier.size(16.dp))
         Column {
             SmallTitle(title = "가상모델")
-            RoundedShape(title = "성별", content = "남성")
+            RoundedSquare(title = "성별", content = "남성")
         }
         Spacer(modifier = Modifier.size(16.dp))
 
         Column {
             SmallTitle(title = "개인정보")
-            ListRoundedShape(list = list)
+            ListRoundedSquare(list = list)
         }
 
         Spacer(modifier = Modifier.size(16.dp))

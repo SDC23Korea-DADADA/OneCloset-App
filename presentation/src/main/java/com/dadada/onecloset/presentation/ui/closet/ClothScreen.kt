@@ -3,20 +3,18 @@ package com.dadada.onecloset.presentation.ui.closet
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
-import com.dadada.onecloset.presentation.ui.common.ClothItemView
-import com.dadada.onecloset.presentation.ui.common.RoundedShape
+import com.dadada.onecloset.presentation.ui.common.RoundedSquare
+import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 
 @Composable
 fun ClothScreen(navHostController: NavHostController) {
@@ -31,10 +29,10 @@ fun ClothScreen(navHostController: NavHostController) {
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(horizontal = 16.dp)) {
-        ClothItemView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(26.dp)), imageUri = item.url.toUri()
+        RoundedSquareImageItem(
+            modifier = roundedSquareLargeModifier,
+            imageUri = item.url.toUri(),
+            icon = null,
         ) {
 
         }
@@ -48,7 +46,7 @@ fun ClothScreen(navHostController: NavHostController) {
             Spacer(modifier = Modifier.weight(1f))
             Column() {
                 list.forEachIndexed { index, s ->
-                    RoundedShape(title = s, content = contentList[index])
+                    RoundedSquare(title = s, content = contentList[index])
                     Spacer(modifier = Modifier.size(12.dp))
                 }
             }

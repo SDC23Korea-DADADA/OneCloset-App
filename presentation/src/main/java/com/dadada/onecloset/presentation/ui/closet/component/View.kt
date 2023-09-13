@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.closet.component
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,19 +29,24 @@ import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.ClosetDetailNav
-import com.dadada.onecloset.presentation.ui.ClothNav
-import com.dadada.onecloset.presentation.ui.common.ClothItemView
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconWithTitleItem
-import com.dadada.onecloset.presentation.ui.common.roundedShapeLargeModifier
+import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
 
 
 @Composable
 fun ClothTabGridView(
     paddingValues: PaddingValues = PaddingValues(0.dp),
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    clothItems: List<Cloth> = listOf(),
+    icon: Int? = null,
+    itemClickedStateList: SnapshotStateList<Boolean> = mutableStateListOf(),
+    onClick: (Int) -> Unit = {}
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val handleTabClick = { newIndex: Int ->
@@ -54,10 +62,6 @@ fun ClothTabGridView(
         tabWidthStateList
     }
 
-    var list =
-        listOf(Cloth(), Cloth(), Cloth(), Cloth(), Cloth(), Cloth(), Cloth(), Cloth(), Cloth())
-    list += list;
-    list += list
 
     Column(
         modifier = modifier
@@ -73,33 +77,48 @@ fun ClothTabGridView(
             tabWidths = tabWidths,
             tabClick = handleTabClick
         )
-        ClothGridView(navHostController = navHostController, clothItems = list)
+        ClothGridView(
+            navHostController = navHostController,
+            clothItems = clothItems,
+            itemClickedStateList = itemClickedStateList,
+            onClick = onClick
+        )
     }
 }
 
+private const val TAG = "View"
 @Composable
-fun ClothGridView(navHostController: NavHostController, clothItems: List<Cloth>) {
+fun ClothGridView(
+    navHostController: NavHostController,
+    clothItems: List<Cloth>,
+    itemClickedStateList: SnapshotStateList<Boolean> = mutableStateListOf(),
+    onClick: (Int) -> Unit = {}
+) {
+    var icon: Int? = null
+    Log.d(TAG, "ClothGridView: ${itemClickedStateList.size}")
     LazyVerticalGrid(
         modifier = Modifier.padding(horizontal = 4.dp),
         columns = GridCells.Fixed(3),
     ) {
-        items(clothItems.size) {
-            ClothItemView(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .clip(RoundedCornerShape(20.dp)),
-                imageUri = clothItems[it].thumbnailImg.toUri()
-            ) {
-                navHostController.navigate(ClothNav.route)
-            }
+        items(clothItems.size) { it ->
+           if(itemClickedStateList.size != 0) {
+               icon = if(itemClickedStateList[it]) R.drawable.ic_checked else R.drawable.ic_unchecked
+           }
+            RoundedSquareImageItem(
+                modifier = roundedSquareMediumModifier,
+                imageUri = clothItems[it].thumbnailImg.toUri(),
+                icon = icon,
+                onClick = { onClick(it) },
+            )
         }
     }
 }
 
+
 @Composable
 fun ClosetListView(navHostController: NavHostController, closetList: List<Closet>) {
     Box(
-        modifier = roundedShapeLargeModifier.aspectRatio(1f)
+        modifier = roundedSquareLargeModifier.aspectRatio(1f)
     ) {
         LazyVerticalGrid(
             modifier = Modifier

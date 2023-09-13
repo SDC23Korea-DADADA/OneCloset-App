@@ -41,7 +41,7 @@ fun InfoView(
     iconView: @Composable () -> Unit
 ) {
     Row(
-        modifier = roundedShapeLargeModifier.clickable(onClick = onClick),
+        modifier = roundedSquareLargeModifier.clickable(onClick = onClick).padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         iconView()
@@ -86,4 +86,5 @@ fun SelectPhotoView(onClickCamera: () -> Unit, onClickGallery: () -> Unit) {
         )
     }
 }
+
 

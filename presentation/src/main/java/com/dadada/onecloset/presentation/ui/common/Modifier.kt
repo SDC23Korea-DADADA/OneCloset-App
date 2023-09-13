@@ -9,18 +9,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-val roundedShapeLargeModifier = Modifier
+val roundedSquareLargeModifier = Modifier
     .fillMaxWidth()
     .clip(RoundedCornerShape(26.dp))
     .background(Color.White)
-    .padding(16.dp)
 
-val roundedShapeMediumModifier = Modifier
-    .fillMaxWidth()
+val roundedSquareMediumModifier = Modifier
+    .padding(4.dp)
     .clip(RoundedCornerShape(20.dp))
     .background(Color.White)
-    .padding(16.dp)
 
-val roundedShapeSmallModifier = Modifier
+val roundedSquareSmallModifier = Modifier
     .padding(4.dp)
     .clip(RoundedCornerShape(14.dp))

@@ -17,7 +17,7 @@ import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.CameraNav
 import com.dadada.onecloset.presentation.ui.FittingNav
 import com.dadada.onecloset.presentation.ui.GalleryNav
-import com.dadada.onecloset.presentation.ui.common.LargeRoundedShapeWithAnimation
+import com.dadada.onecloset.presentation.ui.common.LargeRoundedSquareWithAnimation
 import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
@@ -44,7 +44,7 @@ fun HomeScreen(navHostController: NavHostController) {
             .fillMaxSize()
             .padding(top = 24.dp)
     ) {
-        LargeRoundedShapeWithAnimation(
+        LargeRoundedSquareWithAnimation(
             title = "Care",
             content = "의류 이미지로 세탁기, 건조기, 에어 드레서\n코스를 추천 받으세요!",
             animation = R.raw.animation_course
@@ -53,7 +53,7 @@ fun HomeScreen(navHostController: NavHostController) {
         }
 
         Spacer(modifier = Modifier.height(24.dp))
-        LargeRoundedShapeWithAnimation(
+        LargeRoundedSquareWithAnimation(
             title = "Fitting",
             content = "옷장 속 의류 사진으로 나만의 가상 코디를\n만들어보세요!",
             animation = R.raw.animation_fitting

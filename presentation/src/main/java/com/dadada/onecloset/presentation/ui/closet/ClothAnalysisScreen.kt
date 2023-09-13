@@ -22,14 +22,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.ClothCourseNav
 import com.dadada.onecloset.presentation.ui.common.ChipEditRow
-import com.dadada.onecloset.presentation.ui.common.ClothItemView
 import com.dadada.onecloset.presentation.ui.common.ColorEditRow
+import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 import com.dadada.onecloset.presentation.ui.common.SelectColorBottomSheet
 import com.dadada.onecloset.presentation.ui.common.SelectMaterialBottomSheet
 import com.dadada.onecloset.presentation.ui.common.SelectTypeBottomSheet
-import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.Gray
+import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
 import com.dadada.onecloset.presentation.ui.utils.Material
 import com.dadada.onecloset.presentation.ui.utils.Type
@@ -42,17 +43,20 @@ fun ClothAnalysisScreen(navHostController: NavHostController, photoUri: Uri) {
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ClothItemView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(26.dp)), imageUri = photoUri
+        RoundedSquareImageItem(
+            modifier = roundedSquareLargeModifier,
+            imageUri = photoUri,
+            icon = null,
         ) {
 
         }
         Spacer(modifier = Modifier.size(16.dp))
         ClothCreateInputView()
         Spacer(modifier = Modifier.size(16.dp))
-        Text(text = "*분석 결과가 정확한가요? 버튼을 클릭하면 수정할 수 있어요!", style = Typography.titleSmall.copy(color = Gray))
+        Text(
+            text = "*분석 결과가 정확한가요? 버튼을 클릭하면 수정할 수 있어요!",
+            style = Typography.titleSmall.copy(color = Gray)
+        )
         Spacer(modifier = Modifier.weight(1f))
         RowWithTwoButtons(left = "다시하기", right = "다음", onClickLeft = { /*TODO*/ }) {
             val encodedUri = Uri.encode(photoUri.toString())

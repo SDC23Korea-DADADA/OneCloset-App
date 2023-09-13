@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.CameraNav
+import com.dadada.onecloset.presentation.ui.ClothNav
 import com.dadada.onecloset.presentation.ui.GalleryNav
 import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
 import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
@@ -51,6 +52,10 @@ fun ClothListScreen(navHostController: NavHostController) {
             }
         },
     ) {
-        ClothTabGridView(paddingValues = it, navHostController = navHostController)
+        ClothTabGridView(
+            paddingValues = it,
+            navHostController = navHostController,
+            onClick = { navHostController.navigate(ClothNav.route) }
+        )
     }
 }

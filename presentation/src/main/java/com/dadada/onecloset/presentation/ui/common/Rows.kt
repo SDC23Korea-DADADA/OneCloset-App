@@ -16,12 +16,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
@@ -112,14 +114,14 @@ fun RowWithTwoButtons(
             .weight(1f)
             .padding(vertical = 12.dp),
             text = left,
-            style = Typography.titleLarge,
+            style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold),
             textAlign = TextAlign.Center)
         Text(modifier = Modifier
             .clickable { onClickRight() }
             .weight(1f)
             .padding(vertical = 12.dp),
             text = right,
-            style = Typography.titleLarge,
+            style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold),
             textAlign = TextAlign.Center)
     }
 }

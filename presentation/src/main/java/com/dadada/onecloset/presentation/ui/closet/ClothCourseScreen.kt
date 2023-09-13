@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.presentation.ui.common.RoundedShape
+import com.dadada.onecloset.presentation.ui.common.RoundedSquare
 import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 
 @Composable
@@ -32,7 +32,7 @@ fun ClothCourseScreen(navHostController: NavHostController) {
         Spacer(modifier = Modifier.weight(1f))
         Column() {
             list.forEachIndexed { index, s ->
-                RoundedShape(title = s, content = contentList[index])
+                RoundedSquare(title = s, content = contentList[index])
                 Spacer(modifier = Modifier.size(12.dp))
             }
         }
