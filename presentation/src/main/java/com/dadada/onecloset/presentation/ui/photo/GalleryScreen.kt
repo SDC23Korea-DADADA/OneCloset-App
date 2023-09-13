@@ -32,9 +32,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.presentation.ui.ClothAnalysisNav
-import com.dadada.onecloset.presentation.ui.component.GalleryPhotoItem
+import com.dadada.onecloset.presentation.ui.common.GalleryPhotoItem
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
-import com.dadada.onecloset.presentation.ui.theme.iconGray
+import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 
 private const val TAG = "GalleryScreen"
@@ -95,7 +95,7 @@ fun GalleryHeader(
             }
         },
         actions = {
-            val color = if (isCheckedIdx.value != -1) PrimaryBlack else iconGray
+            val color = if (isCheckedIdx.value != -1) PrimaryBlack else Gray
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 onClick = {

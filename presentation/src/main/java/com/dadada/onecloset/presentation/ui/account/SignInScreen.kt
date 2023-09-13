@@ -118,12 +118,14 @@ private fun logInKakao(context: Context, callback: (OAuthToken?, Throwable?) -> 
                 // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
                 if ((error is ClientError) && (error.reason == ClientErrorCause.Cancelled)) {
                     Log.d(TAG, "logInKakao: ")
+
                     return@loginWithKakaoTalk
                 }
 
                 // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                 //UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
             } else if (token != null) {
+
                 Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
             }
         }

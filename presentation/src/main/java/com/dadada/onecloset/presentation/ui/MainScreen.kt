@@ -27,10 +27,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dadada.onecloset.presentation.ui.account.MyPageScreen
-import com.dadada.onecloset.presentation.ui.closet.ClosetDetailScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothScreen
+import com.dadada.onecloset.presentation.ui.fitting.FittingScreen
 import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
@@ -104,7 +105,7 @@ fun MainNavigationScreen(
             CameraScreen()
         }
         composable(route = ClosetDetailNav.route) {
-            ClosetDetailScreen(navController)
+            ClothListScreen(navHostController = navController)
         }
         composable(route = GalleryNav.route) {
             GalleryScreen(navController)
@@ -128,6 +129,9 @@ fun MainNavigationScreen(
         }
         composable(route = AccountNav.route) {
             MyPageScreen()
+        }
+        composable(route = FittingNav.route) {
+            FittingScreen(navHostController = navController)
         }
     }
 }

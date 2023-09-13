@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.component
+package com.dadada.onecloset.presentation.ui.common
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -16,9 +16,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -30,27 +28,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
-import kotlinx.coroutines.launch
 
 @Composable
 fun CustomTabRow(
     modifier: Modifier,
     tabs: List<String>,
-    selectedTabIndex: MutableState<Int>,
-    tabWidths: MutableList<Dp>
+    selectedTabIndex: Int,
+    tabWidths: MutableList<Dp>,
+    tabClick: (Int) -> Unit
 ) {
     val density = LocalDensity.current
-    val coroutineScope = rememberCoroutineScope()
     TabRow(
         modifier = modifier
             .padding(bottom = 12.dp),
-        selectedTabIndex = selectedTabIndex.value,
+        selectedTabIndex = selectedTabIndex,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 modifier = Modifier
                     .customTabIndicatorOffset(
-                        tabPositions[selectedTabIndex.value],
-                        tabWidths[selectedTabIndex.value]
+                        tabPositions[selectedTabIndex],
+                        tabWidths[selectedTabIndex]
                     )
                     .graphicsLayer {
                         shape = RoundedCornerShape(
@@ -69,17 +66,13 @@ fun CustomTabRow(
     ) {
         tabs.forEachIndexed { index, title ->
             Tab(
-                selected = selectedTabIndex.value == index,
-                onClick = {
-                    coroutineScope.launch {
-                        selectedTabIndex.value = index
-                    }
-                },
+                selected = selectedTabIndex == index,
+                onClick = { tabClick(index) },
                 text = {
                     Text(
                         text = title,
                         color = MaterialTheme.colorScheme.onSurface, //if (selectedTabIndex.value == index) PointDeepGreen else
-                        fontWeight = if (selectedTabIndex.value == index) FontWeight.ExtraBold else FontWeight.Normal,
+                        fontWeight = if (selectedTabIndex == index) FontWeight.ExtraBold else FontWeight.Normal,
                         onTextLayout = { textLayoutResult ->
                             tabWidths[index] =
                                 with(density) { textLayoutResult.size.width.toDp() }

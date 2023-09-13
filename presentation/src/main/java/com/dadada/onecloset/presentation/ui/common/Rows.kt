@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.component
+package com.dadada.onecloset.presentation.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -16,18 +16,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.theme.iconGray
-import com.dadada.onecloset.presentation.ui.theme.iconGreen
+import com.dadada.onecloset.presentation.ui.theme.Gray
 
 @Composable
 fun DropDownRow(component: @Composable () -> Unit, reverse: Boolean, onClick: () -> Unit) {
@@ -113,14 +114,14 @@ fun RowWithTwoButtons(
             .weight(1f)
             .padding(vertical = 12.dp),
             text = left,
-            style = Typography.titleLarge,
+            style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold),
             textAlign = TextAlign.Center)
         Text(modifier = Modifier
             .clickable { onClickRight() }
             .weight(1f)
             .padding(vertical = 12.dp),
             text = right,
-            style = Typography.titleLarge,
+            style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold),
             textAlign = TextAlign.Center)
     }
 }
@@ -154,7 +155,7 @@ fun LicenseRow(content: String, version: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = content)
-        Text(modifier = Modifier.padding(end = 4.dp), text = version, style = Typography.titleSmall.copy(iconGray))
+        Text(modifier = Modifier.padding(end = 4.dp), text = version, style = Typography.titleSmall.copy(Gray))
     }
 }
 

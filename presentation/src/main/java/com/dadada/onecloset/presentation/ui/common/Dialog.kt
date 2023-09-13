@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.component
+package com.dadada.onecloset.presentation.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -127,10 +127,10 @@ fun SelectClosetIconDialogBody(
     ) {
         LazyVerticalGrid(columns = GridCells.Fixed(5)) {
             items(iconResIds.size) {
-                ClosetItem(
-                    modifier = Modifier.clickable { selectedIconIdx.value = it },
+                RoundedSquareIconItem(
+                    modifier = roundedSquareSmallModifier.clickable { selectedIconIdx.value = it },
                     icon = iconResIds[it],
-                    color = selectedColor.value
+                    backGroundTint = selectedColor.value
                 )
             }
         }

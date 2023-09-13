@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.component
+package com.dadada.onecloset.presentation.ui.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween

@@ -2,15 +2,15 @@ package com.dadada.onecloset.presentation.ui.utils
 
 import androidx.compose.ui.graphics.Color
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.theme.iconBlue
-import com.dadada.onecloset.presentation.ui.theme.iconBluePurple
-import com.dadada.onecloset.presentation.ui.theme.iconGray
-import com.dadada.onecloset.presentation.ui.theme.iconGreen
-import com.dadada.onecloset.presentation.ui.theme.iconNavy
-import com.dadada.onecloset.presentation.ui.theme.iconOrange
-import com.dadada.onecloset.presentation.ui.theme.iconPink
-import com.dadada.onecloset.presentation.ui.theme.iconPurple
-import com.dadada.onecloset.presentation.ui.theme.iconSkyBlue
+import com.dadada.onecloset.presentation.ui.theme.Blue
+import com.dadada.onecloset.presentation.ui.theme.BluePurple
+import com.dadada.onecloset.presentation.ui.theme.Gray
+import com.dadada.onecloset.presentation.ui.theme.Green
+import com.dadada.onecloset.presentation.ui.theme.Navy
+import com.dadada.onecloset.presentation.ui.theme.Orange
+import com.dadada.onecloset.presentation.ui.theme.Pink
+import com.dadada.onecloset.presentation.ui.theme.Purple
+import com.dadada.onecloset.presentation.ui.theme.SkyBlue
 
 enum class IconEnum (val resId: Int) {
     ICON1(R.drawable.ic_bow_tie),
@@ -29,13 +29,13 @@ enum class IconEnum (val resId: Int) {
 }
 
 enum class ColorEnum(val color: Color) {
-    Color1(iconBlue),
-    Color2(iconGreen),
-    Color3(iconOrange),
-    Color4(iconGray),
-    Color5(iconSkyBlue),
-    Color6(iconPurple),
-    Color7(iconBluePurple),
-    Color8(iconNavy),
-    Color9(iconPink)
+    Color1(Blue),
+    Color2(Green),
+    Color3(Orange),
+    Color4(Gray),
+    Color5(SkyBlue),
+    Color6(Purple),
+    Color7(BluePurple),
+    Color8(Navy),
+    Color9(Pink)
 }

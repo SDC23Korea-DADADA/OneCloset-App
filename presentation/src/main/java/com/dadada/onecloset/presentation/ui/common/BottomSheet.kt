@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.component
+package com.dadada.onecloset.presentation.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,13 +39,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.BackGround
-import com.dadada.onecloset.presentation.ui.theme.PointGreen
+import com.dadada.onecloset.presentation.ui.theme.Blue
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
-import com.dadada.onecloset.presentation.ui.theme.PrimaryBlue
 import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.theme.iconBlue
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
 import com.dadada.onecloset.presentation.ui.utils.ColorEnum
 import com.dadada.onecloset.presentation.ui.utils.IconEnum
@@ -63,7 +60,7 @@ fun BottomSheetAddCloset() {
     var textValue by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
     var selectedIconIdx = remember { mutableStateOf(0) }
-    val selectedColor = remember { mutableStateOf(iconBlue) }
+    val selectedColor = remember { mutableStateOf(Blue) }
 
 
     if (showDialog) {
@@ -93,11 +90,11 @@ fun BottomSheetAddCloset() {
         ) {
             Text(text = "대표 아이콘", style = Typography.titleSmall.copy(fontWeight = FontWeight.Bold))
             DropDownRow(component = {
-                ClosetItem(
-                    modifier = Modifier,
+                RoundedSquareIconItem(
                     icon = iconResIds[selectedIconIdx.value],
-                    color = selectedColor.value
+                    backGroundTint = selectedColor.value
                 )
+
             }, reverse = showDialog, onClick = { showDialog = !showDialog })
         }
 
@@ -273,7 +270,6 @@ fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: MutableState<C
     }
 }
 
-private const val TAG = "BottomSheet"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectPhotoBottomSheet(
@@ -282,55 +278,34 @@ fun SelectPhotoBottomSheet(
     onClick: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState()
-    var cameraClick by remember {
-        mutableStateOf(false)
-    }
-    if (cameraClick) {
+
+    var cameraClickState by remember { mutableStateOf(false) }
+    val cameraClick = { cameraClickState = !cameraClickState }
+    if (cameraClickState) {
         PermissionRequester(
             permission = Permissions.cameraPermission,
-            onDismissRequest = { cameraClick = !cameraClick },
-            onPermissionGranted = { onClickCamera() }) {
-
+            onDismissRequest = cameraClick,
+            onPermissionGranted = onClickCamera
+        ) {
         }
     }
-    var galleryClick by remember {
-        mutableStateOf(false)
-    }
-    if (galleryClick) {
+
+    var galleryClickState by remember { mutableStateOf(false) }
+    val galleryClick = { galleryClickState = !galleryClickState }
+    if (galleryClickState) {
         PermissionRequester(
             permission = Permissions.readExternalStoragePermission,
-            onDismissRequest = { galleryClick = !galleryClick },
-            onPermissionGranted = { onClickGallery() }) {
-
+            onDismissRequest = galleryClick,
+            onPermissionGranted = onClickGallery
+        ) {
         }
     }
+
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = { onClick() },
         containerColor = BackGround
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp, top = 8.dp, start = 16.dp, end = 16.dp),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            IconWithName(
-                modifier = Modifier.size(44.dp),
-                name = "카메라",
-                icon = R.drawable.ic_camera,
-                color = PrimaryBlue
-            ) {
-                cameraClick = !cameraClick
-            }
-            IconWithName(
-                modifier = Modifier.size(44.dp),
-                name = "갤러리",
-                icon = R.drawable.ic_gallery,
-                color = PointGreen
-            ) {
-                galleryClick = !galleryClick
-            }
-        }
+        SelectPhotoView(onClickCamera = cameraClick, onClickGallery = onClickGallery)
     }
 }
