@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.R
+import com.dadada.onecloset.presentation.ui.CoordinationNav
 import com.dadada.onecloset.presentation.ui.closet.component.ClosetListView
 import com.dadada.onecloset.presentation.ui.common.BottomSheetAddCloset
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
@@ -68,7 +69,7 @@ fun ClosetScreen(navHostController: NavHostController) {
 
     Scaffold(
         floatingActionButton = {
-            CustomFloatingActionButton(icon = Icons.Default.Add) { scope.launch { sheetState.show() } }
+            CustomFloatingActionButton(modifier = Modifier.padding(bottom = 80.dp),icon = Icons.Default.Add) { scope.launch { sheetState.show() } }
         },
     ) {
         Column(
@@ -80,7 +81,7 @@ fun ClosetScreen(navHostController: NavHostController) {
             InfoView(
                 title = stringResource(R.string.daily_codi),
                 content = stringResource(R.string.daliy_codi_guide),
-                onClick = { /*TODO*/ }) {
+                onClick = { navHostController.navigate(CoordinationNav.route) }) {
                 Icon(
                     modifier = Modifier.size(36.dp),
                     painter = painterResource(id = R.drawable.ic_date),

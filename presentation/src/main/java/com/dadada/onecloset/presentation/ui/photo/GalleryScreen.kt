@@ -2,6 +2,7 @@ package com.dadada.onecloset.presentation.ui.photo
 
 import android.net.Uri
 import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,8 +23,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,10 +38,15 @@ import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.dadada.onecloset.domain.model.Photo
+import com.dadada.onecloset.presentation.R
+import com.dadada.onecloset.presentation.ui.CameraNav
 import com.dadada.onecloset.presentation.ui.ClothAnalysisNav
 import com.dadada.onecloset.presentation.ui.common.GalleryPhotoItem
+import com.dadada.onecloset.presentation.ui.common.PhotoItem
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Gray
+import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
+import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 
 private const val TAG = "GalleryScreen"
@@ -46,6 +58,18 @@ fun GalleryScreen(
 ) {
     val pagingPhotos = photoViewModel.photoList.collectAsLazyPagingItems()
     val isCheckedIdx = photoViewModel.isCheckedIdx.collectAsState()
+    var onClick by remember {
+        mutableStateOf(false)
+    }
+
+    if(onClick) {
+        PermissionRequester(
+            permission = Permissions.cameraPermission,
+            onDismissRequest = { onClick = !onClick },
+            onPermissionGranted = { navController.navigate(CameraNav.route) }) {
+            onClick = !onClick
+        }
+    }
 
     LaunchedEffect(Unit) {
         photoViewModel.getPagingPhotos()
@@ -64,11 +88,18 @@ fun GalleryScreen(
             modifier = Modifier.padding(it),
             columns = GridCells.Fixed(4),
         ) {
-            items(pagingPhotos.itemCount) { index ->
-                val isCurrentItemChecked = isCheckedIdx.value == index
-                pagingPhotos[index]?.let { galleryImage ->
-                    GalleryPhotoItem(url = galleryImage.uri, index, isCurrentItemChecked) {
-                        photoViewModel.setCheckedIndex(index)
+            items(pagingPhotos.itemCount + 1) { index ->
+                // 인덱스 0에는 카메라 아이콘을 표시
+                if (index == 0) {
+                    PhotoItem { onClick = !onClick }
+                } else {
+                    // 0이 아닌 다른 인덱스에는 GalleryPhotoItem 표시
+                    val actualIndex = index - 1
+                    val isCurrentItemChecked = isCheckedIdx.value == actualIndex
+                    pagingPhotos[actualIndex]?.let { galleryImage ->
+                        GalleryPhotoItem(url = galleryImage.uri, actualIndex, isCurrentItemChecked) {
+                            photoViewModel.setCheckedIndex(actualIndex)
+                        }
                     }
                 }
             }

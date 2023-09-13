@@ -31,6 +31,7 @@ import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothScreen
+import com.dadada.onecloset.presentation.ui.coordination.CoordinationScreen
 import com.dadada.onecloset.presentation.ui.fitting.FittingScreen
 import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
@@ -110,6 +111,7 @@ fun MainNavigationScreen(
         composable(route = GalleryNav.route) {
             GalleryScreen(navController)
         }
+        
         composable(route = "${ClothAnalysisNav.route}/{photoUri}") {
             val uriArg = it.arguments?.getString("photoUri")
             if (uriArg != null) {
@@ -132,6 +134,9 @@ fun MainNavigationScreen(
         }
         composable(route = FittingNav.route) {
             FittingScreen(navHostController = navController)
+        }
+        composable(route = CoordinationNav.route) {
+            CoordinationScreen(navHostController = navController)
         }
     }
 }

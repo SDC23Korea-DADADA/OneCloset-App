@@ -13,7 +13,7 @@ import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 @Composable
 fun CustomFloatingActionButton(modifier: Modifier = Modifier, icon: ImageVector, onClick: () -> Unit) {
     FloatingActionButton(
-        modifier = Modifier.padding(bottom = 88.dp),
+        modifier = modifier,
         contentColor = Color.White,
         containerColor = PrimaryBlack,
         onClick = { onClick() }
