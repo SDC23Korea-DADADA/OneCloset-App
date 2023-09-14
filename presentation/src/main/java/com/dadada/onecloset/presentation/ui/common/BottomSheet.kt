@@ -282,12 +282,6 @@ fun SelectPhotoBottomSheet(
     var cameraClickState by remember { mutableStateOf(false) }
     val cameraClick = { cameraClickState = !cameraClickState }
     if (cameraClickState) {
-        PermissionRequester(
-            permission = Permissions.cameraPermission,
-            onDismissRequest = cameraClick,
-            onPermissionGranted = onClickCamera
-        ) {
-        }
     }
 
     var galleryClickState by remember { mutableStateOf(false) }

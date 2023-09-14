@@ -19,6 +19,8 @@ import com.dadada.onecloset.presentation.ui.FittingNav
 import com.dadada.onecloset.presentation.ui.GalleryNav
 import com.dadada.onecloset.presentation.ui.common.LargeRoundedSquareWithAnimation
 import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
+import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
+import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 
 private const val TAG = "HomeScreen"
@@ -26,18 +28,16 @@ private const val TAG = "HomeScreen"
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(navHostController: NavHostController) {
-    var showSelectPhotoBottomSheet by remember { mutableStateOf(false) }
+    var clickCourse by remember { mutableStateOf(false) }
 
-    if (showSelectPhotoBottomSheet) {
-        SelectPhotoBottomSheet(onClickCamera = {
-            navHostController.navigate(CameraNav.route)
-        }, onClickGallery = {
-            navHostController.navigate(GalleryNav.route)
-        }) {
-            showSelectPhotoBottomSheet = !showSelectPhotoBottomSheet
+    if(clickCourse) {
+        PermissionRequester(
+            permission = Permissions.readExternalStoragePermission,
+            onDismissRequest = { clickCourse = !clickCourse },
+            onPermissionGranted = { navHostController.navigate(GalleryNav.route) }) {
+            clickCourse = !clickCourse
         }
     }
-
 
     Column(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun HomeScreen(navHostController: NavHostController) {
             content = "의류 이미지로 세탁기, 건조기, 에어 드레서\n코스를 추천 받으세요!",
             animation = R.raw.animation_course
         ) {
-            showSelectPhotoBottomSheet = !showSelectPhotoBottomSheet
+            clickCourse = !clickCourse
         }
 
         Spacer(modifier = Modifier.height(24.dp))

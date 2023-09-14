@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -72,6 +73,25 @@ fun GalleryPhotoItem(url: Uri, idx: Int, isChecked: Boolean, onClick: () -> Unit
             contentDescription = "Checked",
         )
 
+    }
+}
+
+@Composable
+fun PhotoItem(onClick: () -> Unit) {
+    Column(modifier = Modifier
+        .background(Color.White)
+        .aspectRatio(1f)
+        .border(1.dp, Color.White)
+        .clickable {
+            onClick()
+        }, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Image(
+            modifier = Modifier
+                .padding(4.dp),
+            painter = painterResource(id = R.drawable.ic_camera),
+            contentDescription = "Checked",
+        )
+        Text(text = "사진 찍기")
     }
 }
 
