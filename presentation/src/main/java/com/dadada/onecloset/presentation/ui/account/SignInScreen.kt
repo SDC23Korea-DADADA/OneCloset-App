@@ -17,8 +17,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dadada.onecloset.domain.model.AccountInfo
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.account.component.SignInButton
 import com.dadada.onecloset.presentation.ui.account.component.SignInButtonView
+import com.dadada.onecloset.presentation.ui.account.model.SignInButton
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.viewmodel.AccountViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn

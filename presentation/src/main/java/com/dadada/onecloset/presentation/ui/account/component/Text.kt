@@ -9,7 +9,7 @@ sealed class AccountText(val id: Int) {
     object PERSONAL: AccountText(R.string.account_title_personal)
     object PERMISSION: AccountText(R.string.account_permission)
     object LOGOUT: AccountText(R.string.account_log_out)
-    object WITHDRAWAL: AccountText(R.string.account_log_out)
+    object WITHDRAWAL: AccountText(R.string.account_withdrawal)
 
     object MODEL: AccountText(R.string.account_title_virtual_model)
     object GENDER: AccountText(R.string.account_gender)
@@ -21,6 +21,7 @@ sealed class AccountText(val id: Int) {
     companion object {
         val personalInfoContents = listOf(PERMISSION.id, LOGOUT.id, WITHDRAWAL.id)
         val appInfoContents = listOf(VERSION.id, LICENSE.id)
+
     }
 
 }

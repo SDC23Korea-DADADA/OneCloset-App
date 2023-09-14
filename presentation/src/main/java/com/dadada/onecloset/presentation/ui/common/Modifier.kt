@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.dadada.onecloset.presentation.ui.theme.Paddings
 
 val screenModifier = Modifier.fillMaxWidth().padding(16.dp)
 
@@ -17,10 +18,10 @@ val roundedSquareLargeModifier = Modifier
     .background(Color.White)
 
 val roundedSquareMediumModifier = Modifier
-    .padding(4.dp)
+    .padding(Paddings.small)
     .clip(RoundedCornerShape(20.dp))
     .background(Color.White)
 
 val roundedSquareSmallModifier = Modifier
-    .padding(4.dp)
+    .padding(Paddings.small)
     .clip(RoundedCornerShape(14.dp))
