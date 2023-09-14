@@ -9,6 +9,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
+val screenModifier = Modifier.fillMaxWidth().padding(16.dp)
+
 val roundedSquareLargeModifier = Modifier
     .fillMaxWidth()
     .clip(RoundedCornerShape(26.dp))

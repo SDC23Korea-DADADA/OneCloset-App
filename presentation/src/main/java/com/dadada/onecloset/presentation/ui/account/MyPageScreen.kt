@@ -16,49 +16,52 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.dadada.onecloset.presentation.ui.account.component.AccountText
 import com.dadada.onecloset.presentation.ui.common.CircleImageView
-import com.dadada.onecloset.presentation.ui.common.ClickableRow
 import com.dadada.onecloset.presentation.ui.common.LicenseRow
 import com.dadada.onecloset.presentation.ui.common.ListRoundedSquare
 import com.dadada.onecloset.presentation.ui.common.RoundedSquare
-import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Gray
+import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @Composable
 fun MyPageScreen() {
-    val list = listOf("이 앱이 사용하는 권한", "One Cloest 로그아웃", "One Closet 탈퇴")
-    val list2 = listOf("버전 정보", "라이선스")
+    val personalInfoContents = AccountText.personalInfoContents
+    val appInfoContents = AccountText.appInfoContents
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = screenModifier
             .wrapContentHeight()
-            .padding(16.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CircleImageView(modifier = Modifier.size(120.dp), url = "")
+
         Spacer(modifier = Modifier.size(36.dp))
+
         Column {
-            SmallTitle(title = "계정")
+            SmallTitle(id = AccountText.ACCOUNT.id)
             RoundedSquare(title = "카카오 계정", content = "juyong4190@gmail.com")
         }
+
         Spacer(modifier = Modifier.size(16.dp))
         Column {
-            SmallTitle(title = "가상모델")
+            SmallTitle(id = AccountText.MODEL.id)
             RoundedSquare(title = "성별", content = "남성")
         }
         Spacer(modifier = Modifier.size(16.dp))
 
         Column {
-            SmallTitle(title = "개인정보")
-            ListRoundedSquare(list = list)
+            SmallTitle(id = AccountText.PERSONAL.id)
+            ListRoundedSquare(list = personalInfoContents)
         }
 
         Spacer(modifier = Modifier.size(16.dp))
 
         Column {
-            SmallTitle(title = "앱 정보")
+            SmallTitle(id = AccountText.APP.id)
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -67,17 +70,17 @@ fun MyPageScreen() {
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 LicenseRow(content = "버전", version = "1.0.0")
-                ClickableRow(content = "라이선스") {
-                    
-                }
+//                ClickableRow(content = "라이선스") {
+//
+                //}
             }
         }
     }
 }
 
 @Composable
-fun SmallTitle(title: String) = Text(
+fun SmallTitle(id: Int) = Text(
     modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp),
-    text = title,
+    text = stringResource(id = id),
     style = Typography.titleSmall.copy(color = Gray),
 )

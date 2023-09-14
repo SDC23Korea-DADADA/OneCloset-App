@@ -80,7 +80,7 @@ fun RoundedSquare(title: String, content: String) {
 }
 
 @Composable
-fun ListRoundedSquare(list: List<String>) {
+fun ListRoundedSquare(list: List<Int>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
