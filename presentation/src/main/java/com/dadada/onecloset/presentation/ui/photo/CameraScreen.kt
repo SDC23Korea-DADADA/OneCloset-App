@@ -2,10 +2,14 @@ package com.dadada.onecloset.presentation.ui.photo
 
 import android.content.Context
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,7 +23,11 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.dadada.onecloset.presentation.R
+import com.dadada.onecloset.presentation.ui.common.circleShapeModifier
+import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.ujizin.camposer.CameraPreview
 import com.ujizin.camposer.state.CamSelector
 import com.ujizin.camposer.state.rememberCameraState
@@ -39,10 +47,26 @@ fun CameraScreen() {
         modifier = Modifier.padding(0.dp)
     ) {
         DrawGuidelinesAndFilter()
-        Column(modifier = Modifier.fillMaxWidth().padding(top = 48.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 48.dp), horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(text = "의류를 영역에 맞추어 찍어주세요.")
 
+            Spacer(modifier = Modifier.weight(1f))
+
+            Box(modifier = circleShapeModifier.size(64.dp)) {
+                Icon(
+                    modifier = Modifier.align(Alignment.Center),
+                    painter = painterResource(id = R.drawable.ic_camera),
+                    contentDescription = ""
+                )
+            }
+
+            Spacer(modifier = Modifier.size(44.dp))
         }
+
     }
 }
 

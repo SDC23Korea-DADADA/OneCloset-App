@@ -3,6 +3,7 @@ package com.dadada.onecloset.presentation.ui.common
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,3 +26,5 @@ val roundedSquareMediumModifier = Modifier
 val roundedSquareSmallModifier = Modifier
     .padding(Paddings.small)
     .clip(RoundedCornerShape(14.dp))
+
+val circleShapeModifier = Modifier.padding(Paddings.small).clip(CircleShape).background(Color.White)

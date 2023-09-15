@@ -31,11 +31,14 @@ import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothScreen
+import com.dadada.onecloset.presentation.ui.coordination.CoordinationResultScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationScreen
+import com.dadada.onecloset.presentation.ui.fitting.FittingResultScreen
 import com.dadada.onecloset.presentation.ui.fitting.FittingScreen
 import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
+import com.dadada.onecloset.presentation.ui.photo.PhotoScreen
 
 private const val TAG = "MainScreen"
 @Composable
@@ -137,6 +140,15 @@ fun MainNavigationScreen(
         }
         composable(route = CoordinationNav.route) {
             CoordinationScreen(navHostController = navController)
+        }
+        composable(route = FittingResultNav.route) {
+            FittingResultScreen()
+        }
+        composable(route = PhotoNav.route) {
+            PhotoScreen()
+        }
+        composable(route = CoordinationResultNav.route) {
+            CoordinationResultScreen()
         }
     }
 }

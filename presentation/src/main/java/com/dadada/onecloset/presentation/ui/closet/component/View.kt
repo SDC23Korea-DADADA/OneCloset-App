@@ -118,7 +118,7 @@ fun ClothGridView(
 @Composable
 fun ClosetListView(navHostController: NavHostController, closetList: List<Closet>) {
     Box(
-        modifier = roundedSquareLargeModifier.aspectRatio(1f)
+        modifier = roundedSquareLargeModifier
     ) {
         LazyVerticalGrid(
             modifier = Modifier
