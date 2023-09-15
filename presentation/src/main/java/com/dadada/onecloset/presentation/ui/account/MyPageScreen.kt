@@ -1,83 +1,64 @@
 package com.dadada.onecloset.presentation.ui.account
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.dadada.onecloset.presentation.ui.account.component.AccountMultiLineSection
+import com.dadada.onecloset.presentation.ui.account.component.AccountSingleLineSection
+import com.dadada.onecloset.presentation.ui.account.component.AccountText
 import com.dadada.onecloset.presentation.ui.common.CircleImageView
-import com.dadada.onecloset.presentation.ui.common.ClickableRow
-import com.dadada.onecloset.presentation.ui.common.LicenseRow
-import com.dadada.onecloset.presentation.ui.common.ListRoundedSquare
-import com.dadada.onecloset.presentation.ui.common.RoundedSquare
-import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.theme.Gray
+import com.dadada.onecloset.presentation.ui.common.screenModifier
+import com.dadada.onecloset.presentation.ui.theme.Paddings
 
 @Composable
 fun MyPageScreen() {
-    val list = listOf("이 앱이 사용하는 권한", "One Cloest 로그아웃", "One Closet 탈퇴")
-    val list2 = listOf("버전 정보", "라이선스")
+    val personalInfoContents = AccountText.personalInfoContents
+    val appInfoContents = AccountText.appInfoContents
+
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = screenModifier
             .wrapContentHeight()
-            .padding(16.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CircleImageView(modifier = Modifier.size(120.dp), url = "")
-        Spacer(modifier = Modifier.size(36.dp))
-        Column {
-            SmallTitle(title = "계정")
-            RoundedSquare(title = "카카오 계정", content = "juyong4190@gmail.com")
-        }
-        Spacer(modifier = Modifier.size(16.dp))
-        Column {
-            SmallTitle(title = "가상모델")
-            RoundedSquare(title = "성별", content = "남성")
-        }
-        Spacer(modifier = Modifier.size(16.dp))
 
-        Column {
-            SmallTitle(title = "개인정보")
-            ListRoundedSquare(list = list)
-        }
+        AccountSingleLineSection(
+            modifier = Modifier.padding(vertical = Paddings.small),
+            title = stringResource(id = AccountText.ACCOUNT.id),
+            subTitle = "카카오 계정",
+            content = "juyong4190@gmail.com"
+        )
 
-        Spacer(modifier = Modifier.size(16.dp))
+        AccountSingleLineSection(
+            modifier = Modifier.padding(vertical = Paddings.small),
+            title = stringResource(id = AccountText.MODEL.id),
+            subTitle = stringResource(id = AccountText.GENDER.id),
+            content = "남자"
+        )
 
-        Column {
-            SmallTitle(title = "앱 정보")
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(26.dp))
-                    .background(Color.White)
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                LicenseRow(content = "버전", version = "1.0.0")
-                ClickableRow(content = "라이선스") {
-                    
-                }
-            }
-        }
+        AccountMultiLineSection(
+            modifier = Modifier.padding(vertical = Paddings.small),
+            title = stringResource(id = AccountText.PERSONAL.id),
+            subTitleList = personalInfoContents,
+        )
+
+        AccountMultiLineSection(
+            modifier = Modifier.padding(vertical = Paddings.small),
+            title = stringResource(id = AccountText.APP.id),
+            subTitleList = appInfoContents,
+        )
     }
 }
-
-@Composable
-fun SmallTitle(title: String) = Text(
-    modifier = Modifier.padding(start = 16.dp, top = 4.dp, bottom = 4.dp),
-    text = title,
-    style = Typography.titleSmall.copy(color = Gray),
-)

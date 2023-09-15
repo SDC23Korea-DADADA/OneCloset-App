@@ -23,43 +23,6 @@ import com.dadada.onecloset.presentation.ui.theme.LottieBackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @Composable
-fun LargeRoundedSquareWithAnimation(
-    title: String,
-    content: String,
-    animation: Int,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(26.dp))
-            .background(Color.White)
-            .clickable { onClick() }
-            .padding(16.dp)
-    ) {
-        Text(text = title, style = Typography.titleMedium)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = content)
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-                .clip(RoundedCornerShape(26.dp))
-                .background(LottieBackGroundGray)
-        ) {
-            LottieLoader(
-                source = animation,
-                modifier = Modifier
-                    .size(150.dp)
-                    .align(Alignment.CenterEnd)
-            )
-        }
-    }
-}
-
-@Composable
 fun RoundedSquare(title: String, content: String) {
     Row(
         modifier = Modifier
@@ -80,7 +43,7 @@ fun RoundedSquare(title: String, content: String) {
 }
 
 @Composable
-fun ListRoundedSquare(list: List<String>) {
+fun ListRoundedSquare(list: List<Int>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
