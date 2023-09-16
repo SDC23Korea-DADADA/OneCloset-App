@@ -188,7 +188,7 @@ fun RoundedSquareImageItem(
 
     ) {
         AsyncImage(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = roundedSquareLargeModifier.align(Alignment.Center),
             model = imageUri,
             contentDescription = "의류 사진",
             contentScale = ContentScale.Crop

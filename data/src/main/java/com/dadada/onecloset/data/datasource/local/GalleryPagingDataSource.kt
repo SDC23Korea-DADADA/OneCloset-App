@@ -1,4 +1,4 @@
-package com.dadada.onecloset.data.datasource
+package com.dadada.onecloset.data.datasource.local
 
 import android.content.ContentResolver
 import android.content.ContentUris

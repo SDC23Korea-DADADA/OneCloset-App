@@ -35,6 +35,7 @@ import com.dadada.onecloset.presentation.ui.common.RoundedSquare
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
@@ -76,9 +77,7 @@ fun ClothScreen(navHostController: NavHostController) {
 
 
     val item = Cloth()
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 16.dp)) {
+    Box(modifier = screenModifier) {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             RoundedSquareImageItem(
                 modifier = roundedSquareLargeModifier,

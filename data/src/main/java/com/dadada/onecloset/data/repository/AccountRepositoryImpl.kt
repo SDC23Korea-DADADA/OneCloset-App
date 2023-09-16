@@ -1,6 +1,6 @@
 package com.dadada.onecloset.data.repository
 
-import com.dadada.onecloset.data.datasource.PreferenceDataSource
+import com.dadada.onecloset.data.datasource.local.PreferenceDataSource
 import com.dadada.onecloset.domain.model.AccountInfo
 import com.dadada.onecloset.domain.repository.AccountRepository
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 
-val screenModifier = Modifier.fillMaxWidth().padding(16.dp)
+val screenModifier = Modifier.fillMaxWidth().padding(horizontal = Paddings.xlarge)
 
 val roundedSquareLargeModifier = Modifier
     .fillMaxWidth()

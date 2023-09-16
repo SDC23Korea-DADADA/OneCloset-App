@@ -44,7 +44,6 @@ private val LightColorScheme = lightColorScheme(
 fun OneClosetTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     typography: Typography = Typography,
-    shapes: Shapes = Shapes,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
@@ -69,7 +68,6 @@ fun OneClosetTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        shapes = shapes,
         content = content
     )
 }
