@@ -16,7 +16,7 @@ class XAccessTokenInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder: Request.Builder = chain.request().newBuilder()
         try {
-            dataSource.getString("access_token", null).let { token ->
+            dataSource.getAccountInfo()?.accessToken.let { token ->
                 token?.let {
                     builder.addHeader("Authorization", "Bearer $it")
                     Log.d(TAG, "intercept: 헤더 담김 ${it}")

@@ -1,5 +1,9 @@
 package com.dadada.onecloset.presentation.ui
 
+object LogInNav: Destination {
+    override val route: String = NavigationRouteName.LOGIN
+    override val title: String = NavigationTitle.LOGIN
+}
 
 object MainTabNav: Destination {
     override val route: String = NavigationRouteName.TAB
@@ -81,6 +85,7 @@ interface Destination {
 }
 
 object NavigationRouteName {
+    const val LOGIN = "login"
     const val TAB ="tab"
     const val HOME = "home"
     const val CLOSET = "closet"
@@ -99,6 +104,7 @@ object NavigationRouteName {
 }
 
 object NavigationTitle {
+    const val LOGIN = "로그인"
     const val TAB ="탭"
     const val HOME = "빠른 실행"
     const val CLOSET = "옷장"

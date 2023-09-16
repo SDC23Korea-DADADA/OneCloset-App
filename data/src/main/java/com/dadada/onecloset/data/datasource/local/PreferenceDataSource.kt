@@ -12,7 +12,7 @@ class PreferenceDataSource @Inject constructor(
 ) {
     companion object {
         private const val PREFERENCE_NAME = "preference_name"
-        private const val ACCOUNT_INFO = "account_info"
+        const val ACCOUNT_INFO = "account_info"
     }
 
     private fun getPreference(context: Context): SharedPreferences {
@@ -23,7 +23,7 @@ class PreferenceDataSource @Inject constructor(
     private val editor by lazy { prefs.edit() }
     private val gson = Gson()
 
-    private fun putString(key: String, data: String?) {
+    fun putString(key: String, data: String?) {
         editor.putString(key, data)
         editor.apply()
     }

@@ -2,12 +2,15 @@ package com.dadada.onecloset.di
 
 import com.bonobono.data.interceptor.XAccessTokenInterceptor
 import com.dadada.onecloset.BuildConfig
+import com.dadada.onecloset.data.datasource.remote.AccountService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -31,4 +34,15 @@ object NetworkModule {
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()
         }
+
+    @Singleton
+    @Provides
+    fun provideAccountService(okHttpClient: OkHttpClient): AccountService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.API_KEY)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(AccountService::class.java)
+
 }

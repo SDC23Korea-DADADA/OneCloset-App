@@ -21,20 +21,21 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import com.dadada.onecloset.domain.model.AccountInfo
+import com.dadada.onecloset.presentation.ui.account.LogInScreen
 import com.dadada.onecloset.presentation.ui.account.MyPageScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationResultScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationScreen
@@ -44,14 +45,17 @@ import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 import com.dadada.onecloset.presentation.ui.photo.PhotoScreen
+import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 private const val TAG = "MainScreen"
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(startDestination: String) {
     val scaffoldState = rememberScrollState()
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -68,6 +72,7 @@ fun MainScreen() {
         MainNavigationScreen(
             innerPaddings = it,
             navController = navController,
+            startDestination = startDestination
         )
     }
 }
@@ -79,7 +84,7 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
         return
     }
     TopAppBar(
-        modifier = Modifier.padding(top = 12.dp),
+        modifier = Modifier.padding(top = Paddings.large),
         title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
         navigationIcon = {
             if (currentRoute != MainTabNav.route) {
@@ -106,16 +111,20 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
 fun MainNavigationScreen(
     innerPaddings: PaddingValues,
     navController: NavHostController,
+    startDestination: String
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
-        startDestination = MainTabNav.route,
+        startDestination = startDestination,
         enterTransition = { fadeIn(animationSpec = tween(700)) },
         exitTransition = { fadeOut(animationSpec = tween(700)) },
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
+        composable(route = LogInNav.route) {
+            LogInScreen(navHostController = navController)
+        }
         composable(route = MainTabNav.route) {
             MainTabScreen(navController)
         }
@@ -128,7 +137,7 @@ fun MainNavigationScreen(
         composable(route = GalleryNav.route) {
             GalleryScreen(navController)
         }
-        
+
         composable(route = "${ClothAnalysisNav.route}/{photoUri}") {
             val uriArg = it.arguments?.getString("photoUri")
             if (uriArg != null) {
