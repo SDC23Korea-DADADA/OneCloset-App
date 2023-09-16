@@ -1,6 +1,12 @@
 package com.dadada.onecloset.presentation.ui
 
 import android.net.Uri
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -23,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.dadada.onecloset.presentation.ui.account.MyPageScreen
@@ -39,12 +44,16 @@ import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 import com.dadada.onecloset.presentation.ui.photo.PhotoScreen
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 private const val TAG = "MainScreen"
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen() {
     val scaffoldState = rememberScrollState()
-    val navController = rememberNavController()
+    val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -92,15 +101,20 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavigationScreen(
     innerPaddings: PaddingValues,
     navController: NavHostController,
 ) {
-    NavHost(
+    AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
-        startDestination = MainTabNav.route
+        startDestination = MainTabNav.route,
+        enterTransition = { fadeIn(animationSpec = tween(700)) },
+        exitTransition = { fadeOut(animationSpec = tween(700)) },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None }
     ) {
         composable(route = MainTabNav.route) {
             MainTabScreen(navController)

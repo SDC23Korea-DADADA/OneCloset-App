@@ -64,12 +64,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
 
     // navigation
-    implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.1-alpha")
     // tab
     implementation("com.google.accompanist:accompanist-pager:0.30.1")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.30.1")
+
 
     // lottie
     implementation("com.airbnb.android:lottie-compose:6.1.0")
