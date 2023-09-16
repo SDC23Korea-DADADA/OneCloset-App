@@ -45,7 +45,7 @@ fun CoordinationCalendarScreen(navHostController: NavHostController) {
         floatingActionButton = { CustomFloatingActionButton(icon = Icons.Default.Add) { scope.launch { sheetState.show() } } }
     ) {
         it
-        HorizontalCalendar(modifier = roundedSquareLargeModifier.padding(Paddings.medium)) {
+        HorizontalCalendar(modifier = roundedSquareLargeModifier.padding(Paddings.medium), navController = navHostController) {
 
         }
     }

@@ -33,9 +33,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.model.HorizontalCalendarConfig
+import com.dadada.onecloset.presentation.ui.CoordinationResultNav
+import com.dadada.onecloset.presentation.ui.PhotoNav
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
@@ -48,6 +52,7 @@ import java.util.Locale
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalCalendar(
+    navController: NavHostController,
     modifier: Modifier = Modifier,
     currentDate: LocalDate = LocalDate.now(),
     config: HorizontalCalendarConfig = HorizontalCalendarConfig(),
@@ -88,7 +93,7 @@ fun HorizontalCalendar(
                     selectedDate = currentSelectedDate,
                     onSelectedDate = { date ->
                         currentSelectedDate = date
-                    })
+                    }, navController = navController)
             }
         }
     }
@@ -111,7 +116,8 @@ fun CalendarMonthItem(
     modifier: Modifier = Modifier,
     currentDate: LocalDate,
     selectedDate: LocalDate,
-    onSelectedDate: (LocalDate) -> Unit
+    onSelectedDate: (LocalDate) -> Unit,
+    navController: NavHostController
 ) {
     val lastDay by remember { mutableStateOf(currentDate.lengthOfMonth()) }
     val firstDayOfWeek by remember { mutableStateOf(currentDate.dayOfWeek.value) }
@@ -143,7 +149,8 @@ fun CalendarMonthItem(
                     date = date,
                     isToday = date == LocalDate.now(),
                     isSelected = isSelected,
-                    onSelectedDate = onSelectedDate
+                    onSelectedDate = onSelectedDate,
+                    navController
                 )
             }
         }
@@ -157,7 +164,8 @@ fun CalendarDay(
     date: LocalDate,
     isToday: Boolean,
     isSelected: Boolean,
-    onSelectedDate: (LocalDate) -> Unit
+    onSelectedDate: (LocalDate) -> Unit,
+    navController: NavHostController
 ) {
     val hasEvent = false
     Box(
@@ -165,7 +173,10 @@ fun CalendarDay(
             .fillMaxWidth()
             .aspectRatio(0.7f)
             .clip(shape = RoundedCornerShape(10.dp))
-            .clickable { onSelectedDate(date) },
+            .clickable {
+                onSelectedDate(date)
+                navController.navigate(CoordinationResultNav.route)
+            },
         contentAlignment = Alignment.Center
     ) {
         Box(

@@ -44,16 +44,15 @@ fun ClosetScreen(navHostController: NavHostController) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val list = listOf(
-        Closet("옷장", R.drawable.ic_date, Blue.toArgb(), ""),
-        Closet("옷장", R.drawable.ic_date, BluePurple.toArgb(), ""),
-        Closet("옷장", R.drawable.ic_date, Orange.toArgb(), ""),
-        Closet("옷장", R.drawable.ic_date, Gray.toArgb(), ""),
+        Closet("옷장1", R.drawable.ic_jacket, Blue.toArgb(), ""),
+        Closet("옷장2", R.drawable.ic_down_jacket, BluePurple.toArgb(), ""),
+        Closet("옷장3", R.drawable.ic_tie, Orange.toArgb(), ""),
+        Closet("옷장4", R.drawable.ic_t_shirt, Gray.toArgb(), ""),
     )
     var arr = listOf(
-        Closet("옷장", R.drawable.ic_date, Green.toArgb(), ""),
-        Closet("옷장", R.drawable.ic_date, Pink.toArgb(), ""),
-        Closet("옷장", R.drawable.ic_date, SkyBlue.toArgb(), ""),
-        Closet("옷장", R.drawable.ic_date, Navy.toArgb(), ""),
+        Closet("옷장5", R.drawable.ic_shirt, Green.toArgb(), ""),
+        Closet("옷장6", R.drawable.ic_bow_tie, Pink.toArgb(), ""),
+        Closet("옷장7", R.drawable.ic_raincoat, SkyBlue.toArgb(), ""),
     )
     arr += list
 

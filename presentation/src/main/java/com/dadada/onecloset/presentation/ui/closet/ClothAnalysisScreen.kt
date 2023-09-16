@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.ClothCourseNav
+import com.dadada.onecloset.presentation.ui.ClothNav
 import com.dadada.onecloset.presentation.ui.common.ChipEditRow
 import com.dadada.onecloset.presentation.ui.common.ColorEditRow
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
@@ -60,7 +61,7 @@ fun ClothAnalysisScreen(navHostController: NavHostController, photoUri: Uri) {
         Spacer(modifier = Modifier.weight(1f))
         RowWithTwoButtons(left = "다시하기", right = "다음", onClickLeft = { /*TODO*/ }) {
             val encodedUri = Uri.encode(photoUri.toString())
-            navHostController.navigate("${ClothCourseNav.route}/${encodedUri}")
+            navHostController.navigate(ClothNav.route)
         }
     }
 }

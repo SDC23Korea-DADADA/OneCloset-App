@@ -50,6 +50,11 @@ object CoordinationNav: Destination {
     override val title: String = NavigationTitle.COORDINATION
 }
 
+object CoordinationResultNav: Destination {
+    override val route: String = NavigationRouteName.COORDINATION_RESULT
+    override val title: String = NavigationTitle.COORDINATION_RESULT
+}
+
 object GalleryNav: Destination {
     override val route: String = NavigationRouteName.CLOTH_ANALYSIS
     override val title: String = NavigationTitle.CLOTH_ANALYSIS
@@ -58,6 +63,16 @@ object GalleryNav: Destination {
 object AccountNav: Destination {
     override val route: String = NavigationRouteName.ACCOUNT
     override val title: String = NavigationTitle.ACCOUNT
+}
+
+object PhotoNav: Destination {
+    override val route: String = NavigationRouteName.PHOTO
+    override val title: String = NavigationTitle.PHOTO
+}
+
+object FittingResultNav: Destination {
+    override val route: String = NavigationRouteName.FITTING_RESULT
+    override val title: String = NavigationTitle.FITTING_RESULT
 }
 
 interface Destination {
@@ -78,6 +93,9 @@ object NavigationRouteName {
     const val ACCOUNT = "account"
     const val FITTING = "fitting"
     const val COORDINATION = "coordination"
+    const val COORDINATION_RESULT = "coordination_result"
+    const val FITTING_RESULT = "fitting_result"
+    const val PHOTO = "photo"
 }
 
 object NavigationTitle {
@@ -93,4 +111,7 @@ object NavigationTitle {
     const val ACCOUNT = "계정"
     const val FITTING = "가상피팅"
     const val COORDINATION = "데일리코디"
+    const val COORDINATION_RESULT = "coordination"
+    const val FITTING_RESULT = "가상피팅 결과"
+    const val PHOTO = "사진"
 }

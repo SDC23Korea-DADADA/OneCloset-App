@@ -1,4 +1,4 @@
-package com.dadada.onecloset.data.datasource
+package com.dadada.onecloset.data.datasource.local
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -38,7 +38,7 @@ class PreferenceDataSource @Inject constructor(
         editor.apply()
     }
 
-    private fun getString(key: String, defValue: String? = null): String? {
+    fun getString(key: String, defValue: String? = null): String? {
         return prefs.getString(key, defValue)
     }
 

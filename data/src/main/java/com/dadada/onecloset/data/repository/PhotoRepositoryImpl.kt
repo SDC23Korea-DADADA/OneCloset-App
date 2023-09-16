@@ -2,7 +2,7 @@ package com.dadada.onecloset.data.repository
 
 import android.content.Context
 import androidx.paging.PagingSource
-import com.dadada.onecloset.data.datasource.GalleryPagingDataSource
+import com.dadada.onecloset.data.datasource.local.GalleryPagingDataSource
 import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.domain.repository.GalleryRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
