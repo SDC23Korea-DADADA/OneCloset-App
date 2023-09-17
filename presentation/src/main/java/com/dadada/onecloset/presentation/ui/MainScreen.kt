@@ -25,16 +25,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import com.dadada.onecloset.presentation.ui.account.LogInScreen
 import com.dadada.onecloset.presentation.ui.account.MyPageScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
+import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationResultScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationScreen
@@ -44,14 +42,17 @@ import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 import com.dadada.onecloset.presentation.ui.photo.PhotoScreen
+import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.dadada.onecloset.presentation.ui.NavigationItem.*
 
 private const val TAG = "MainScreen"
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(startDestination: String) {
     val scaffoldState = rememberScrollState()
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -68,6 +69,7 @@ fun MainScreen() {
         MainNavigationScreen(
             innerPaddings = it,
             navController = navController,
+            startDestination = startDestination
         )
     }
 }
@@ -75,11 +77,11 @@ fun MainScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainHeader(navController: NavHostController, currentRoute: String?) {
-    if (currentRoute == CameraNav.route || currentRoute == GalleryNav.route) {
+    if (NavigationItem.isNoToolbar(currentRoute)) {
         return
     }
     TopAppBar(
-        modifier = Modifier.padding(top = 12.dp),
+        modifier = Modifier.padding(top = Paddings.large),
         title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
         navigationIcon = {
             if (currentRoute != MainTabNav.route) {
@@ -106,16 +108,20 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
 fun MainNavigationScreen(
     innerPaddings: PaddingValues,
     navController: NavHostController,
+    startDestination: String
 ) {
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
-        startDestination = MainTabNav.route,
+        startDestination = startDestination,
         enterTransition = { fadeIn(animationSpec = tween(700)) },
         exitTransition = { fadeOut(animationSpec = tween(700)) },
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
+        composable(route = NavigationItem.LogInNav.route) {
+            LogInScreen(navHostController = navController)
+        }
         composable(route = MainTabNav.route) {
             MainTabScreen(navController)
         }
@@ -128,7 +134,7 @@ fun MainNavigationScreen(
         composable(route = GalleryNav.route) {
             GalleryScreen(navController)
         }
-        
+
         composable(route = "${ClothAnalysisNav.route}/{photoUri}") {
             val uriArg = it.arguments?.getString("photoUri")
             if (uriArg != null) {

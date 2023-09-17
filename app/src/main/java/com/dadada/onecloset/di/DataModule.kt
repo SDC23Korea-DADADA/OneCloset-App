@@ -13,11 +13,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 interface DataModule {
-
-    @Binds
-    @Singleton
-    fun bindAccountRepository(accountRepositoryImpl: AccountRepositoryImpl): AccountRepository
-
     @Binds
     @Singleton
     fun bindPhotoRepository(galleryRepositoryImpl: PhotoRepositoryImpl): GalleryRepository

@@ -15,8 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.FittingNav
-import com.dadada.onecloset.presentation.ui.GalleryNav
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.home.component.HomeMainFeatureCard
 import com.dadada.onecloset.presentation.ui.theme.Paddings
@@ -33,7 +32,7 @@ fun HomeScreen(navHostController: NavHostController) {
         PermissionRequester(
             permission = Permissions.readExternalStoragePermission,
             onDismissRequest = { clickCourse = !clickCourse },
-            onPermissionGranted = { navHostController.navigate(GalleryNav.route) }) {
+            onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) }) {
             clickCourse = !clickCourse
         }
     }
@@ -58,7 +57,7 @@ fun HomeScreen(navHostController: NavHostController) {
             title = stringResource(R.string.fitting),
             content = stringResource(R.string.home_fitting_guide),
             animation = R.raw.animation_fitting,
-            onClick = { navHostController.navigate(FittingNav.route) }
+            onClick = { navHostController.navigate(NavigationItem.FittingNav.route) }
         )
     }
 }

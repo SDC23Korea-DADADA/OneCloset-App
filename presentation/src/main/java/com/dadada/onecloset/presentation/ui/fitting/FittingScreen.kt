@@ -9,18 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
-import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.FittingResultNav
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
 import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 import com.dadada.onecloset.presentation.ui.fitting.component.FittingSelectedClothListView
@@ -59,7 +55,7 @@ fun FittingScreen(navHostController: NavHostController) {
             left = "취소",
             right = "다음",
             onClickLeft = { },
-            onClickRight = { navHostController.navigate(FittingResultNav.route) }
+            onClickRight = { navHostController.navigate(NavigationItem.FittingResultNav.route) }
         )
     }
 }
