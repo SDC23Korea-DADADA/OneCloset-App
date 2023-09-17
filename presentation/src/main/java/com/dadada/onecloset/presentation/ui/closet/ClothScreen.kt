@@ -1,13 +1,11 @@
 package com.dadada.onecloset.presentation.ui.closet
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,17 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
-import com.dadada.onecloset.presentation.ui.ClothNav
 import com.dadada.onecloset.presentation.ui.common.ChipEditRow
 import com.dadada.onecloset.presentation.ui.common.ColorEditRow
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
 import com.dadada.onecloset.presentation.ui.common.RoundedSquare
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.screenModifier
-import com.dadada.onecloset.presentation.ui.theme.BackGround
-import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
 import com.dadada.onecloset.presentation.ui.utils.Material
 import com.dadada.onecloset.presentation.ui.utils.Type
@@ -95,7 +89,7 @@ fun ClothScreen(navHostController: NavHostController) {
                 tabClick = handleTabClick
             )
 
-            when(selectedTabIndex) {
+            when (selectedTabIndex) {
                 0 -> {
                     Column(
                         modifier = Modifier
@@ -112,6 +106,7 @@ fun ClothScreen(navHostController: NavHostController) {
                         }
                     }
                 }
+
                 else -> {
                     Column(
                         modifier = Modifier

@@ -12,13 +12,10 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.ClosetDetailNav
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconWithTitleItem
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier

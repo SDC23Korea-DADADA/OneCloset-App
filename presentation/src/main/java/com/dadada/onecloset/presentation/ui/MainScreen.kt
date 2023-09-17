@@ -21,16 +21,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.dadada.onecloset.domain.model.AccountInfo
 import com.dadada.onecloset.presentation.ui.account.LogInScreen
 import com.dadada.onecloset.presentation.ui.account.MyPageScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
@@ -46,10 +43,10 @@ import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 import com.dadada.onecloset.presentation.ui.photo.PhotoScreen
 import com.dadada.onecloset.presentation.ui.theme.Paddings
-import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.dadada.onecloset.presentation.ui.NavigationItem.*
 
 private const val TAG = "MainScreen"
 
@@ -80,7 +77,7 @@ fun MainScreen(startDestination: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainHeader(navController: NavHostController, currentRoute: String?) {
-    if (currentRoute == CameraNav.route || currentRoute == GalleryNav.route) {
+    if (NavigationItem.isNoToolbar(currentRoute)) {
         return
     }
     TopAppBar(
@@ -122,7 +119,7 @@ fun MainNavigationScreen(
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None }
     ) {
-        composable(route = LogInNav.route) {
+        composable(route = NavigationItem.LogInNav.route) {
             LogInScreen(navHostController = navController)
         }
         composable(route = MainTabNav.route) {

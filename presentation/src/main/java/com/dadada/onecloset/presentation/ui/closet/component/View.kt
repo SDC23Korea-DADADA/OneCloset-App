@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -18,7 +17,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,7 +28,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.ClosetDetailNav
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconWithTitleItem
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
@@ -131,7 +129,7 @@ fun ClosetListView(navHostController: NavHostController, closetList: List<Closet
                     title = closetList[it].name,
                     icon = closetList[it].icon,
                     backGroundTint = Color(closetList[it].iconColor),
-                    onClick = { navHostController.navigate(ClosetDetailNav.route) }
+                    onClick = { navHostController.navigate(NavigationItem.ClosetDetailNav.route) }
                 )
             }
         }

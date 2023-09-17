@@ -1,7 +1,6 @@
 package com.dadada.onecloset.presentation.ui.coordination.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,13 +33,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.model.HorizontalCalendarConfig
-import com.dadada.onecloset.presentation.ui.CoordinationResultNav
-import com.dadada.onecloset.presentation.ui.PhotoNav
-import com.dadada.onecloset.presentation.ui.theme.Gray
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.dateFormat
@@ -175,7 +171,7 @@ fun CalendarDay(
             .clip(shape = RoundedCornerShape(10.dp))
             .clickable {
                 onSelectedDate(date)
-                navController.navigate(CoordinationResultNav.route)
+                navController.navigate(NavigationItem.CoordinationResultNav.route)
             },
         contentAlignment = Alignment.Center
     ) {

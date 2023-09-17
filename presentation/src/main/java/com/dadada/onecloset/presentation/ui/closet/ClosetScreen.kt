@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.CoordinationNav
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.ClosetListView
 import com.dadada.onecloset.presentation.ui.common.BottomSheetAddCloset
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
@@ -32,7 +32,6 @@ import com.dadada.onecloset.presentation.ui.theme.Blue
 import com.dadada.onecloset.presentation.ui.theme.BluePurple
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Green
-import com.dadada.onecloset.presentation.ui.theme.Navy
 import com.dadada.onecloset.presentation.ui.theme.Orange
 import com.dadada.onecloset.presentation.ui.theme.Pink
 import com.dadada.onecloset.presentation.ui.theme.SkyBlue
@@ -80,7 +79,7 @@ fun ClosetScreen(navHostController: NavHostController) {
             InfoView(
                 title = stringResource(R.string.daily_codi),
                 content = stringResource(R.string.daliy_codi_guide),
-                onClick = { navHostController.navigate(CoordinationNav.route) }) {
+                onClick = { navHostController.navigate(NavigationItem.CoordinationNav.route) }) {
                 Icon(
                     modifier = Modifier.size(36.dp),
                     painter = painterResource(id = R.drawable.ic_date),

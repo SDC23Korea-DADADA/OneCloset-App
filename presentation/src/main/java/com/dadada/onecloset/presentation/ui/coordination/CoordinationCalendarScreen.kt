@@ -1,7 +1,5 @@
 package com.dadada.onecloset.presentation.ui.coordination
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,12 +9,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.presentation.ui.FittingNav
-import com.dadada.onecloset.presentation.ui.GalleryNav
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.coordination.component.HorizontalCalendar
@@ -35,8 +30,8 @@ fun CoordinationCalendarScreen(navHostController: NavHostController) {
             onDismissRequest = { scope.launch { sheetState.hide() } },
             containerColor = Color.White
         ) {
-            SelectCodiView(onClickRecord = { navHostController.navigate(GalleryNav.route) }) {
-                navHostController.navigate(FittingNav.route)
+            SelectCodiView(onClickRecord = { navHostController.navigate(NavigationItem.GalleryNav.route) }) {
+                navHostController.navigate(NavigationItem.FittingNav.route)
             }
         }
     }

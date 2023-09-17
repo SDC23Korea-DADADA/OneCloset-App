@@ -18,9 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.AccountInfo
-import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.MainTabNav
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.component.SignInButtonView
 import com.dadada.onecloset.presentation.ui.account.model.SignInButton
 import com.dadada.onecloset.presentation.ui.common.screenModifier
@@ -61,7 +60,7 @@ fun LogInScreen(
     }
 
     LaunchedEffect(accountInfo) {
-        if(accountInfo == null) return@LaunchedEffect
+        if (accountInfo == null) return@LaunchedEffect
         accountViewModel.getAccountInfo()
     }
 
@@ -77,7 +76,7 @@ fun LogInScreen(
                 it.type
             )
         )
-        navHostController.navigate(MainTabNav.route)
+        navHostController.navigate(NavigationItem.MainTabNav.route)
     }
 
 

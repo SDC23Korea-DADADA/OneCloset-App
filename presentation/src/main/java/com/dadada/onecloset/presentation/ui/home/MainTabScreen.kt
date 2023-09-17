@@ -15,8 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.presentation.ui.ClosetNav
-import com.dadada.onecloset.presentation.ui.HomeNav
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.ClosetScreen
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
 
@@ -27,7 +26,7 @@ fun MainTabScreen(navHostController: NavHostController) {
         selectedTabIndex = newIndex
     }
 
-    val tabs = listOf(HomeNav.title, ClosetNav.title)
+    val tabs = listOf(NavigationItem.HomeNav.title, NavigationItem.ClosetNav.title)
     val tabWidths = remember {
         val tabWidthStateList = mutableStateListOf<Dp>()
         repeat(tabs.size) {
