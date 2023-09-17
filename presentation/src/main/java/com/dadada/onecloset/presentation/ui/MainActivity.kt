@@ -1,6 +1,7 @@
 package com.dadada.onecloset.presentation.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import com.dadada.onecloset.presentation.ui.theme.OneClosetTheme
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val TAG = "MainActivity"
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -29,6 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = BackGround
                 ) {
+                    Log.d(TAG, "onCreate: ${accountInfo!!.accessToken}")
                     val startDestination =
                         if (accountInfo == null) NavigationItem.LogInNav.route else NavigationItem.MainTabNav.route
                     MainScreen(startDestination = startDestination)

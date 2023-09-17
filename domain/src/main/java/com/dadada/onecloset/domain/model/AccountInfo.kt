@@ -7,5 +7,5 @@ data class AccountInfo(
     val gender: String = "",
     val nickName: String = "",
     val email: String = "",
-    val type: String = ""
+    val social: String = ""
 )

@@ -6,9 +6,9 @@ import com.dadada.onecloset.domain.model.Token
 import kotlinx.coroutines.flow.StateFlow
 
 interface AccountRepository {
-    fun getAccountInfo() : StateFlow<AccountInfo?>
+    fun getAccountInfo(): StateFlow<AccountInfo?>
 
-    suspend fun getAccountInfoFromRemote() : NetworkResult<AccountInfo>
+    suspend fun getAccountInfoFromRemote(): NetworkResult<AccountInfo>
     suspend fun signIn(accountInfo: AccountInfo)
 
     suspend fun signOutGoogle()

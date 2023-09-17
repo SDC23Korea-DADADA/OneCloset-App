@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.closet
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,13 +14,19 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.R
@@ -28,32 +35,31 @@ import com.dadada.onecloset.presentation.ui.closet.component.ClosetListView
 import com.dadada.onecloset.presentation.ui.common.BottomSheetAddCloset
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.InfoView
-import com.dadada.onecloset.presentation.ui.theme.Blue
-import com.dadada.onecloset.presentation.ui.theme.BluePurple
-import com.dadada.onecloset.presentation.ui.theme.Gray
-import com.dadada.onecloset.presentation.ui.theme.Green
-import com.dadada.onecloset.presentation.ui.theme.Orange
-import com.dadada.onecloset.presentation.ui.theme.Pink
-import com.dadada.onecloset.presentation.ui.theme.SkyBlue
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
+private const val TAG = "ClosetScreen"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClosetScreen(navHostController: NavHostController) {
+fun ClosetScreen(
+    navHostController: NavHostController,
+    closetViewModel: ClosetViewModel = hiltViewModel()
+) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    val list = listOf(
-        Closet("옷장1", R.drawable.ic_jacket, Blue.toArgb(), ""),
-        Closet("옷장2", R.drawable.ic_down_jacket, BluePurple.toArgb(), ""),
-        Closet("옷장3", R.drawable.ic_tie, Orange.toArgb(), ""),
-        Closet("옷장4", R.drawable.ic_t_shirt, Gray.toArgb(), ""),
-    )
-    var arr = listOf(
-        Closet("옷장5", R.drawable.ic_shirt, Green.toArgb(), ""),
-        Closet("옷장6", R.drawable.ic_bow_tie, Pink.toArgb(), ""),
-        Closet("옷장7", R.drawable.ic_raincoat, SkyBlue.toArgb(), ""),
-    )
-    arr += list
+    val closetListState by closetViewModel.closetListState.collectAsState()
+    var closetList by remember { mutableStateOf(listOf<Closet>()) }
+    LaunchedEffect(closetListState) {
+        closetViewModel.getClosetList()
+    }
+
+    Log.d(TAG, "ClosetScreen: $closetListState")
+    
+    NetworkResultHandler(state = closetListState) {
+        Log.d(TAG, "ClosetScreen: ")
+        closetList = it
+    }
 
     if (sheetState.isVisible) {
         ModalBottomSheet(
@@ -67,7 +73,10 @@ fun ClosetScreen(navHostController: NavHostController) {
 
     Scaffold(
         floatingActionButton = {
-            CustomFloatingActionButton(modifier = Modifier.padding(bottom = 80.dp),icon = Icons.Default.Add) { scope.launch { sheetState.show() } }
+            CustomFloatingActionButton(
+                modifier = Modifier.padding(bottom = 80.dp),
+                icon = Icons.Default.Add
+            ) { scope.launch { sheetState.show() } }
         },
     ) {
         Column(
@@ -89,7 +98,7 @@ fun ClosetScreen(navHostController: NavHostController) {
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            ClosetListView(navHostController = navHostController, closetList = arr)
+            ClosetListView(navHostController = navHostController, closetList = closetList)
         }
     }
 }

@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -39,6 +40,8 @@ dependencies {
     // hilt
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-android-compiler:2.44.2")
+
+    implementation ("com.google.code.gson:gson:2.10.1")
 
     val paging_version = "3.1.1"
     implementation("androidx.paging:paging-runtime:$paging_version")

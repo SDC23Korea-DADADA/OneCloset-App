@@ -3,6 +3,7 @@ package com.dadada.onecloset.di
 import com.bonobono.data.interceptor.XAccessTokenInterceptor
 import com.dadada.onecloset.BuildConfig
 import com.dadada.onecloset.data.datasource.remote.AccountService
+import com.dadada.onecloset.data.datasource.remote.ClosetService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,5 +45,15 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
             .create(AccountService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideClosetService(okHttpClient: OkHttpClient): ClosetService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.API_KEY)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(ClosetService::class.java)
 
 }

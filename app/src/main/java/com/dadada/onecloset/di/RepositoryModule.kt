@@ -2,8 +2,11 @@ package com.dadada.onecloset.di
 
 import com.dadada.onecloset.data.datasource.local.PreferenceDataSource
 import com.dadada.onecloset.data.datasource.remote.AccountService
+import com.dadada.onecloset.data.datasource.remote.ClosetService
 import com.dadada.onecloset.data.repository.AccountRepositoryImpl
+import com.dadada.onecloset.data.repository.ClosetRepositoryImpl
 import com.dadada.onecloset.domain.repository.AccountRepository
+import com.dadada.onecloset.domain.repository.ClosetRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +26,16 @@ object RepositoryModule {
         return AccountRepositoryImpl(
             preferenceDataSource = preferenceDataSource,
             accountService = accountService
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideClosetRepository(
+        closetService: ClosetService
+    ): ClosetRepository {
+        return ClosetRepositoryImpl(
+            closetService = closetService
         )
     }
 }

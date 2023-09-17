@@ -13,19 +13,21 @@ import com.dadada.onecloset.presentation.ui.common.GalaxyLoadingView
 private const val TAG = "NetworkResultHandler"
 @Composable
 fun <T> NetworkResultHandler(state: NetworkResult<T>, action: (data: T) -> Unit) {
-    var isLoading by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(true) }
     if(isLoading) {
         GalaxyLoadingView()
     }
     
     LaunchedEffect(state) {
-        Log.d(TAG, "NetworkResultHandler: $state")
         if(state is NetworkResult.Idle) return@LaunchedEffect
         when (state) {
             is NetworkResult.Error -> {} // Handle the error here.
             NetworkResult.Idle -> {} // Handle the idle state here.
-            NetworkResult.Loading -> {isLoading = true}
-            is NetworkResult.Success -> action(state.data)
+            NetworkResult.Loading -> { isLoading = true }
+            is NetworkResult.Success -> {
+                isLoading = false
+                action(state.data)
+            }
         }
     }
 }

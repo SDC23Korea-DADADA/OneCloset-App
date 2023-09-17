@@ -34,6 +34,8 @@ import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconWithTitleIte
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
+import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
+import com.dadada.onecloset.presentation.ui.utils.iconHandler
 
 
 @Composable
@@ -127,8 +129,8 @@ fun ClosetListView(navHostController: NavHostController, closetList: List<Closet
                 RoundedSquareIconWithTitleItem(
                     modifier = Modifier.padding(24.dp),
                     title = closetList[it].name,
-                    icon = closetList[it].icon,
-                    backGroundTint = Color(closetList[it].iconColor),
+                    icon = iconHandler(closetList[it].icon),
+                    backGroundTint = hexStringToColor(closetList[it].colorCode),
                     onClick = { navHostController.navigate(NavigationItem.ClosetDetailNav.route) }
                 )
             }
