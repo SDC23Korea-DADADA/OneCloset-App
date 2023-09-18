@@ -153,7 +153,8 @@ fun MainNavigationScreen(
             }
         }
         composable(route = ClothNav.route) {
-            ClothScreen(navHostController = navController)
+            val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }
+            ClothScreen(navHostController = navController, closetViewModel = hiltViewModel(parentEntry))
         }
         composable(route = AccountNav.route) {
             MyPageScreen()

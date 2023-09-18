@@ -53,6 +53,7 @@ fun ClosetScreen(
     navHostController: NavHostController,
     closetViewModel: ClosetViewModel = hiltViewModel()
 ) {
+
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val closetListState by closetViewModel.closetListState.collectAsState()
@@ -71,6 +72,7 @@ fun ClosetScreen(
         closetViewModel.getClosetList()
         scope.launch { sheetState.hide() }
     }
+
     var showDialog by remember { mutableStateOf(false) }
     if (sheetState.isVisible) {
         ModalBottomSheet(

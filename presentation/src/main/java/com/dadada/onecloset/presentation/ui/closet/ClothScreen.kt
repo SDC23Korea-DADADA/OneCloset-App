@@ -35,18 +35,20 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
 import com.dadada.onecloset.presentation.ui.utils.Material
 import com.dadada.onecloset.presentation.ui.utils.Type
+import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 @Composable
-fun ClothScreen(navHostController: NavHostController) {
+fun ClothScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
+    var item = closetViewModel.getSelectedCloth()
+
     var showType = remember { mutableStateOf(false) }
     var showColor = remember { mutableStateOf(false) }
     var showMaterial = remember { mutableStateOf(false) }
 
-    var type = remember { mutableStateOf<Type>(Type.Blouse) }
-    var material = remember { mutableStateOf<Material>(Material.Denim) }
-    var color = remember {
-        mutableStateOf<ClothColor>(ClothColor.Black)
-    }
+    var type = remember { mutableStateOf(item.type) }
+    var material = remember { mutableStateOf(item.material) }
+    var color = remember { mutableStateOf(item.color) }
 
     val list = listOf("세탁", "건조", "에어드레서")
     val contentList = listOf(
@@ -70,12 +72,11 @@ fun ClothScreen(navHostController: NavHostController) {
     }
 
 
-    val item = Cloth()
     Box(modifier = screenModifier) {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             RoundedSquareImageItem(
                 modifier = roundedSquareLargeModifier,
-                imageUri = item.thumnailImg.toUri(),
+                imageUri = "".toUri(),
                 icon = null,
             ) {
 
@@ -117,9 +118,9 @@ fun ClothScreen(navHostController: NavHostController) {
                             )
                     ) {
                         Spacer(modifier = Modifier.size(12.dp))
-                        ChipEditRow("종류", type.value.name, reverse = showType)
-                        ChipEditRow("재질", material.value.name, reverse = showMaterial)
-                        ColorEditRow("색상", color.value.color, reverse = showColor)
+                        ChipEditRow("종류", type.value, reverse = showType)
+                        ChipEditRow("재질", material.value, reverse = showMaterial)
+                        ColorEditRow("색상", hexStringToColor(color.value), reverse = showColor)
                         Spacer(modifier = Modifier.size(12.dp))
                     }
                 }

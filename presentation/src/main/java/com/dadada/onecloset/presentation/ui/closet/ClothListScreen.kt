@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.ui.NavigationItem
@@ -24,10 +23,12 @@ import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
+private const val TAG = "ClothListScreen"
 @Composable
 fun ClothListScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<Cloth>()) }
+
     LaunchedEffect(Unit) {
         closetViewModel.getClothList()
     }
@@ -62,7 +63,10 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             paddingValues = it,
             navHostController = navHostController,
             clothItems = clothList,
-            onClick = { navHostController.navigate(NavigationItem.ClothNav.route) }
+            onClick = {cloth ->
+                closetViewModel.setSelectedCloth(cloth)
+                navHostController.navigate(NavigationItem.ClothNav.route)
+            }
         )
     }
 }

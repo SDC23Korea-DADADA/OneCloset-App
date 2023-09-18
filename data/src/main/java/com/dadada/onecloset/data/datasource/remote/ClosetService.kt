@@ -4,6 +4,7 @@ import com.dadada.onecloset.data.model.ServerResponse
 import com.dadada.onecloset.data.model.closet.response.ClosetListResponse
 import com.dadada.onecloset.data.model.closet.response.ClothListResponse
 import com.dadada.onecloset.domain.model.Closet
+import com.dadada.onecloset.domain.model.Cloth
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -27,5 +28,8 @@ interface ClosetService {
 
     @GET("api/clothes/list/{id}")
     suspend fun getClothList(@Path(value = "id") id: String) : ClothListResponse
+
+    @POST("api/clothes/")
+    suspend fun putCloth(@Body cloth: Cloth) : ServerResponse
 
 }

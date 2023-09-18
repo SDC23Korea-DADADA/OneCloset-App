@@ -47,7 +47,7 @@ fun ClothTabGridView(
     clothItems: List<Cloth> = listOf(),
     icon: Int? = null,
     itemClickedStateList: SnapshotStateList<Boolean> = mutableStateListOf(),
-    onClick: (Int) -> Unit = {}
+    onClick: (Cloth) -> Unit = {}
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val handleTabClick = { newIndex: Int ->
@@ -93,7 +93,7 @@ fun ClothGridView(
     navHostController: NavHostController,
     clothItems: List<Cloth>,
     itemClickedStateList: SnapshotStateList<Boolean> = mutableStateListOf(),
-    onClick: (Int) -> Unit = {}
+    onClick: (Cloth) -> Unit = {}
 ) {
     var icon: Int? = null
     Log.d(TAG, "ClothGridView: ${itemClickedStateList.size}")
@@ -107,9 +107,9 @@ fun ClothGridView(
            }
             RoundedSquareImageItem(
                 modifier = roundedSquareMediumModifier,
-                imageUri = clothItems[it].thumnailImg.toUri(),
+                imageUri = clothItems[it].thumnailUrl.toUri(),
                 icon = icon,
-                onClick = { onClick(it) },
+                onClick = { onClick(clothItems[it]) },
             )
         }
     }

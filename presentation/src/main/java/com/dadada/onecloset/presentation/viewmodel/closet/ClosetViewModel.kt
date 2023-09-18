@@ -35,6 +35,7 @@ class ClosetViewModel @Inject constructor(
     val networkResultState = _networkResultState.asStateFlow()
 
     private lateinit var selectedId: String
+    private lateinit var selectedCloth: Cloth
 
     fun getClosetList() = viewModelScope.launch {
         _closetListState.value = NetworkResult.Loading
@@ -44,7 +45,6 @@ class ClosetViewModel @Inject constructor(
     private val TAG = "ClosetViewModel"
     fun putCloset(closet: Closet) = viewModelScope.launch {
         _networkResultState.value = NetworkResult.Loading
-        Log.d(TAG, "putCloset: $closet")
         _networkResultState.emit(putClosetUseCase.invoke(closet))
     }
 
@@ -64,4 +64,13 @@ class ClosetViewModel @Inject constructor(
     fun setSelectedId(id: String) {
         selectedId = id
     }
+
+    fun setSelectedCloth(cloth: Cloth) {
+        selectedCloth = cloth
+    }
+
+    fun getSelectedCloth(): Cloth {
+        return selectedCloth
+    }
+
 }

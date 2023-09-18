@@ -25,8 +25,7 @@ import com.dadada.onecloset.presentation.ui.theme.BackGround
 private const val TAG = "FittingScreen"
 @Composable
 fun FittingScreen(navHostController: NavHostController) {
-    var clothItems = listOf(Cloth(), Cloth(), Cloth(), Cloth(), Cloth(), Cloth(), Cloth(), Cloth(), Cloth())
-    clothItems += clothItems
+    var clothItems = listOf<Cloth>()
 
     val initialClickedState = List(clothItems.size) { false }
     val itemClickedStateList = remember { initialClickedState.toMutableStateList() }
@@ -39,13 +38,13 @@ fun FittingScreen(navHostController: NavHostController) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             FittingSelectedClothListView(modifier = Modifier.fillMaxWidth())
             Spacer(modifier = Modifier.size(12.dp))
-            ClothTabGridView(
-                modifier = Modifier,
-                navHostController = navHostController,
-                clothItems = clothItems,
-                itemClickedStateList = itemClickedStateList,
-                onClick = handleItemClick
-            )
+//            ClothTabGridView(
+//                modifier = Modifier,
+//                navHostController = navHostController,
+//                clothItems = clothItems,
+//                itemClickedStateList = itemClickedStateList,
+//                onClick = handleItemClick
+//            )
         }
 
         RowWithTwoButtons(
