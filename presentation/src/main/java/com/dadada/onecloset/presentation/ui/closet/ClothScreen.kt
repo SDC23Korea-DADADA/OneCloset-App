@@ -75,7 +75,7 @@ fun ClothScreen(navHostController: NavHostController) {
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             RoundedSquareImageItem(
                 modifier = roundedSquareLargeModifier,
-                imageUri = item.thumbnailImg.toUri(),
+                imageUri = item.thumnailImg.toUri(),
                 icon = null,
             ) {
 

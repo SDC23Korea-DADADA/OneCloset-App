@@ -22,10 +22,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dadada.onecloset.presentation.ui.account.LogInScreen
@@ -129,7 +131,8 @@ fun MainNavigationScreen(
             CameraScreen()
         }
         composable(route = ClosetDetailNav.route) {
-            ClothListScreen(navHostController = navController)
+            val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }
+            ClothListScreen(navHostController = navController, closetViewModel = hiltViewModel(parentEntry))
         }
         composable(route = GalleryNav.route) {
             GalleryScreen(navController)

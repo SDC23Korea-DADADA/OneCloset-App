@@ -7,7 +7,7 @@ import com.dadada.onecloset.presentation.R
 fun iconHandler(iconId: Int): Int {
     return when (iconId) {
         1 -> R.drawable.ic_shirt
-        else -> R.drawable.ic_bow_tie
+        else -> iconId
     }
 }
 

@@ -31,7 +31,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = BackGround
                 ) {
-                    Log.d(TAG, "onCreate: ${accountInfo!!.accessToken}")
                     val startDestination =
                         if (accountInfo == null) NavigationItem.LogInNav.route else NavigationItem.MainTabNav.route
                     MainScreen(startDestination = startDestination)

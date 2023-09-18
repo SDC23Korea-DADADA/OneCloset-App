@@ -2,6 +2,7 @@ package com.dadada.onecloset.data.datasource.remote
 
 import com.dadada.onecloset.data.model.ServerResponse
 import com.dadada.onecloset.data.model.closet.response.ClosetListResponse
+import com.dadada.onecloset.data.model.closet.response.ClothListResponse
 import com.dadada.onecloset.domain.model.Closet
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -22,6 +23,9 @@ interface ClosetService {
     suspend fun updateCloset(@Body closet: Closet) : ServerResponse
 
     @DELETE("api/closet/{id}")
-    suspend fun deleteClose(@Path(value = "id") id: String) : ServerResponse
+    suspend fun deleteCloset(@Path(value = "id") id: String) : ServerResponse
+
+    @GET("api/clothes/list/{id}")
+    suspend fun getClothList(@Path(value = "id") id: String) : ClothListResponse
 
 }

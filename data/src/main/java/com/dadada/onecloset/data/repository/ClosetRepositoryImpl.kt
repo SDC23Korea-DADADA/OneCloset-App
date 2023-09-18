@@ -1,11 +1,10 @@
 package com.dadada.onecloset.data.repository
 
-import android.util.Log
 import com.dadada.onecloset.data.datasource.remote.ClosetService
 import com.dadada.onecloset.data.datasource.remote.handleApi
 import com.dadada.onecloset.data.mapper.toDomain
-import com.dadada.onecloset.data.model.ServerResponse
 import com.dadada.onecloset.domain.model.Closet
+import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.repository.ClosetRepository
 import javax.inject.Inject
@@ -27,6 +26,10 @@ class ClosetRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteCloset(id: String): NetworkResult<Unit> {
-        return handleApi { closetService.deleteClose(id) }
+        return handleApi { closetService.deleteCloset(id) }
+    }
+
+    override suspend fun getClothList(id: String): NetworkResult<List<Cloth>> {
+        return handleApi { closetService.getClothList(id).toDomain() }
     }
 }

@@ -1,18 +1,23 @@
 package com.dadada.onecloset.presentation.ui.closet
 
-import android.util.Log
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.BottomSheetScaffoldState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,7 +46,8 @@ import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "ClosetScreen"
-@OptIn(ExperimentalMaterial3Api::class)
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun ClosetScreen(
     navHostController: NavHostController,
@@ -56,15 +62,16 @@ fun ClosetScreen(
     LaunchedEffect(closetListState) {
         closetViewModel.getClosetList()
     }
-    
+
     NetworkResultHandler(state = closetListState) {
         closetList = it
     }
 
     NetworkResultHandler(state = networkResultState) {
         closetViewModel.getClosetList()
+        scope.launch { sheetState.hide() }
     }
-
+    var showDialog by remember { mutableStateOf(false) }
     if (sheetState.isVisible) {
         ModalBottomSheet(
             sheetState = sheetState,
@@ -73,6 +80,12 @@ fun ClosetScreen(
         ) {
             BottomSheetAddCloset(closetViewModel)
         }
+        
+//        AlertDialog(onDismissRequest = { /*TODO*/ }, confirmButton = { /*TODO*/ }, text = {
+//            BottomSheetAddCloset(
+//                closetViewModel = closetViewModel
+//            )
+//        })
     }
 
     Scaffold(
@@ -102,7 +115,11 @@ fun ClosetScreen(
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            ClosetListView(navHostController = navHostController, closetList = closetList)
+            ClosetListView(
+                navHostController = navHostController,
+                closetList = closetList,
+                closetViewModel = closetViewModel
+            )
         }
     }
 }

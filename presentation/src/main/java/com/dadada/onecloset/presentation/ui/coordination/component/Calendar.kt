@@ -183,7 +183,7 @@ fun CalendarDay(
                 .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            AsyncImage(model = Cloth().thumbnailImg, contentDescription = "", contentScale = ContentScale.Crop)
+            AsyncImage(model = Cloth().thumnailImg, contentDescription = "", contentScale = ContentScale.Crop)
         }
 
 

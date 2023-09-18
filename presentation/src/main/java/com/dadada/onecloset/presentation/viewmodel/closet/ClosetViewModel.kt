@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dadada.onecloset.domain.model.Closet
+import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.usecase.closet.DeleteClosetUseCase
 import com.dadada.onecloset.domain.usecase.closet.GetClosetListUseCase
+import com.dadada.onecloset.domain.usecase.closet.GetClothListUseCase
 import com.dadada.onecloset.domain.usecase.closet.PutClosetUseCase
 import com.dadada.onecloset.domain.usecase.closet.UpdateClosetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,13 +22,19 @@ class ClosetViewModel @Inject constructor(
     private val getClosetListUseCase: GetClosetListUseCase,
     private val putClosetUseCase: PutClosetUseCase,
     private val deleteClosetUseCase: DeleteClosetUseCase,
-    private val updateClosetUseCase: UpdateClosetUseCase
+    private val updateClosetUseCase: UpdateClosetUseCase,
+    private val getClothListUseCase: GetClothListUseCase
 ) : ViewModel() {
     private val _closetListState = MutableStateFlow<NetworkResult<List<Closet>>>(NetworkResult.Idle)
     val closetListState = _closetListState.asStateFlow()
 
+    private val _clothListState = MutableStateFlow<NetworkResult<List<Cloth>>>(NetworkResult.Idle)
+    val clothListState = _clothListState.asStateFlow()
+
     private val _networkResultState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val networkResultState = _networkResultState.asStateFlow()
+
+    private lateinit var selectedId: String
 
     fun getClosetList() = viewModelScope.launch {
         _closetListState.value = NetworkResult.Loading
@@ -46,5 +54,14 @@ class ClosetViewModel @Inject constructor(
 
     fun deleteCloset(id: String) = viewModelScope.launch {
         _networkResultState.emit(deleteClosetUseCase.invoke(id))
+    }
+
+    fun getClothList() = viewModelScope.launch {
+        _clothListState.value = NetworkResult.Loading
+        _clothListState.emit(getClothListUseCase.invoke(selectedId))
+    }
+
+    fun setSelectedId(id: String) {
+        selectedId = id
     }
 }

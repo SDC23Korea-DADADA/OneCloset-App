@@ -36,6 +36,7 @@ import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.ui.utils.iconHandler
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 
 @Composable
@@ -106,7 +107,7 @@ fun ClothGridView(
            }
             RoundedSquareImageItem(
                 modifier = roundedSquareMediumModifier,
-                imageUri = clothItems[it].thumbnailImg.toUri(),
+                imageUri = clothItems[it].thumnailImg.toUri(),
                 icon = icon,
                 onClick = { onClick(it) },
             )
@@ -116,7 +117,7 @@ fun ClothGridView(
 
 
 @Composable
-fun ClosetListView(navHostController: NavHostController, closetList: List<Closet>) {
+fun ClosetListView(navHostController: NavHostController, closetList: List<Closet>, closetViewModel: ClosetViewModel) {
     Box(
         modifier = roundedSquareLargeModifier
     ) {
@@ -131,7 +132,10 @@ fun ClosetListView(navHostController: NavHostController, closetList: List<Closet
                     title = closetList[it].name,
                     icon = iconHandler(closetList[it].icon),
                     backGroundTint = hexStringToColor(closetList[it].colorCode),
-                    onClick = { navHostController.navigate(NavigationItem.ClosetDetailNav.route) }
+                    onClick = {
+                        closetViewModel.setSelectedId(closetList[it].closetId.toString())
+                        navHostController.navigate(NavigationItem.ClosetDetailNav.route)
+                    }
                 )
             }
         }
