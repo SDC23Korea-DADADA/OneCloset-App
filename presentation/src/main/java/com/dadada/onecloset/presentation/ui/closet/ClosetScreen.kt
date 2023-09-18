@@ -1,6 +1,7 @@
 package com.dadada.onecloset.presentation.ui.closet
 
 import android.util.Log
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,16 +50,19 @@ fun ClosetScreen(
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val closetListState by closetViewModel.closetListState.collectAsState()
+    val networkResultState by closetViewModel.networkResultState.collectAsState()
     var closetList by remember { mutableStateOf(listOf<Closet>()) }
+
     LaunchedEffect(closetListState) {
         closetViewModel.getClosetList()
     }
-
-    Log.d(TAG, "ClosetScreen: $closetListState")
     
     NetworkResultHandler(state = closetListState) {
-        Log.d(TAG, "ClosetScreen: ")
         closetList = it
+    }
+
+    NetworkResultHandler(state = networkResultState) {
+        closetViewModel.getClosetList()
     }
 
     if (sheetState.isVisible) {
@@ -67,7 +71,7 @@ fun ClosetScreen(
             onDismissRequest = { scope.launch { sheetState.hide() } },
             containerColor = Color.White
         ) {
-            BottomSheetAddCloset()
+            BottomSheetAddCloset(closetViewModel)
         }
     }
 

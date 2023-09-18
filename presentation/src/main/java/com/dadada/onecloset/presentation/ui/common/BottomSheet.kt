@@ -39,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Blue
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
@@ -50,10 +51,12 @@ import com.dadada.onecloset.presentation.ui.utils.Material
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.ui.utils.Type
+import com.dadada.onecloset.presentation.ui.utils.colorToHexString
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun BottomSheetAddCloset() {
+fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
     val iconResIds = IconEnum.values().map { it.resId }
     val colors = ColorEnum.values().map { it.color }
 
@@ -115,7 +118,9 @@ fun BottomSheetAddCloset() {
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
+        Button(modifier = Modifier.fillMaxWidth(), onClick = {
+            closetViewModel.putCloset(Closet(closetId = 5, colorCode = colorToHexString(selectedColor.value), icon = iconResIds[selectedIconIdx.value], name = "TEST 옷장"))
+        }) {
             Text(text = "등록")
         }
     }
