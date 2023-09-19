@@ -12,4 +12,5 @@ interface ClosetRepository {
 
     suspend fun getClothList(id: String) : NetworkResult<List<Cloth>>
     suspend fun putCloth(cloth: Cloth) : NetworkResult<Unit>
+    suspend fun getCloth(id: String) : NetworkResult<Cloth>
 }

@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.GalleryPhotoItem
@@ -43,13 +44,15 @@ import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 private const val TAG = "GalleryScreen"
 
 @Composable
 fun GalleryScreen(
     navController: NavHostController,
-    photoViewModel: PhotoViewModel = hiltViewModel()
+    photoViewModel: PhotoViewModel = hiltViewModel(),
+    closetViewModel: ClosetViewModel,
 ) {
     val pagingPhotos = photoViewModel.photoList.collectAsLazyPagingItems()
     val isCheckedIdx = photoViewModel.isCheckedIdx.collectAsState()
@@ -75,7 +78,8 @@ fun GalleryScreen(
             GalleryHeader(
                 navController = navController,
                 pagingPhotos = pagingPhotos,
-                isCheckedIdx = isCheckedIdx
+                isCheckedIdx = isCheckedIdx,
+                closetViewModel = closetViewModel
             )
         }
     ) {
@@ -110,7 +114,8 @@ fun GalleryScreen(
 fun GalleryHeader(
     navController: NavHostController,
     pagingPhotos: LazyPagingItems<Photo>,
-    isCheckedIdx: State<Int>
+    isCheckedIdx: State<Int>,
+    closetViewModel: ClosetViewModel
 ) {
     TopAppBar(
         modifier = Modifier.padding(vertical = 8.dp),
@@ -126,8 +131,8 @@ fun GalleryHeader(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 onClick = {
                     val encodedUri = Uri.encode(pagingPhotos[isCheckedIdx.value]?.uri.toString())
-                    Log.d(TAG, "GalleryHeader: $encodedUri")
-                    navController.navigate("${NavigationItem.ClothAnalysisNav.route}/${encodedUri}")
+                    closetViewModel.cloth.img = pagingPhotos[isCheckedIdx.value]?.uri.toString()
+                    navController.navigate(NavigationItem.ClothAnalysisNav.route)
                 }) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
             }

@@ -61,8 +61,8 @@ sealed class NavigationItem(override val route: String, override val title: Stri
     }
 
     object GalleryNav: Destination {
-        override val route: String = NavigationRouteName.CLOTH_ANALYSIS
-        override val title: String = NavigationTitle.CLOTH_ANALYSIS
+        override val route: String = NavigationRouteName.GALLERY
+        override val title: String = NavigationTitle.GALLERY
     }
 
     object AccountNav: Destination {

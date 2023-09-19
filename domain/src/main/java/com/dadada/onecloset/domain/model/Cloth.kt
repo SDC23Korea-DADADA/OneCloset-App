@@ -1,17 +1,21 @@
 package com.dadada.onecloset.domain.model
 
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
-
 data class Cloth(
-    val clothesId: String = "",
+    var airDressor: String = "",
+    val careTipList: List<Any> = listOf(),
+    val clothesId: Int = -1,
     val color: String = "",
+    var colorCode: String = "",
     val description: String = "",
-    val hashTag: List<String>,
-    val material: String = "",
+    var dryer: String = "",
+    val hashtagList: List<String> = listOf(),
+    var img: String = "",
+    var laundry: String = "",
+    val laundryTipList: List<Any> = listOf(),
+    var material: String = "",
+    val tpoList: List<String> = listOf(),
+    var type: String = "",
+    val weatherList: List<String> = listOf(),
     val thumnailUrl: String = "",
-    val tpo: List<String> = listOf(),
-    val type: String = "",
-    val url: String = "",
-    val weather: List<String> = listOf()
+    var closetId: String = ""
 )

@@ -49,6 +49,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.dadada.onecloset.presentation.ui.NavigationItem.*
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 private const val TAG = "MainScreen"
 
@@ -112,6 +113,7 @@ fun MainNavigationScreen(
     navController: NavHostController,
     startDestination: String
 ) {
+    val closetViewModel: ClosetViewModel = hiltViewModel()
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
@@ -135,22 +137,14 @@ fun MainNavigationScreen(
             ClothListScreen(navHostController = navController, closetViewModel = hiltViewModel(parentEntry))
         }
         composable(route = GalleryNav.route) {
-            GalleryScreen(navController)
+            GalleryScreen(navController, closetViewModel = closetViewModel)
         }
 
-        composable(route = "${ClothAnalysisNav.route}/{photoUri}") {
-            val uriArg = it.arguments?.getString("photoUri")
-            if (uriArg != null) {
-                val decodedUri = Uri.decode(uriArg)
-                ClothAnalysisScreen(navController, photoUri = decodedUri.toUri())
-            }
+        composable(route = ClothAnalysisNav.route) {
+            ClothAnalysisScreen(navController, closetViewModel = closetViewModel)
         }
-        composable(route = "${ClothCourseNav.route}/{photoUri}") {
-            val uriArg = it.arguments?.getString("photoUri")
-            if (uriArg != null) {
-                val decodedUri = Uri.decode(uriArg)
-                ClothCourseScreen(navController)
-            }
+        composable(route = ClothCourseNav.route) {
+            ClothCourseScreen(navController, closetViewModel = closetViewModel)
         }
         composable(route = ClothNav.route) {
             val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }

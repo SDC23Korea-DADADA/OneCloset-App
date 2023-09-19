@@ -15,27 +15,26 @@ import com.dadada.onecloset.presentation.ui.theme.SkyBlueColor
 import com.dadada.onecloset.presentation.ui.theme.WineColor
 
 sealed class Type(val id: Int, val category: String, val name: String) {
-    object Top: Type(11, "상의", "탑")
-    object Blouse: Type(12, "상의", "블라우스")
-    object Knit: Type(13, "상의", "니트")
-    object Shirt: Type(14, "상의", "셔츠")
-    object HoodT: Type(15, "상의", "후드티")
+    object Top: Type(11, "상의", "긴팔티")
+    object Blouse: Type(12, "상의", "반팔티")
+    object Knit: Type(13, "상의", "셔츠/블라우스")
+    object Shirt: Type(14, "상의", "니트웨어")
+    object HoodT: Type(16, "상의", "후드티")
+    object Sleeveless: Type(17, "상의", "민소매")
 
-    object Jean: Type(21, "하의", "청바지")
-    object Pants: Type(22, "하의", "팬츠")
-    object Skirt: Type(23, "하의", "치마")
-    object JoggerPants: Type(24, "하의", "조거팬츠")
-    object Leggings: Type(25, "하의", "레깅스")
+    object Jean: Type(21, "하의", "긴바지")
+    object Pants: Type(22, "하의", "반바지")
+    object LongSkirt: Type(23, "하의", "롱스커트")
+    object MiniSkirt: Type(23, "하의", "미니스커트")
 
     object Coat: Type(31, "아우터", "코트")
     object Jacket: Type(32, "아우터", "재킷")
-    object Jumper: Type(33, "아우터", "점퍼")
+    object Jumper: Type(33, "아우터", "점퍼/ZIP-UP")
     object Padding: Type(34, "아우터", "패딩")
-    object ZipUp: Type(35, "아우터", "집업")
     object Cardigan: Type(36, "아우터", "가디건")
-    object Vest: Type(37, "아우터", "조끼")
+    object Vest: Type(37, "아우터", "베스트")
 
-    object Dress: Type(41, "한벌옷", "드레스")
+    object Dress: Type(41, "한벌옷", "원피스")
     object JumpSuit: Type(42, "한벌옷", "점프슈트")
 
 
@@ -52,22 +51,16 @@ sealed class Type(val id: Int, val category: String, val name: String) {
 }
 
 sealed class Material(val id: Int, val name: String) {
-    object Leader: Material(1, "가죽/무스탕")
+    object Leader: Material(8, "가죽")
     object Knit: Material(2, "니트")
     object Denim: Material(3, "데님")
-    object Lace: Material(4, "레이스")
-    object Linen: Material(5, "린넨")
-    object Velvet: Material(6, "벨벳")
-    object Suede: Material(7, "스웨이드")
-    object Chiffon: Material(8, "쉬폰")
-    object Silk: Material(9, "실크")
-    object Wool: Material(10, "울/캐시미어")
-    object Jersey: Material(11, "저지")
-    object Corduroy: Material(12, "코드류이")
-    object Tweed: Material(13, "트위드")
-    object Padding: Material(14, "패딩")
-    object Fur: Material(15, "퍼")
-    object Fleece: Material(16, "플리스")
+    object Cotton: Material(1, "면/폴리")
+    object Chiffon: Material(4, "쉬폰")
+    object Corduroy: Material(9, "코드류이")
+    object Tweed: Material(6, "트위드")
+    object Padding: Material(5, "패딩")
+    object Fur: Material(7, "퍼/플리스")
+    object Other: Material(0, "기타")
 
     companion object {
         fun getAllMaterial(): List<Material> {

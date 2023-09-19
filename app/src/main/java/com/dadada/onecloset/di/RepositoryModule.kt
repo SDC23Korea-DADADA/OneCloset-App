@@ -1,5 +1,6 @@
 package com.dadada.onecloset.di
 
+import android.content.ContentResolver
 import com.dadada.onecloset.data.datasource.local.PreferenceDataSource
 import com.dadada.onecloset.data.datasource.remote.AccountService
 import com.dadada.onecloset.data.datasource.remote.ClosetService
@@ -32,7 +33,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideClosetRepository(
-        closetService: ClosetService
+        closetService: ClosetService,
     ): ClosetRepository {
         return ClosetRepositoryImpl(
             closetService = closetService

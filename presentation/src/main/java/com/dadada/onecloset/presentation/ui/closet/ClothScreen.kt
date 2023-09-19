@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.closet
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.presentation.ui.closet.component.ClothCourseView
+import com.dadada.onecloset.presentation.ui.closet.component.ClothInformView
 import com.dadada.onecloset.presentation.ui.common.ChipEditRow
 import com.dadada.onecloset.presentation.ui.common.ColorEditRow
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
@@ -32,30 +37,34 @@ import com.dadada.onecloset.presentation.ui.common.RoundedSquare
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.screenModifier
-import com.dadada.onecloset.presentation.ui.utils.ClothColor
-import com.dadada.onecloset.presentation.ui.utils.Material
-import com.dadada.onecloset.presentation.ui.utils.Type
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
+private const val TAG = "ClothScreen"
 @Composable
 fun ClothScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
-    var item = closetViewModel.getSelectedCloth()
+    val clothState by closetViewModel.clothState.collectAsState()
+    var cloth by remember { mutableStateOf(Cloth()) }
+
+    LaunchedEffect(Unit) {
+        closetViewModel.getCloth()
+    }
+
+    NetworkResultHandler(state = clothState) {
+        cloth = it
+    }
 
     var showType = remember { mutableStateOf(false) }
     var showColor = remember { mutableStateOf(false) }
     var showMaterial = remember { mutableStateOf(false) }
 
-    var type = remember { mutableStateOf(item.type) }
-    var material = remember { mutableStateOf(item.material) }
-    var color = remember { mutableStateOf(item.color) }
+    var type = remember { mutableStateOf(cloth.type) }
+    var material = remember { mutableStateOf(cloth.material) }
+    var color = remember { mutableStateOf(cloth.color) }
 
-    val list = listOf("세탁", "건조", "에어드레서")
-    val contentList = listOf(
-        "울 소재의 옷은 울 전용 세제를 넣어 울 전용 코스를 이용해보세요!",
-        "울 소재의 옷은 울 전용 세제를 넣어 울 전용 코스를 이용해보세요!",
-        "울 소재의 옷은 울 전용 세제를 넣어 울 전용 코스를 이용해보세요!"
-    )
+    val titleList = listOf("세탁", "건조", "에어드레서")
+    val contentList = listOf(cloth.laundry, cloth.dryer, cloth.airDressor)
 
     var selectedTabIndex by remember { mutableStateOf(0) }
     val handleTabClick = { newIndex: Int ->
@@ -76,7 +85,7 @@ fun ClothScreen(navHostController: NavHostController, closetViewModel: ClosetVie
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             RoundedSquareImageItem(
                 modifier = roundedSquareLargeModifier,
-                imageUri = "".toUri(),
+                imageUri = cloth.img.toUri(),
                 icon = null,
             ) {
 
@@ -91,39 +100,8 @@ fun ClothScreen(navHostController: NavHostController, closetViewModel: ClosetVie
             )
 
             when (selectedTabIndex) {
-                0 -> {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-
-                        Spacer(modifier = Modifier.weight(1f))
-                        Column() {
-                            list.forEachIndexed { index, s ->
-                                RoundedSquare(title = s, content = contentList[index])
-                                Spacer(modifier = Modifier.size(12.dp))
-                            }
-                        }
-                    }
-                }
-
-                else -> {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(26.dp))
-                            .background(
-                                Color.White
-                            )
-                    ) {
-                        Spacer(modifier = Modifier.size(12.dp))
-                        ChipEditRow("종류", type.value, reverse = showType)
-                        ChipEditRow("재질", material.value, reverse = showMaterial)
-                        ColorEditRow("색상", hexStringToColor(color.value), reverse = showColor)
-                        Spacer(modifier = Modifier.size(12.dp))
-                    }
-                }
+                0 -> { ClothCourseView(titleList = titleList, contentList = contentList) }
+                else -> { ClothInformView(cloth = cloth) }
             }
         }
     }

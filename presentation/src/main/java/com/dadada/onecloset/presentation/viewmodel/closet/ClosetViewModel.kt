@@ -1,6 +1,5 @@
 package com.dadada.onecloset.presentation.viewmodel.closet
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dadada.onecloset.domain.model.Closet
@@ -9,7 +8,9 @@ import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.usecase.closet.DeleteClosetUseCase
 import com.dadada.onecloset.domain.usecase.closet.GetClosetListUseCase
 import com.dadada.onecloset.domain.usecase.closet.GetClothListUseCase
+import com.dadada.onecloset.domain.usecase.closet.GetClothUseCase
 import com.dadada.onecloset.domain.usecase.closet.PutClosetUseCase
+import com.dadada.onecloset.domain.usecase.closet.PutClothUseCase
 import com.dadada.onecloset.domain.usecase.closet.UpdateClosetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +24,9 @@ class ClosetViewModel @Inject constructor(
     private val putClosetUseCase: PutClosetUseCase,
     private val deleteClosetUseCase: DeleteClosetUseCase,
     private val updateClosetUseCase: UpdateClosetUseCase,
-    private val getClothListUseCase: GetClothListUseCase
+    private val getClothListUseCase: GetClothListUseCase,
+    private val getClothUseCase: GetClothUseCase,
+    private val putClothUseCase: PutClothUseCase
 ) : ViewModel() {
     private val _closetListState = MutableStateFlow<NetworkResult<List<Closet>>>(NetworkResult.Idle)
     val closetListState = _closetListState.asStateFlow()
@@ -34,12 +37,17 @@ class ClosetViewModel @Inject constructor(
     private val _networkResultState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val networkResultState = _networkResultState.asStateFlow()
 
-    private lateinit var selectedId: String
-    private lateinit var selectedCloth: Cloth
+    private val _clothState = MutableStateFlow<NetworkResult<Cloth>>(NetworkResult.Idle)
+    val clothState = _clothState.asStateFlow()
+
+    private lateinit var selectedClosetId: String
+    private lateinit var selectedClothId: String
+    var cloth: Cloth = Cloth()
 
     fun getClosetList() = viewModelScope.launch {
         _closetListState.value = NetworkResult.Loading
         _closetListState.emit(getClosetListUseCase.invoke())
+        _clothListState.value = NetworkResult.Idle
     }
 
     private val TAG = "ClosetViewModel"
@@ -58,19 +66,22 @@ class ClosetViewModel @Inject constructor(
 
     fun getClothList() = viewModelScope.launch {
         _clothListState.value = NetworkResult.Loading
-        _clothListState.emit(getClothListUseCase.invoke(selectedId))
+        _clothListState.emit(getClothListUseCase.invoke(selectedClosetId))
+    }
+
+    fun getCloth() = viewModelScope.launch {
+        _clothState.emit(getClothUseCase.invoke(selectedClothId))
+    }
+
+    fun putCloth() = viewModelScope.launch {
+        _networkResultState.emit(putClothUseCase.invoke(cloth))
     }
 
     fun setSelectedId(id: String) {
-        selectedId = id
+        selectedClosetId = id
     }
 
-    fun setSelectedCloth(cloth: Cloth) {
-        selectedCloth = cloth
+    fun setSelectedClothId(id: String) {
+        selectedClothId = id
     }
-
-    fun getSelectedCloth(): Cloth {
-        return selectedCloth
-    }
-
 }

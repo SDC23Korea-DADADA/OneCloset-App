@@ -24,6 +24,7 @@ import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 private const val TAG = "ClothListScreen"
+
 @Composable
 fun ClothListScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
     val clothListState by closetViewModel.clothListState.collectAsState()
@@ -63,8 +64,8 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             paddingValues = it,
             navHostController = navHostController,
             clothItems = clothList,
-            onClick = {cloth ->
-                closetViewModel.setSelectedCloth(cloth)
+            onClick = { id ->
+                closetViewModel.setSelectedClothId(id.toString())
                 navHostController.navigate(NavigationItem.ClothNav.route)
             }
         )

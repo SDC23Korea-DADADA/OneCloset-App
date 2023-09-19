@@ -2,14 +2,20 @@ package com.dadada.onecloset.presentation.ui.closet.component
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -21,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
@@ -29,11 +36,20 @@ import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
+import com.dadada.onecloset.presentation.ui.common.ChipEditRow
+import com.dadada.onecloset.presentation.ui.common.ClothInformRow
+import com.dadada.onecloset.presentation.ui.common.ColorEditRow
+import com.dadada.onecloset.presentation.ui.common.ColorInformRow
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
+import com.dadada.onecloset.presentation.ui.common.DropDownRow
+import com.dadada.onecloset.presentation.ui.common.RoundedSquare
+import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconItem
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconWithTitleItem
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
+import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.ui.utils.iconHandler
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
@@ -47,7 +63,7 @@ fun ClothTabGridView(
     clothItems: List<Cloth> = listOf(),
     icon: Int? = null,
     itemClickedStateList: SnapshotStateList<Boolean> = mutableStateListOf(),
-    onClick: (Cloth) -> Unit = {}
+    onClick: (Int) -> Unit = {}
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val handleTabClick = { newIndex: Int ->
@@ -88,12 +104,13 @@ fun ClothTabGridView(
 }
 
 private const val TAG = "View"
+
 @Composable
 fun ClothGridView(
     navHostController: NavHostController,
     clothItems: List<Cloth>,
     itemClickedStateList: SnapshotStateList<Boolean> = mutableStateListOf(),
-    onClick: (Cloth) -> Unit = {}
+    onClick: (Int) -> Unit = {}
 ) {
     var icon: Int? = null
     Log.d(TAG, "ClothGridView: ${itemClickedStateList.size}")
@@ -102,14 +119,15 @@ fun ClothGridView(
         columns = GridCells.Fixed(3),
     ) {
         items(clothItems.size) { it ->
-           if(itemClickedStateList.size != 0) {
-               icon = if(itemClickedStateList[it]) R.drawable.ic_checked else R.drawable.ic_unchecked
-           }
+            if (itemClickedStateList.size != 0) {
+                icon =
+                    if (itemClickedStateList[it]) R.drawable.ic_checked else R.drawable.ic_unchecked
+            }
             RoundedSquareImageItem(
                 modifier = roundedSquareMediumModifier,
                 imageUri = clothItems[it].thumnailUrl.toUri(),
                 icon = icon,
-                onClick = { onClick(clothItems[it]) },
+                onClick = { onClick(clothItems[it].clothesId) },
             )
         }
     }
@@ -117,7 +135,10 @@ fun ClothGridView(
 
 
 @Composable
-fun ClosetListView(navHostController: NavHostController, closetList: List<Closet>, closetViewModel: ClosetViewModel) {
+fun ClosetListView(
+    closetList: List<Closet>,
+    onClick: (Int) -> Unit
+) {
     Box(
         modifier = roundedSquareLargeModifier
     ) {
@@ -132,12 +153,56 @@ fun ClosetListView(navHostController: NavHostController, closetList: List<Closet
                     title = closetList[it].name,
                     icon = iconHandler(closetList[it].icon),
                     backGroundTint = hexStringToColor(closetList[it].colorCode),
-                    onClick = {
-                        closetViewModel.setSelectedId(closetList[it].closetId.toString())
-                        navHostController.navigate(NavigationItem.ClosetDetailNav.route)
-                    }
+                    onClick = { onClick(it) }
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun ClothCourseView(titleList: List<String>, contentList: List<String>) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = Modifier.weight(1f))
+        Column() {
+            titleList.forEachIndexed { index, title ->
+                RoundedSquare(title = title, content = contentList[index])
+                Spacer(modifier = Modifier.size(12.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun ClothInformView(cloth: Cloth) {
+    Column(
+        modifier = roundedSquareLargeModifier.padding(vertical = Paddings.large)
+    ) {
+        ClothInformRow("종류", cloth.type)
+        ClothInformRow(title = "재질", content = cloth.material)
+        ColorInformRow(title = "색상", content =  hexStringToColor(cloth.colorCode))
+    }
+}
+
+@Composable
+fun ClothInputAdditionalInformDialogView() {
+    Column(modifier = roundedSquareLargeModifier.padding(Paddings.xlarge)) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "계절")
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "TPO")
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "해쉬태그")
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "계절")
         }
     }
 }

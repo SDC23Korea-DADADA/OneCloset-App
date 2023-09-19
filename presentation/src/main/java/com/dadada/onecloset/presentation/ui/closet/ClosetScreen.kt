@@ -118,10 +118,11 @@ fun ClosetScreen(
             Spacer(modifier = Modifier.size(16.dp))
 
             ClosetListView(
-                navHostController = navHostController,
                 closetList = closetList,
-                closetViewModel = closetViewModel
-            )
+            ) {
+                closetViewModel.setSelectedId(closetList[it].closetId.toString())
+                navHostController.navigate(NavigationItem.ClosetDetailNav.route)
+            }
         }
     }
 }
