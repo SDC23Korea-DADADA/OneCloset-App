@@ -36,3 +36,27 @@ fun DropDownMenu(
         }
     }
 }
+
+@Composable
+fun FittingDropDownMenu(
+    modifier: Modifier = Modifier,
+    expanded: Boolean,
+    modeTitleList: List<String>,
+    onClick: (Int) -> Unit,
+    onDismissRequest: () -> Unit
+) {
+    MaterialTheme(shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(20.dp))) {
+        DropdownMenu(
+            modifier = Modifier.background(Color.White),
+            expanded = expanded,
+            onDismissRequest = { onDismissRequest() },
+        ) {
+            modeTitleList.forEachIndexed { index, content ->
+                DropdownMenuItem(onClick = {
+                    onClick(index)
+                    onDismissRequest()
+                }, text = { Text(content) })
+            }
+        }
+    }
+}

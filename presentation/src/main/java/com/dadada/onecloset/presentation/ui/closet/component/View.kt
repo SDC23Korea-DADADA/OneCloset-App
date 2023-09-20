@@ -66,7 +66,7 @@ fun ClothTabGridView(
     navHostController: NavHostController,
     clothItems: List<Cloth> = listOf(),
     icon: Int? = null,
-    itemClickedStateList: SnapshotStateList<Boolean> = mutableStateListOf(),
+    itemClickedStateList: List<Boolean> = mutableStateListOf(),
     onClick: (Int) -> Unit = {}
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
@@ -101,6 +101,7 @@ fun ClothTabGridView(
         ClothGridView(
             navHostController = navHostController,
             clothItems = clothItems,
+            icon = icon,
             itemClickedStateList = itemClickedStateList,
             onClick = onClick
         )
@@ -113,17 +114,18 @@ private const val TAG = "View"
 fun ClothGridView(
     navHostController: NavHostController,
     clothItems: List<Cloth>,
-    itemClickedStateList: SnapshotStateList<Boolean> = mutableStateListOf(),
+    icon: Int? = null,
+    itemClickedStateList: List<Boolean> = mutableStateListOf(),
     onClick: (Int) -> Unit = {}
 ) {
-    var icon: Int? = null
+    var icon: Int? = icon
     Log.d(TAG, "ClothGridView: ${itemClickedStateList.size}")
     LazyVerticalGrid(
         modifier = Modifier.padding(horizontal = 4.dp),
         columns = GridCells.Fixed(3),
     ) {
         items(clothItems.size) { it ->
-            if (itemClickedStateList.size != 0) {
+            if (itemClickedStateList.isNotEmpty()) {
                 icon =
                     if (itemClickedStateList[it]) R.drawable.ic_checked else R.drawable.ic_unchecked
             }
@@ -131,7 +133,7 @@ fun ClothGridView(
                 modifier = roundedSquareMediumModifier,
                 imageUri = clothItems[it].thumnailUrl.toUri(),
                 icon = icon,
-                onClick = { onClick(clothItems[it].clothesId) },
+                onClick = { onClick(it) },
             )
         }
     }

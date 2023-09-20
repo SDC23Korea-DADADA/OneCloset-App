@@ -33,8 +33,8 @@ import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 
 @Composable
-fun DropDownRow(component: @Composable () -> Unit, reverse: Boolean, onClick: () -> Unit) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+fun DropDownRow(modifier: Modifier = Modifier, component: @Composable () -> Unit, reverse: Boolean, onClick: () -> Unit) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         component()
         DropDownButton(reverse = reverse) {
             onClick()

@@ -49,6 +49,8 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
         }
     }
 
+
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +67,7 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             navHostController = navHostController,
             clothItems = clothList,
             onClick = {
-                navHostController.navigate("${NavigationItem.ClothNav.route}/${it}")
+                navHostController.navigate("${NavigationItem.ClothNav.route}/${clothList[it].clothesId}")
             }
         )
     }

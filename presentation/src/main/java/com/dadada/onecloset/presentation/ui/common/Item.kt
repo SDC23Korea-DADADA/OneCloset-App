@@ -1,6 +1,7 @@
 package com.dadada.onecloset.presentation.ui.common
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import kotlin.math.log
 
 @Composable
 fun ColorIconItem(color: Color, selectedColor: MutableState<Color>) {
