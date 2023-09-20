@@ -3,6 +3,7 @@ package com.dadada.onecloset.domain.repository
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.domain.model.ClothAnalysis
+import com.dadada.onecloset.domain.model.ClothCareCourse
 import com.dadada.onecloset.domain.model.NetworkResult
 
 interface ClosetRepository {
@@ -17,4 +18,5 @@ interface ClosetRepository {
     suspend fun getCloth(id: String) : NetworkResult<Cloth>
     suspend fun deleteCloth(id: String) : NetworkResult<Unit>
     suspend fun getClothAnalysis(image: String) : NetworkResult<ClothAnalysis>
+    suspend fun getClothCareCourse(material: String) : NetworkResult<ClothCareCourse>
 }

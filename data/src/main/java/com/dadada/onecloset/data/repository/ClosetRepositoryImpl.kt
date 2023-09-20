@@ -12,6 +12,7 @@ import com.dadada.onecloset.data.mapper.toDomain
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.domain.model.ClothAnalysis
+import com.dadada.onecloset.domain.model.ClothCareCourse
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.repository.ClosetRepository
 import com.google.gson.Gson
@@ -102,5 +103,9 @@ class ClosetRepositoryImpl @Inject constructor(
 
 
         return handleApi { closetService.putAnalysisImage(imagePart).toDomain() }
+    }
+
+    override suspend fun getClothCareCourse(material: String): NetworkResult<ClothCareCourse> {
+        return handleApi { closetService.getClothCareCourse(material).toDomain() }
     }
 }

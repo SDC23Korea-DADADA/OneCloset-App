@@ -5,17 +5,19 @@ import androidx.lifecycle.viewModelScope
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.domain.model.ClothAnalysis
+import com.dadada.onecloset.domain.model.ClothCareCourse
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.usecase.closet.DeleteClosetUseCase
 import com.dadada.onecloset.domain.usecase.closet.GetClosetListUseCase
-import com.dadada.onecloset.domain.usecase.cloth.GetClothListUseCase
-import com.dadada.onecloset.domain.usecase.cloth.GetClothUseCase
 import com.dadada.onecloset.domain.usecase.closet.PutClosetUseCase
-import com.dadada.onecloset.domain.usecase.cloth.PutClothUseCase
 import com.dadada.onecloset.domain.usecase.closet.UpdateClosetUseCase
 import com.dadada.onecloset.domain.usecase.cloth.DeleteClothUseCase
 import com.dadada.onecloset.domain.usecase.cloth.GetBasicClothListUscCase
 import com.dadada.onecloset.domain.usecase.cloth.GetClothAnalysisUseCase
+import com.dadada.onecloset.domain.usecase.cloth.GetClothCareCourseUseCase
+import com.dadada.onecloset.domain.usecase.cloth.GetClothListUseCase
+import com.dadada.onecloset.domain.usecase.cloth.GetClothUseCase
+import com.dadada.onecloset.domain.usecase.cloth.PutClothUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,7 +35,8 @@ class ClosetViewModel @Inject constructor(
     private val getClothUseCase: GetClothUseCase,
     private val putClothUseCase: PutClothUseCase,
     private val deleteClothUseCase: DeleteClothUseCase,
-    private val putClothAnalysisUseCase: GetClothAnalysisUseCase
+    private val putClothAnalysisUseCase: GetClothAnalysisUseCase,
+    private val getClothCareCourseUseCase: GetClothCareCourseUseCase
 ) : ViewModel() {
     private val _closetListState = MutableStateFlow<NetworkResult<List<Closet>>>(NetworkResult.Idle)
     val closetListState = _closetListState.asStateFlow()
@@ -53,8 +56,13 @@ class ClosetViewModel @Inject constructor(
     private val _clothDeleteState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val clothDeleteState = _clothDeleteState.asStateFlow()
 
-    private val _clothAnalysisState = MutableStateFlow<NetworkResult<ClothAnalysis>>(NetworkResult.Idle)
+    private val _clothAnalysisState =
+        MutableStateFlow<NetworkResult<ClothAnalysis>>(NetworkResult.Idle)
     val clothAnalysisState = _clothAnalysisState.asStateFlow()
+
+    private val _clothCareCourseState =
+        MutableStateFlow<NetworkResult<ClothCareCourse>>(NetworkResult.Idle)
+    val clothCareCourseState = _clothCareCourseState.asStateFlow()
 
     private lateinit var selectedClosetId: String
     var cloth: Cloth = Cloth()
@@ -62,7 +70,6 @@ class ClosetViewModel @Inject constructor(
     fun getClosetList() = viewModelScope.launch {
         _closetListState.value = NetworkResult.Loading
         _closetListState.emit(getClosetListUseCase.invoke())
-        _clothListState.value = NetworkResult.Idle
     }
 
     fun putCloset(closet: Closet) = viewModelScope.launch {
@@ -89,6 +96,7 @@ class ClosetViewModel @Inject constructor(
     }
 
     fun getCloth(clothId: String) = viewModelScope.launch {
+        _clothState.value = NetworkResult.Loading
         _clothState.emit(getClothUseCase.invoke(clothId))
     }
 
@@ -100,6 +108,7 @@ class ClosetViewModel @Inject constructor(
     fun deleteCloth(id: String) = viewModelScope.launch {
         _clothDeleteState.value = NetworkResult.Loading
         _clothDeleteState.emit(deleteClothUseCase.invoke(id))
+        _clothDeleteState.value = NetworkResult.Idle
     }
 
     fun setSelectedId(id: String) {
@@ -110,4 +119,21 @@ class ClosetViewModel @Inject constructor(
         _clothAnalysisState.value = NetworkResult.Loading
         _clothAnalysisState.emit(putClothAnalysisUseCase.invoke(image))
     }
+
+    fun getClothCare() = viewModelScope.launch {
+        _clothCareCourseState.value = NetworkResult.Loading
+        _clothCareCourseState.emit(getClothCareCourseUseCase.invoke(cloth.material))
+    }
+
+    fun resetNetworkStates() {
+        _closetListState.value = NetworkResult.Idle
+        _clothListState.value = NetworkResult.Idle
+        _networkResultState.value = NetworkResult.Idle
+        _clothState.value = NetworkResult.Idle
+        _clothRegisterIdState.value = NetworkResult.Idle
+        _clothDeleteState.value = NetworkResult.Idle
+        _clothAnalysisState.value = NetworkResult.Idle
+        _clothCareCourseState.value = NetworkResult.Idle
+    }
+
 }

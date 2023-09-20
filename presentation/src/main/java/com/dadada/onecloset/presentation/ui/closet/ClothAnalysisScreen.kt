@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
 import com.dadada.onecloset.presentation.ui.utils.Material
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.Type
 import com.dadada.onecloset.presentation.ui.utils.colorToHexString
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
@@ -40,6 +42,15 @@ import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 private const val TAG = "ClothAnalysisScreen"
 @Composable
 fun ClothAnalysisScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
+    val clothCareCourseState by closetViewModel.clothCareCourseState.collectAsState()
+    NetworkResultHandler(state = clothCareCourseState) {
+        closetViewModel.cloth.laundry = it.laundry
+        closetViewModel.cloth.dryer = it.dryer
+        closetViewModel.cloth.airDressor = it.airDresser
+        closetViewModel.resetNetworkStates()
+        navHostController.navigate(NavigationItem.ClothCourseNav.route)
+    }
+
     Column(
         modifier = screenModifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -60,7 +71,7 @@ fun ClothAnalysisScreen(navHostController: NavHostController, closetViewModel: C
         )
         Spacer(modifier = Modifier.weight(1f))
         RowWithTwoButtons(left = "다시하기", right = "추천받기", onClickLeft = { /*TODO*/ }) {
-            navHostController.navigate(NavigationItem.ClothCourseNav.route)
+            closetViewModel.getClothCare()
         }
     }
 }
@@ -78,18 +89,21 @@ fun ClothCreateInputView(cloth: Cloth) {
     if (showType.value) {
         SelectTypeBottomSheet(show = showType, type) {
             type = it
+            cloth.type = it
         }
     }
 
     if (showMaterial.value) {
         SelectMaterialBottomSheet(show = showMaterial, curMaterial = material) {
             material = it
+            cloth.material = it
         }
     }
 
     if (showColor.value) {
         SelectColorBottomSheet(show = showColor, curColor = colorCode) {
             colorCode = it
+            cloth.colorCode = it
         }
     }
 
