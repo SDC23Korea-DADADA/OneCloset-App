@@ -31,6 +31,9 @@ interface ClosetService {
     @DELETE("api/closet/{id}")
     suspend fun deleteCloset(@Path(value = "id") id: String) : ServerResponse
 
+    @GET("api/clothes/list")
+    suspend fun getBasicClothList() : ClothListResponse
+
     @GET("api/clothes/list/{id}")
     suspend fun getClothList(@Path(value = "id") id: String) : ClothListResponse
 

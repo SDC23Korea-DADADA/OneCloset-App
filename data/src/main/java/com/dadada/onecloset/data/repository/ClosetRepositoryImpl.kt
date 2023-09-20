@@ -42,6 +42,11 @@ class ClosetRepositoryImpl @Inject constructor(
         return handleApi { closetService.deleteCloset(id) }
     }
 
+    override suspend fun getBasicClothList(): NetworkResult<List<Cloth>> {
+        return handleApi { closetService.getBasicClothList().toDomain() }
+    }
+
+
     override suspend fun getClothList(id: String): NetworkResult<List<Cloth>> {
         return handleApi { closetService.getClothList(id).toDomain() }
     }

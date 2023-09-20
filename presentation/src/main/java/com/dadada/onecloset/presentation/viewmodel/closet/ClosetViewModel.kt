@@ -13,6 +13,7 @@ import com.dadada.onecloset.domain.usecase.closet.PutClosetUseCase
 import com.dadada.onecloset.domain.usecase.cloth.PutClothUseCase
 import com.dadada.onecloset.domain.usecase.closet.UpdateClosetUseCase
 import com.dadada.onecloset.domain.usecase.cloth.DeleteClothUseCase
+import com.dadada.onecloset.domain.usecase.cloth.GetBasicClothListUscCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +26,7 @@ class ClosetViewModel @Inject constructor(
     private val putClosetUseCase: PutClosetUseCase,
     private val deleteClosetUseCase: DeleteClosetUseCase,
     private val updateClosetUseCase: UpdateClosetUseCase,
+    private val getBasicClothListUscCase: GetBasicClothListUscCase,
     private val getClothListUseCase: GetClothListUseCase,
     private val getClothUseCase: GetClothUseCase,
     private val putClothUseCase: PutClothUseCase,
@@ -58,7 +60,6 @@ class ClosetViewModel @Inject constructor(
         _clothListState.value = NetworkResult.Idle
     }
 
-    private val TAG = "ClosetViewModel"
     fun putCloset(closet: Closet) = viewModelScope.launch {
         _networkResultState.value = NetworkResult.Loading
         _networkResultState.emit(putClosetUseCase.invoke(closet))
@@ -70,6 +71,11 @@ class ClosetViewModel @Inject constructor(
 
     fun deleteCloset(id: String) = viewModelScope.launch {
         _networkResultState.emit(deleteClosetUseCase.invoke(id))
+    }
+
+    fun getBasicClothList() = viewModelScope.launch {
+        _clothListState.value = NetworkResult.Loading
+        _clothListState.emit(getBasicClothListUscCase.invoke())
     }
 
     fun getClothList() = viewModelScope.launch {

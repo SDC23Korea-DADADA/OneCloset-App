@@ -47,6 +47,11 @@ sealed class Type(val id: Int, val category: String, val name: String) {
             val allTypes = getAllTypes()
             return allTypes.filter { it.category == category }
         }
+
+        fun getCategory(name: String) {
+
+        }
+
     }
 }
 

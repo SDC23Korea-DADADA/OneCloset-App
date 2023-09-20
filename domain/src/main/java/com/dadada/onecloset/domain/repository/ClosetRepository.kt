@@ -10,6 +10,7 @@ interface ClosetRepository {
     suspend fun updateCloset(closet: Closet): NetworkResult<Unit>
     suspend fun deleteCloset(id: String): NetworkResult<Unit>
 
+    suspend fun getBasicClothList() : NetworkResult<List<Cloth>>
     suspend fun getClothList(id: String) : NetworkResult<List<Cloth>>
     suspend fun putCloth(cloth: Cloth) : NetworkResult<Long>
     suspend fun getCloth(id: String) : NetworkResult<Cloth>
