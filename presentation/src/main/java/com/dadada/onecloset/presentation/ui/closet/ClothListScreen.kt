@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.closet
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -29,6 +30,7 @@ private const val TAG = "ClothListScreen"
 fun ClothListScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<Cloth>()) }
+    var allClothList by remember { mutableStateOf(listOf<Cloth>()) }
 
     LaunchedEffect(Unit) {
         closetViewModel.getClothList()
@@ -36,6 +38,8 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
 
     NetworkResultHandler(state = clothListState) {
         clothList = it
+        allClothList = it
+        Log.d(TAG, "ClothListScreen: $allClothList")
     }
 
     var showSelectPhotoBottomSheet by remember { mutableStateOf(false) }
@@ -49,7 +53,7 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
         }
     }
 
-
+    Log.d(TAG, "ClothListScreen: $clothList")
 
     Scaffold(
         modifier = Modifier
@@ -68,6 +72,13 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             clothItems = clothList,
             onClick = {
                 navHostController.navigate("${NavigationItem.ClothNav.route}/${clothList[it].clothesId}")
+            },
+            onClickTab = { upperType ->
+                clothList = if (upperType == "전체") {
+                    allClothList
+                } else {
+                    allClothList.filter { it.upperType == upperType }
+                }
             }
         )
     }
