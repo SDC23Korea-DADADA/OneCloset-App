@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.closet
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
+private const val TAG = "ClothCourseScreen"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
@@ -89,6 +91,7 @@ fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: Clo
             Spacer(modifier = Modifier.weight(1f))
             Column() {
                 list.forEachIndexed { index, s ->
+                    Log.d(TAG, "ClothCourseScreen: $contentList")
                     RoundedSquare(title = s, content = contentList[index])
                     Spacer(modifier = Modifier.size(12.dp))
                 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.domain.model.ClothAnalysis
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.usecase.closet.DeleteClosetUseCase
 import com.dadada.onecloset.domain.usecase.closet.GetClosetListUseCase
@@ -14,6 +15,7 @@ import com.dadada.onecloset.domain.usecase.cloth.PutClothUseCase
 import com.dadada.onecloset.domain.usecase.closet.UpdateClosetUseCase
 import com.dadada.onecloset.domain.usecase.cloth.DeleteClothUseCase
 import com.dadada.onecloset.domain.usecase.cloth.GetBasicClothListUscCase
+import com.dadada.onecloset.domain.usecase.cloth.GetClothAnalysisUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,7 +32,8 @@ class ClosetViewModel @Inject constructor(
     private val getClothListUseCase: GetClothListUseCase,
     private val getClothUseCase: GetClothUseCase,
     private val putClothUseCase: PutClothUseCase,
-    private val deleteClothUseCase: DeleteClothUseCase
+    private val deleteClothUseCase: DeleteClothUseCase,
+    private val putClothAnalysisUseCase: GetClothAnalysisUseCase
 ) : ViewModel() {
     private val _closetListState = MutableStateFlow<NetworkResult<List<Closet>>>(NetworkResult.Idle)
     val closetListState = _closetListState.asStateFlow()
@@ -50,6 +53,8 @@ class ClosetViewModel @Inject constructor(
     private val _clothDeleteState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val clothDeleteState = _clothDeleteState.asStateFlow()
 
+    private val _clothAnalysisState = MutableStateFlow<NetworkResult<ClothAnalysis>>(NetworkResult.Idle)
+    val clothAnalysisState = _clothAnalysisState.asStateFlow()
 
     private lateinit var selectedClosetId: String
     var cloth: Cloth = Cloth()
@@ -99,5 +104,10 @@ class ClosetViewModel @Inject constructor(
 
     fun setSelectedId(id: String) {
         selectedClosetId = id
+    }
+
+    fun putClothAnalysis(image: String) = viewModelScope.launch {
+        _clothAnalysisState.value = NetworkResult.Loading
+        _clothAnalysisState.emit(putClothAnalysisUseCase.invoke(image))
     }
 }

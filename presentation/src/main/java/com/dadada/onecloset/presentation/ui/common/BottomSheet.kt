@@ -154,7 +154,7 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: MutableState<Type>) {
+fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var chipIdx by remember {
@@ -202,7 +202,7 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: MutableState<Typ
                     CustomListItem(
                         content = list[it].name,
                         onClick = {
-                            curType.value = list[it]
+                            onClick(list[it].name)
                             show.value = !show.value
                         }
                     )
@@ -214,7 +214,7 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: MutableState<Typ
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectMaterialBottomSheet(show: MutableState<Boolean>, curMaterial: MutableState<Material>) {
+fun SelectMaterialBottomSheet(show: MutableState<Boolean>, curMaterial: String, onClick: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val list = Material.getAllMaterial()
@@ -244,7 +244,7 @@ fun SelectMaterialBottomSheet(show: MutableState<Boolean>, curMaterial: MutableS
                     CustomListItem(
                         content = list[it].name,
                         onClick = {
-                            curMaterial.value = list[it]
+                            onClick(list[it].name)
                             show.value = !show.value
                         }
                     )
@@ -256,7 +256,7 @@ fun SelectMaterialBottomSheet(show: MutableState<Boolean>, curMaterial: MutableS
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: MutableState<ClothColor>) {
+fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: String, onClick: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val list = ClothColor.getAllColor()
@@ -291,7 +291,7 @@ fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: MutableState<C
                         .background(list[it].color)
                         .border(1.dp, Color.Black, CircleShape)
                         .clickable {
-                            curColor.value = list[it]
+                            onClick(colorToHexString(list[it].color))
                             show.value = !show.value
                         }
                     )
