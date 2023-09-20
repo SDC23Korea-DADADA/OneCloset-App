@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -29,30 +38,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.common.ChipEditRow
 import com.dadada.onecloset.presentation.ui.common.ClothInformRow
-import com.dadada.onecloset.presentation.ui.common.ColorEditRow
 import com.dadada.onecloset.presentation.ui.common.ColorInformRow
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
-import com.dadada.onecloset.presentation.ui.common.DropDownRow
+import com.dadada.onecloset.presentation.ui.common.DropDownMenu
 import com.dadada.onecloset.presentation.ui.common.RoundedSquare
-import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconItem
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconWithTitleItem
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
-import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.ui.utils.iconHandler
-import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 
 @Composable
@@ -153,7 +157,7 @@ fun ClosetListView(
                     title = closetList[it].name,
                     icon = iconHandler(closetList[it].icon),
                     backGroundTint = hexStringToColor(closetList[it].colorCode),
-                    onClick = { onClick(it) }
+                    onClick = { onClick(closetList[it].closetId) }
                 )
             }
         }
@@ -205,4 +209,42 @@ fun ClothInputAdditionalInformDialogView() {
             Text(text = "계절")
         }
     }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ClothHeader(
+    navController: NavHostController,
+    onClickEdit: () -> Unit,
+    onClickDelete: () -> Unit
+) {
+    var expandDropDown by remember {
+        mutableStateOf(false)
+    }
+
+    TopAppBar(
+        modifier = Modifier.padding(vertical = 8.dp),
+        title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = "back")
+            }
+        },
+        actions = {
+            Box {
+                IconButton(onClick = {
+                    expandDropDown = !expandDropDown
+                }) {
+                    Icon(Icons.Filled.MoreVert, contentDescription = "more options")
+                }
+                if(expandDropDown) {
+                    DropDownMenu(modifier = roundedSquareMediumModifier, expanded = expandDropDown, onClickEdit = onClickEdit, onClickDelete = onClickDelete) {
+                        expandDropDown = !expandDropDown
+                    }
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+    )
 }

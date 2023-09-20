@@ -120,7 +120,7 @@ fun ClosetScreen(
             ClosetListView(
                 closetList = closetList,
             ) {
-                closetViewModel.setSelectedId(closetList[it].closetId.toString())
+                closetViewModel.setSelectedId(it.toString())
                 navHostController.navigate(NavigationItem.ClosetDetailNav.route)
             }
         }

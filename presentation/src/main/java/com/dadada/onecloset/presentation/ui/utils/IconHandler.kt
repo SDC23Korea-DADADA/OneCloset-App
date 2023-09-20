@@ -16,5 +16,5 @@ fun hexStringToColor(hex: String): Color {
 }
 
 fun colorToHexString(color: Color): String {
-    return "${Integer.toHexString(color.toArgb())}"
+    return "#${Integer.toHexString(color.toArgb())}"
 }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -98,7 +99,7 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
         actions = {
             if (currentRoute == MainTabNav.route) {
                 IconButton(onClick = { navController.navigate(AccountNav.route) }) {
-                    Icon(Icons.Filled.AccountCircle, contentDescription = "account")
+                    Icon(Icons.Filled.AccountCircle, contentDescription = "")
                 }
             }
         },
@@ -146,9 +147,11 @@ fun MainNavigationScreen(
         composable(route = ClothCourseNav.route) {
             ClothCourseScreen(navController, closetViewModel = closetViewModel)
         }
-        composable(route = ClothNav.route) {
-            val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }
-            ClothScreen(navHostController = navController, closetViewModel = hiltViewModel(parentEntry))
+        composable(route = "${ClothNav.route}/{clothId}") {
+            val clothId = it.arguments?.getString("clothId")
+            if (clothId != null) {
+                ClothScreen(navHostController = navController, clothId = clothId)
+            }
         }
         composable(route = AccountNav.route) {
             MyPageScreen()

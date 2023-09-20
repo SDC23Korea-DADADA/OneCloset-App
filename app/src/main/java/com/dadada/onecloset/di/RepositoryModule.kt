@@ -1,6 +1,7 @@
 package com.dadada.onecloset.di
 
 import android.content.ContentResolver
+import android.content.Context
 import com.dadada.onecloset.data.datasource.local.PreferenceDataSource
 import com.dadada.onecloset.data.datasource.remote.AccountService
 import com.dadada.onecloset.data.datasource.remote.ClosetService
@@ -11,6 +12,7 @@ import com.dadada.onecloset.domain.repository.ClosetRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -34,9 +36,11 @@ object RepositoryModule {
     @Singleton
     fun provideClosetRepository(
         closetService: ClosetService,
+        @ApplicationContext context: Context
     ): ClosetRepository {
         return ClosetRepositoryImpl(
-            closetService = closetService
+            closetService = closetService,
+            context = context
         )
     }
 }

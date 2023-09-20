@@ -12,12 +12,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.SelectClosetBottomSheet
 import com.dadada.onecloset.presentation.ui.common.RoundedSquare
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
@@ -26,6 +29,7 @@ import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
@@ -46,6 +50,13 @@ fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: Clo
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
+    val clothRegisterIdState by closetViewModel.clothRegisterIdState.collectAsState()
+    NetworkResultHandler(state = clothRegisterIdState) {
+        navHostController.navigate("${NavigationItem.ClothNav.route}/${it}") {
+            popUpTo(NavigationItem.GalleryNav.route) { inclusive = true }
+        }
+    }
+
     if (sheetState.isVisible) {
         SelectClosetBottomSheet(
             sheetState = sheetState,
@@ -56,6 +67,7 @@ fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: Clo
             }
         )
     }
+
 
     Box(
         modifier = screenModifier,

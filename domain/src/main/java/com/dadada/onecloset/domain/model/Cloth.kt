@@ -6,7 +6,7 @@ data class Cloth(
     val clothesId: Int = -1,
     val color: String = "",
     var colorCode: String = "",
-    val description: String = "",
+    val description: String = "1",
     var dryer: String = "",
     val hashtagList: List<String> = listOf(),
     var img: String = "",

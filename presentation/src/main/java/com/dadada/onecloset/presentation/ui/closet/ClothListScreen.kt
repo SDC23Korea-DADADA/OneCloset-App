@@ -64,9 +64,8 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             paddingValues = it,
             navHostController = navHostController,
             clothItems = clothList,
-            onClick = { id ->
-                closetViewModel.setSelectedClothId(id.toString())
-                navHostController.navigate(NavigationItem.ClothNav.route)
+            onClick = {
+                navHostController.navigate("${NavigationItem.ClothNav.route}/${it}")
             }
         )
     }

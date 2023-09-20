@@ -1,18 +1,19 @@
 package com.dadada.onecloset.data.repository
 
-import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import androidx.core.net.toUri
 import com.dadada.onecloset.data.datasource.remote.ClosetService
 import com.dadada.onecloset.data.datasource.remote.handleApi
+import com.dadada.onecloset.data.mapper.Converter
 import com.dadada.onecloset.data.mapper.toDomain
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.repository.ClosetRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -23,6 +24,7 @@ private const val TAG = "ClosetRepositoryImpl"
 
 class ClosetRepositoryImpl @Inject constructor(
     private val closetService: ClosetService,
+    private val context: Context
 ) : ClosetRepository {
     override suspend fun getClosetList(): NetworkResult<List<Closet>> {
         return handleApi { closetService.getClosetList().toDomain() }
@@ -44,30 +46,46 @@ class ClosetRepositoryImpl @Inject constructor(
         return handleApi { closetService.getClothList(id).toDomain() }
     }
 
-    override suspend fun putCloth(cloth: Cloth): NetworkResult<Unit> {
-//        val inputStream = context.contentResolver.openInputStream(cloth.img.toUri())
-//        val bitmap = BitmapFactory.decodeStream(inputStream)
-//        val baos = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//        val byteArray = baos.toByteArray()
+    override suspend fun putCloth(cloth: Cloth): NetworkResult<Long> {
+        val inputStream = context.contentResolver.openInputStream(Uri.parse(cloth.img))
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos)
+        val byteArray = baos.toByteArray()
+
+        val descriptionRequestBody = MultipartBody.Part.createFormData("description", cloth.description)
+        val colorCodeRequestBody = MultipartBody.Part.createFormData("colorCode", cloth.colorCode)
+        val materialRequestBody = MultipartBody.Part.createFormData("material", cloth.material)
+        val typeRequestBody = MultipartBody.Part.createFormData("type", cloth.type)
+        val closetIdRequestBody = MultipartBody.Part.createFormData("closetId", cloth.closetId)
 
 
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("laundry", cloth.laundry)
-            .addFormDataPart("dryer", cloth.dryer)
-            .addFormDataPart("airDressor", cloth.airDressor)
-            .addFormDataPart("colorCode", cloth.colorCode)
-            .addFormDataPart("material", cloth.material)
-            .addFormDataPart("type", cloth.type)
-            .addFormDataPart("closetId", cloth.closetId.toString()) // 숫자를 문자열로 변환
-//            .addFormDataPart("img", "filename.jpg",
-//                RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)) // 이미지 추가
-            .build()
-        return handleApi { closetService.putCloth(requestBody) }
+        val requestFile = Converter.createMultipartBodyPartOnePhoto(Converter.getRealPathFromUriOrNull(context, cloth.img.toUri())!!)
+
+        val imageRequestBody = RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)
+        val imagePart = MultipartBody.Part.createFormData("image", "filename.jpg", imageRequestBody)
+
+        val parts = MultipartBody.Part.createFormData("hashtagList", "")
+
+        val parts2 = MultipartBody.Part.createFormData("weatherList", "")
+
+        val parts3 = MultipartBody.Part.createFormData("tpoList", "")
+
+
+
+        return handleApi {
+            closetService.putCloth(
+                imagePart, typeRequestBody, colorCodeRequestBody, materialRequestBody, descriptionRequestBody,
+                parts, parts2, parts3, closetIdRequestBody
+            ).toDomain()
+        }
     }
 
     override suspend fun getCloth(id: String): NetworkResult<Cloth> {
         return handleApi { closetService.getCloth(id).toDomain() }
+    }
+
+    override suspend fun deleteCloth(id: String): NetworkResult<Unit> {
+        return handleApi { closetService.deleteCloth(id) }
     }
 }

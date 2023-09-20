@@ -1,5 +1,11 @@
 package com.dadada.onecloset.presentation.ui
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.dadada.onecloset.presentation.R
+
 sealed class NavigationItem(override val route: String, override val title: String) : Destination {
     object LogInNav: Destination {
         override val route: String = NavigationRouteName.LOGIN
@@ -83,8 +89,16 @@ sealed class NavigationItem(override val route: String, override val title: Stri
     companion object {
         fun isNoToolbar(route: String?) : Boolean {
             return when(route) {
-                CameraNav.route, GalleryNav.route, LogInNav.route -> true
+                CameraNav.route, GalleryNav.route, LogInNav.route, "${ClothNav.route}/{clothId}" -> true
                 else -> false
+            }
+        }
+
+        fun getToolbarIcon(route: String?) : ImageVector? {
+            return when(route) {
+                ClothNav.route -> Icons.Default.MoreVert
+                MainTabNav.route -> Icons.Default.AccountCircle
+                else -> null
             }
         }
     }

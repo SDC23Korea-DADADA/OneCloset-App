@@ -36,7 +36,6 @@ import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 private const val TAG = "ClothAnalysisScreen"
 @Composable
 fun ClothAnalysisScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
-    Log.d(TAG, "ClothAnalysisScreen: ${closetViewModel.cloth}")
     closetViewModel.cloth.material = Material.Denim.name
     closetViewModel.cloth.type = Type.Blouse.name
     closetViewModel.cloth.colorCode = colorToHexString(ClothColor.Black.color)

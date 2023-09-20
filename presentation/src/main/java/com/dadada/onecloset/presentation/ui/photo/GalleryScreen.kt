@@ -132,6 +132,7 @@ fun GalleryHeader(
                 onClick = {
                     val encodedUri = Uri.encode(pagingPhotos[isCheckedIdx.value]?.uri.toString())
                     closetViewModel.cloth.img = pagingPhotos[isCheckedIdx.value]?.uri.toString()
+                    Log.d(TAG, "GalleryHeader: ${pagingPhotos[isCheckedIdx.value]?.uri}")
                     navController.navigate(NavigationItem.ClothAnalysisNav.route)
                 }) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
