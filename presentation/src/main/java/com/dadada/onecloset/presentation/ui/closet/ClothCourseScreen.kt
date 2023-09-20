@@ -33,25 +33,24 @@ import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
+private const val TAG = "ClothCourseScreen"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
     val list = listOf("세탁", "건조", "에어드레서")
     val contentList = listOf(
-        "울 소재의 옷은 울 전용 세제를 넣어 울 전용 코스를 이용해보세요!",
-        "울 소재의 옷은 울 전용 세제를 넣어 울 전용 코스를 이용해보세요!",
-        "울 소재의 옷은 울 전용 세제를 넣어 울 전용 코스를 이용해보세요!"
+        closetViewModel.cloth.laundry,
+        closetViewModel.cloth.dryer,
+        closetViewModel.cloth.airDressor
     )
-
-    closetViewModel.cloth.laundry = contentList[0]
-    closetViewModel.cloth.dryer = contentList[1]
-    closetViewModel.cloth.airDressor = contentList[2]
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     val clothRegisterIdState by closetViewModel.clothRegisterIdState.collectAsState()
     NetworkResultHandler(state = clothRegisterIdState) {
+        closetViewModel.resetNetworkStates()
         navHostController.navigate("${NavigationItem.ClothNav.route}/${it}") {
             popUpTo(NavigationItem.GalleryNav.route) { inclusive = true }
         }
@@ -102,7 +101,7 @@ fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: Clo
             left = "취소",
             right = "등록하기",
             onClickLeft = { /*TODO*/ }) {
-                scope.launch { sheetState.show() }
+            scope.launch { sheetState.show() }
         }
     }
 }

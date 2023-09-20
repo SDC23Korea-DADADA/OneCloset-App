@@ -11,6 +11,8 @@ import com.dadada.onecloset.data.mapper.Converter
 import com.dadada.onecloset.data.mapper.toDomain
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.domain.model.ClothAnalysis
+import com.dadada.onecloset.domain.model.ClothCareCourse
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.repository.ClosetRepository
 import com.google.gson.Gson
@@ -55,7 +57,7 @@ class ClosetRepositoryImpl @Inject constructor(
         val inputStream = context.contentResolver.openInputStream(Uri.parse(cloth.img))
         val bitmap = BitmapFactory.decodeStream(inputStream)
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
         val byteArray = baos.toByteArray()
 
         val descriptionRequestBody = MultipartBody.Part.createFormData("description", cloth.description)
@@ -63,17 +65,12 @@ class ClosetRepositoryImpl @Inject constructor(
         val materialRequestBody = MultipartBody.Part.createFormData("material", cloth.material)
         val typeRequestBody = MultipartBody.Part.createFormData("type", cloth.type)
         val closetIdRequestBody = MultipartBody.Part.createFormData("closetId", cloth.closetId)
-
-
-        val requestFile = Converter.createMultipartBodyPartOnePhoto(Converter.getRealPathFromUriOrNull(context, cloth.img.toUri())!!)
-
         val imageRequestBody = RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)
         val imagePart = MultipartBody.Part.createFormData("image", "filename.jpg", imageRequestBody)
 
+
         val parts = MultipartBody.Part.createFormData("hashtagList", "")
-
         val parts2 = MultipartBody.Part.createFormData("weatherList", "")
-
         val parts3 = MultipartBody.Part.createFormData("tpoList", "")
 
 
@@ -92,5 +89,23 @@ class ClosetRepositoryImpl @Inject constructor(
 
     override suspend fun deleteCloth(id: String): NetworkResult<Unit> {
         return handleApi { closetService.deleteCloth(id) }
+    }
+
+    override suspend fun getClothAnalysis(image: String): NetworkResult<ClothAnalysis> {
+        val inputStream = context.contentResolver.openInputStream(Uri.parse(image))
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+        val byteArray = baos.toByteArray()
+
+        val imageRequestBody = RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)
+        val imagePart = MultipartBody.Part.createFormData("image", "filename.jpg", imageRequestBody)
+
+
+        return handleApi { closetService.putAnalysisImage(imagePart).toDomain() }
+    }
+
+    override suspend fun getClothCareCourse(material: String): NetworkResult<ClothCareCourse> {
+        return handleApi { closetService.getClothCareCourse(material).toDomain() }
     }
 }

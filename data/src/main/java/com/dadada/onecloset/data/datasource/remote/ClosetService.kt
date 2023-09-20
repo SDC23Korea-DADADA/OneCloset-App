@@ -2,6 +2,8 @@ package com.dadada.onecloset.data.datasource.remote
 
 import com.dadada.onecloset.data.model.ServerResponse
 import com.dadada.onecloset.data.model.closet.response.ClosetListResponse
+import com.dadada.onecloset.data.model.closet.response.ClothAnalysisResponse
+import com.dadada.onecloset.data.model.closet.response.ClothCareCourseResponse
 import com.dadada.onecloset.data.model.closet.response.ClothListResponse
 import com.dadada.onecloset.data.model.closet.response.ClothRegisterResponse
 import com.dadada.onecloset.data.model.closet.response.ClothResponse
@@ -58,5 +60,10 @@ interface ClosetService {
     @DELETE("api/clothes/{id}")
     suspend fun deleteCloth(@Path(value = "id") id: String) : ServerResponse
 
+    @Multipart
+    @POST("/api/clothes/info")
+    suspend fun putAnalysisImage(@Part image: MultipartBody.Part) : ClothAnalysisResponse
 
+    @GET("/api/clothes/material/{material}")
+    suspend fun getClothCareCourse(@Path(value = "material") material: String) : ClothCareCourseResponse
 }
