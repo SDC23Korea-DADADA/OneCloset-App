@@ -17,5 +17,6 @@ data class Cloth(
     var type: String = "",
     val weatherList: List<String> = listOf(),
     val thumnailUrl: String = "",
-    var closetId: String = ""
+    var closetId: String = "",
+    var upperType: String = ""
 )

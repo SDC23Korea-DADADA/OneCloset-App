@@ -43,6 +43,8 @@ fun FittingScreen(
 ) {
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<Cloth>()) }
+    var allClothList by remember { mutableStateOf(listOf<Cloth>()) }
+
     var clickedState by remember { mutableStateOf(listOf<Boolean>()) }
     val emptyItemList: List<List<FittingEmptyItem>> = FittingEmptyItem.getList()
     var modeIdx by remember { mutableStateOf(0) }
@@ -74,6 +76,7 @@ fun FittingScreen(
 
     NetworkResultHandler(state = clothListState) {
         clothList = it
+        allClothList = it
         clickedState = List(clothList.size) { false }
     }
 
@@ -105,7 +108,14 @@ fun FittingScreen(
                 clothItems = clothList,
                 icon = R.drawable.ic_checked,
                 itemClickedStateList = clickedState,
-                onClick = handleItemClick
+                onClick = handleItemClick,
+                onClickTab = { upperType ->
+                    clothList = if (upperType == "전체") {
+                        allClothList
+                    } else {
+                        allClothList.filter { it.upperType == upperType }
+                    }
+                }
             )
         }
 
