@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.theme.Gray
+import com.dadada.onecloset.presentation.ui.theme.Paddings
 
 @Composable
 fun DropDownRow(component: @Composable () -> Unit, reverse: Boolean, onClick: () -> Unit) {
@@ -100,6 +101,51 @@ fun ColorEditRow(title: String, content: Color, reverse: MutableState<Boolean>) 
 }
 
 @Composable
+fun ColorInformRow(title: String, content: Color) {
+    Row(
+        modifier = screenModifier.padding(vertical = Paddings.small),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            modifier = Modifier.padding(start = Paddings.medium),
+            text = title,
+            style = Typography.titleMedium
+        )
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(36.dp)
+                .background(content)
+                .border(1.dp, content, CircleShape)
+        )
+    }
+}
+
+@Composable
+fun ClothInformRow(title: String, content: String) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            modifier = Modifier.padding(start = 8.dp),
+            text = title,
+            style = Typography.titleMedium
+        )
+        SuggestionChip(
+            onClick = { },
+            label = { Text(text = content, color = Color.White) },
+            colors = SuggestionChipDefaults.suggestionChipColors(containerColor = PrimaryBlack)
+        )
+    }
+}
+
+
+@Composable
 fun RowWithTwoButtons(
     modifier: Modifier = Modifier,
     left: String,
@@ -107,9 +153,11 @@ fun RowWithTwoButtons(
     onClickLeft: () -> Unit,
     onClickRight: () -> Unit
 ) {
-    Row(modifier = modifier
-        .fillMaxWidth()
-        .padding()) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding()
+    ) {
         Text(modifier = Modifier
             .clickable { onClickLeft() }
             .weight(1f)
@@ -123,6 +171,36 @@ fun RowWithTwoButtons(
             .padding(vertical = 12.dp),
             text = right,
             style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold),
+            textAlign = TextAlign.Center)
+    }
+}
+
+@Composable
+fun RowWithSmallTwoButtons(
+    modifier: Modifier = Modifier,
+    left: String,
+    right: String,
+    onClickLeft: () -> Unit,
+    onClickRight: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding()
+    ) {
+        Text(modifier = Modifier
+            .clickable { onClickLeft() }
+            .weight(1f)
+            .padding(vertical = 12.dp),
+            text = left,
+            fontWeight = FontWeight.ExtraBold,
+            textAlign = TextAlign.Center)
+        Text(modifier = Modifier
+            .clickable { onClickRight() }
+            .weight(1f)
+            .padding(vertical = 12.dp),
+            text = right,
+            fontWeight = FontWeight.ExtraBold,
             textAlign = TextAlign.Center)
     }
 }
@@ -156,7 +234,11 @@ fun LicenseRow(content: String, version: String) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = content)
-        Text(modifier = Modifier.padding(end = 4.dp), text = version, style = Typography.titleSmall.copy(Gray))
+        Text(
+            modifier = Modifier.padding(end = 4.dp),
+            text = version,
+            style = Typography.titleSmall.copy(Gray)
+        )
     }
 }
 

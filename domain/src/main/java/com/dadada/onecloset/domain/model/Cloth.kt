@@ -1,14 +1,21 @@
 package com.dadada.onecloset.domain.model
 
 data class Cloth(
-    val clothesId: String = "",
+    var airDressor: String = "",
+    val careTipList: List<Any> = listOf(),
+    val clothesId: Int = -1,
     val color: String = "",
-    val description: String = "",
-    val hashTag: List<String> = listOf(),
-    val material: String = "",
-    val thumbnailImg: String = "https://image.musinsa.com/images/prd_img/2022062010181200000020384.jpg",
-    val tpo: List<String> = listOf(),
-    val type: String = "",
-    val url: String = "",
-    val weather: List<String> = listOf()
+    var colorCode: String = "",
+    val description: String = "1",
+    var dryer: String = "",
+    val hashtagList: List<String> = listOf(),
+    var img: String = "",
+    var laundry: String = "",
+    val laundryTipList: List<Any> = listOf(),
+    var material: String = "",
+    val tpoList: List<String> = listOf(),
+    var type: String = "",
+    val weatherList: List<String> = listOf(),
+    val thumnailUrl: String = "",
+    var closetId: String = ""
 )

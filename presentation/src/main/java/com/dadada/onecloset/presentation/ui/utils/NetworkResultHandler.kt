@@ -17,15 +17,17 @@ fun <T> NetworkResultHandler(state: NetworkResult<T>, action: (data: T) -> Unit)
     if(isLoading) {
         GalaxyLoadingView()
     }
-    
+
     LaunchedEffect(state) {
-        Log.d(TAG, "NetworkResultHandler: $state")
-        if(state is NetworkResult.Idle) return@LaunchedEffect
+        Log.d(TAG, "NetworkResultHandler: ${state}")
         when (state) {
-            is NetworkResult.Error -> {} // Handle the error here.
-            NetworkResult.Idle -> {} // Handle the idle state here.
-            NetworkResult.Loading -> {isLoading = true}
-            is NetworkResult.Success -> action(state.data)
+            is NetworkResult.Error -> { } // Handle the error here.
+            NetworkResult.Idle -> { isLoading = false } // Handle the idle state here.
+            NetworkResult.Loading -> { isLoading = true }
+            is NetworkResult.Success -> {
+                isLoading = false
+                action(state.data)
+            }
         }
     }
 }

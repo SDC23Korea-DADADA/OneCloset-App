@@ -14,12 +14,12 @@ import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
 
 @Composable
 fun FittingSelectedClothListView(modifier: Modifier = Modifier) {
-    val list = listOf(Cloth(), Cloth(), Cloth())
+    val list = listOf<Cloth>()
     Row(modifier = modifier, horizontalArrangement = Arrangement.SpaceAround) {
         list.forEach {
             RoundedSquareImageItem(
                 modifier = roundedSquareMediumModifier.size(80.dp),
-                imageUri = it.url.toUri(),
+                imageUri = it.thumnailUrl.toUri(),
                 icon = R.drawable.ic_close
             ) {
 

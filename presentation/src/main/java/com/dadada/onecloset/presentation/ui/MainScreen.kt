@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,10 +23,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.dadada.onecloset.presentation.ui.account.LogInScreen
@@ -47,6 +50,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.dadada.onecloset.presentation.ui.NavigationItem.*
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 private const val TAG = "MainScreen"
 
@@ -95,7 +99,7 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
         actions = {
             if (currentRoute == MainTabNav.route) {
                 IconButton(onClick = { navController.navigate(AccountNav.route) }) {
-                    Icon(Icons.Filled.AccountCircle, contentDescription = "account")
+                    Icon(Icons.Filled.AccountCircle, contentDescription = "")
                 }
             }
         },
@@ -110,6 +114,7 @@ fun MainNavigationScreen(
     navController: NavHostController,
     startDestination: String
 ) {
+    val closetViewModel: ClosetViewModel = hiltViewModel()
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
@@ -129,28 +134,24 @@ fun MainNavigationScreen(
             CameraScreen()
         }
         composable(route = ClosetDetailNav.route) {
-            ClothListScreen(navHostController = navController)
+            val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }
+            ClothListScreen(navHostController = navController, closetViewModel = hiltViewModel(parentEntry))
         }
         composable(route = GalleryNav.route) {
-            GalleryScreen(navController)
+            GalleryScreen(navController, closetViewModel = closetViewModel)
         }
 
-        composable(route = "${ClothAnalysisNav.route}/{photoUri}") {
-            val uriArg = it.arguments?.getString("photoUri")
-            if (uriArg != null) {
-                val decodedUri = Uri.decode(uriArg)
-                ClothAnalysisScreen(navController, photoUri = decodedUri.toUri())
-            }
+        composable(route = ClothAnalysisNav.route) {
+            ClothAnalysisScreen(navController, closetViewModel = closetViewModel)
         }
-        composable(route = "${ClothCourseNav.route}/{photoUri}") {
-            val uriArg = it.arguments?.getString("photoUri")
-            if (uriArg != null) {
-                val decodedUri = Uri.decode(uriArg)
-                ClothCourseScreen(navController)
-            }
+        composable(route = ClothCourseNav.route) {
+            ClothCourseScreen(navController, closetViewModel = closetViewModel)
         }
-        composable(route = ClothNav.route) {
-            ClothScreen(navHostController = navController)
+        composable(route = "${ClothNav.route}/{clothId}") {
+            val clothId = it.arguments?.getString("clothId")
+            if (clothId != null) {
+                ClothScreen(navHostController = navController, clothId = clothId)
+            }
         }
         composable(route = AccountNav.route) {
             MyPageScreen()

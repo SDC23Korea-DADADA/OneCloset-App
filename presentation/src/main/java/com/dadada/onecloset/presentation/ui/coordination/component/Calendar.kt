@@ -34,7 +34,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.presentation.model.HorizontalCalendarConfig
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
@@ -183,7 +182,7 @@ fun CalendarDay(
                 .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            AsyncImage(model = Cloth().thumbnailImg, contentDescription = "", contentScale = ContentScale.Crop)
+            AsyncImage(model = "", contentDescription = "", contentScale = ContentScale.Crop)
         }
 
 

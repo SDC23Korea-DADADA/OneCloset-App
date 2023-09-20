@@ -73,7 +73,7 @@ fun LogInScreen(
                 it.gender,
                 it.nickName,
                 it.email,
-                it.type
+                it.social
             )
         )
         navHostController.navigate(NavigationItem.MainTabNav.route)

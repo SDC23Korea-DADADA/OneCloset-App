@@ -5,19 +5,10 @@ import com.dadada.onecloset.data.model.account.response.LogInResponse
 import com.dadada.onecloset.domain.model.AccountInfo
 import com.dadada.onecloset.domain.model.Token
 
-fun LogInResponse.toDomain(): Token{
-    return Token(
-        accessToken = data.accessToken,
-        refreshToken = data.refreshToken
-    )
+fun LogInResponse.toDomain(): Token {
+    return data
 }
 
-fun AccountResponse.toDomain() : AccountInfo {
-    return AccountInfo(
-        profileImage = data.profileImg,
-        gender = data.gender,
-        nickName = data.nickname,
-        email = data.email,
-        type = data.social
-    )
+fun AccountResponse.toDomain(): AccountInfo {
+    return data
 }

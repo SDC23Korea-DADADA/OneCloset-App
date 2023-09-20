@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -181,14 +182,13 @@ fun RoundedSquareImageItem(
     onClick: () -> Unit
 ) {
     Box(
-        modifier = modifier
+        modifier = roundedSquareSmallModifier
             .aspectRatio(1f)
-            .border(1.dp, Color.White)
             .clickable(onClick = onClick)
 
     ) {
         AsyncImage(
-            modifier = roundedSquareLargeModifier.align(Alignment.Center),
+            modifier = Modifier.fillMaxSize(),
             model = imageUri,
             contentDescription = "의류 사진",
             contentScale = ContentScale.Crop

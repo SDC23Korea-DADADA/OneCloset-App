@@ -1,24 +1,18 @@
 package com.dadada.onecloset.presentation.ui.closet
 
 import android.net.Uri
-import androidx.compose.foundation.background
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.ChipEditRow
@@ -29,23 +23,30 @@ import com.dadada.onecloset.presentation.ui.common.SelectColorBottomSheet
 import com.dadada.onecloset.presentation.ui.common.SelectMaterialBottomSheet
 import com.dadada.onecloset.presentation.ui.common.SelectTypeBottomSheet
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
 import com.dadada.onecloset.presentation.ui.utils.Material
 import com.dadada.onecloset.presentation.ui.utils.Type
+import com.dadada.onecloset.presentation.ui.utils.colorToHexString
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
+
+private const val TAG = "ClothAnalysisScreen"
 @Composable
-fun ClothAnalysisScreen(navHostController: NavHostController, photoUri: Uri) {
+fun ClothAnalysisScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
+    closetViewModel.cloth.material = Material.Denim.name
+    closetViewModel.cloth.type = Type.Blouse.name
+    closetViewModel.cloth.colorCode = colorToHexString(ClothColor.Black.color)
+
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
+        modifier = screenModifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         RoundedSquareImageItem(
             modifier = roundedSquareLargeModifier,
-            imageUri = photoUri,
+            imageUri = closetViewModel.cloth.img.toUri(),
             icon = null,
         ) {
 
@@ -58,14 +59,12 @@ fun ClothAnalysisScreen(navHostController: NavHostController, photoUri: Uri) {
             style = Typography.titleSmall.copy(color = Gray)
         )
         Spacer(modifier = Modifier.weight(1f))
-        RowWithTwoButtons(left = "다시하기", right = "다음", onClickLeft = { /*TODO*/ }) {
-            val encodedUri = Uri.encode(photoUri.toString())
-            navHostController.navigate(NavigationItem.ClothNav.route)
+        RowWithTwoButtons(left = "다시하기", right = "추천받기", onClickLeft = { /*TODO*/ }) {
+            navHostController.navigate(NavigationItem.ClothCourseNav.route)
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClothCreateInputView() {
     var showType = remember { mutableStateOf(false) }
@@ -90,12 +89,7 @@ fun ClothCreateInputView() {
     }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(26.dp))
-            .background(
-                Color.White
-            )
+        modifier = roundedSquareLargeModifier
     ) {
         Spacer(modifier = Modifier.size(12.dp))
         ChipEditRow("종류", type.value.name, reverse = showType)

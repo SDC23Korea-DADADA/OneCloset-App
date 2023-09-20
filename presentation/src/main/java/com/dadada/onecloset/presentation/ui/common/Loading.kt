@@ -74,7 +74,6 @@ fun GalaxyLoadingView(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Gray.copy(alpha = 0.7f)) // 회색 틴트 처리
             .zIndex(1f) // Z-index 설정, 1f 이상의 값이면 다른 오브젝트 위에 올라가게 됩니다.
     ) {
         Box(
