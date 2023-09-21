@@ -22,7 +22,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun FittingModelListBottomSheet(
     navHostController: NavHostController,
-    fittingViewModel: FittingViewModel
+    fittingViewModel: FittingViewModel,
+    onDismissRequest: () -> Unit
 ) {
     val modelListState by fittingViewModel.modelListState.collectAsState()
     var modelList by remember {
@@ -39,7 +40,10 @@ fun FittingModelListBottomSheet(
     val scope = rememberCoroutineScope()
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = { scope.launch { sheetState.hide() } },
+        onDismissRequest = {
+            scope.launch { sheetState.hide() }
+            onDismissRequest()
+        },
         containerColor = BackGround
     ) {
         ModelListView(navHostController, modelList, fittingViewModel)
