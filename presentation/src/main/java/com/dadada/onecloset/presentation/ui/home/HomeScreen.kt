@@ -39,8 +39,11 @@ fun HomeScreen(navHostController: NavHostController, fittingViewModel: FittingVi
     }
 
     var showBottomSheet by remember { mutableStateOf(false) }
-    if(showBottomSheet) {
-        FittingModelListBottomSheet(navHostController, fittingViewModel = fittingViewModel)
+    if (showBottomSheet) {
+        FittingModelListBottomSheet(
+            navHostController,
+            fittingViewModel = fittingViewModel,
+            onDismissRequest = { showBottomSheet = !showBottomSheet })
     }
 
 
