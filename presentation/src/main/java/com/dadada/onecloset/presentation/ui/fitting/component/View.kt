@@ -31,7 +31,7 @@ fun FittingSelectedClothListView(
     modifier: Modifier = Modifier,
     clothList: List<Cloth>,
     modeIdx: Int,
-    emptyItemList: List<List<FittingEmptyItem>>,
+    emptyItemList: List<FittingEmptyItem>,
     selectedItemList: List<Cloth>,
     onClickDropDown: (Int) -> Unit,
 ) {
@@ -71,8 +71,8 @@ fun FittingSelectedClothListView(
             selectedItemList.forEachIndexed { index, cloth ->
                 if (cloth.clothesId == -1) {
                     EmptyClothItem(
-                        icon = emptyItemList[modeIdx][index].icon,
-                        content = emptyItemList[modeIdx][index].content
+                        icon = emptyItemList[index].icon,
+                        content = emptyItemList[index].content
                     )
                 } else {
                     SelectClothItem(imageUri = cloth.thumnailUrl.toUri(), onClick = {})

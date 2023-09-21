@@ -16,18 +16,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
+import com.dadada.onecloset.presentation.ui.account.component.FittingModelListBottomSheet
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.home.component.HomeMainFeatureCard
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 private const val TAG = "HomeScreen"
 
 @Composable
-fun HomeScreen(navHostController: NavHostController) {
+fun HomeScreen(navHostController: NavHostController, fittingViewModel: FittingViewModel) {
     var clickCourse by remember { mutableStateOf(false) }
-
     if (clickCourse) {
         PermissionRequester(
             permission = Permissions.readExternalStoragePermission,
@@ -36,6 +37,12 @@ fun HomeScreen(navHostController: NavHostController) {
             clickCourse = !clickCourse
         }
     }
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+    if(showBottomSheet) {
+        FittingModelListBottomSheet(navHostController, fittingViewModel = fittingViewModel)
+    }
+
 
     Column(
         modifier = Modifier
@@ -57,7 +64,7 @@ fun HomeScreen(navHostController: NavHostController) {
             title = stringResource(R.string.fitting),
             content = stringResource(R.string.home_fitting_guide),
             animation = R.raw.animation_fitting,
-            onClick = { navHostController.navigate(NavigationItem.FittingNav.route) }
+            onClick = { showBottomSheet = !showBottomSheet }
         )
     }
 }

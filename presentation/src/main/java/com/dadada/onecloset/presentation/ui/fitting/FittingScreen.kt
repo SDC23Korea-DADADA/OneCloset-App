@@ -1,18 +1,15 @@
 package com.dadada.onecloset.presentation.ui.fitting
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -22,31 +19,37 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.domain.model.fitting.FittingResult
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
 import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
-import com.dadada.onecloset.presentation.ui.fitting.component.EmptyClothItem
 import com.dadada.onecloset.presentation.ui.fitting.component.FittingSelectedClothListView
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.FittingEmptyItem
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
+import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 private const val TAG = "FittingScreen"
 
 @Composable
 fun FittingScreen(
     navHostController: NavHostController,
+    fittingViewModel: FittingViewModel,
     closetViewModel: ClosetViewModel = hiltViewModel()
 ) {
+    val fittingResultState by fittingViewModel.fittingResultState.collectAsState()
+    var fittingResult by remember { mutableStateOf(FittingResult()) }
+
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<Cloth>()) }
     var allClothList by remember { mutableStateOf(listOf<Cloth>()) }
 
     var clickedState by remember { mutableStateOf(listOf<Boolean>()) }
     val emptyItemList: List<List<FittingEmptyItem>> = FittingEmptyItem.getList()
+    var curEmptyItemList: List<FittingEmptyItem> by remember { mutableStateOf(emptyItemList[0]) }
     var modeIdx by remember { mutableStateOf(0) }
     var selectedItemList by remember { mutableStateOf(arrayListOf<Cloth>(Cloth(), Cloth())) }
     var selectedItemSize by remember { mutableStateOf(emptyItemList[modeIdx].size) }
@@ -54,10 +57,10 @@ fun FittingScreen(
 
     var handleItemClick = { newIndex: Int ->
         val newClickedState = clickedState.toMutableList()
-        if(newClickedState[newIndex]) {
+        if (newClickedState[newIndex]) {
             newClickedState[newIndex] = false
             selectedItemList = replaceClothById(selectedItemList, clothList[newIndex].clothesId)
-        } else if(!newClickedState[newIndex] && getCountById(selectedItemList) < selectedItemSize) {
+        } else if (!newClickedState[newIndex] && getCountById(selectedItemList) < selectedItemSize) {
             newClickedState[newIndex] = true
             selectedItemList = putClothById(selectedItemList, clothList[newIndex])
         }
@@ -65,6 +68,7 @@ fun FittingScreen(
     }
 
     LaunchedEffect(key1 = modeIdx) {
+        curEmptyItemList = emptyItemList[modeIdx]
         selectedItemSize = emptyItemList[modeIdx].size
         selectedItemList = ArrayList(List(selectedItemSize) { Cloth() })
         clickedState = List(clothList.size) { false }
@@ -79,6 +83,13 @@ fun FittingScreen(
         allClothList = it
         clickedState = List(clothList.size) { false }
     }
+
+    NetworkResultHandler(state = fittingResultState) {
+        fittingViewModel.fittingResult = it
+        fittingViewModel.resetNetworkStates()
+        navHostController.navigate(NavigationItem.FittingResultNav.route)
+    }
+
 
     var showSelectPhotoBottomSheet by remember { mutableStateOf(false) }
     if (showSelectPhotoBottomSheet) {
@@ -97,7 +108,7 @@ fun FittingScreen(
             FittingSelectedClothListView(
                 clothList = clothList,
                 modeIdx = modeIdx,
-                emptyItemList = emptyItemList ,
+                emptyItemList = curEmptyItemList,
                 selectedItemList = selectedItemList,
                 onClickDropDown = { modeIdx = it }
             )
@@ -126,7 +137,27 @@ fun FittingScreen(
             left = "취소",
             right = "다음",
             onClickLeft = { },
-            onClickRight = { navHostController.navigate(NavigationItem.FittingResultNav.route) }
+            onClickRight = {
+                when (modeIdx) {
+                    0 -> {
+                        fittingViewModel.setFittingInfoTopId(selectedItemList[0].clothesId.toString())
+                        fittingViewModel.setFittingInfoBottomId(selectedItemList[0].clothesId.toString())
+                    }
+
+                    1 -> {
+                        fittingViewModel.setFittingInfoTopId(selectedItemList[0].clothesId.toString())
+                    }
+
+                    2 -> {
+                        fittingViewModel.setFittingInfoBottomId(selectedItemList[0].clothesId.toString())
+                    }
+
+                    else -> {
+                        fittingViewModel.setFittingInfoOneId(selectedItemList[0].clothesId.toString())
+                    }
+                }
+                fittingViewModel.getFittingResult()
+            }
         )
     }
 }

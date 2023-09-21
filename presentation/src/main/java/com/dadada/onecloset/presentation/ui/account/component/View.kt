@@ -1,12 +1,17 @@
 package com.dadada.onecloset.presentation.ui.account.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Icon
@@ -14,16 +19,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.navigation.NavHostController
+import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.model.SignInButton
+import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 @Composable
 fun AccountTitleView(title: String) {
@@ -58,9 +71,10 @@ fun AccountSingleLineSection(
     modifier: Modifier = Modifier,
     title: String,
     subTitle: String,
-    content: String
+    content: String,
+    onClick: () -> Unit = {}
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.clickable { onClick() }) {
         AccountTitleView(title = title)
         Column(modifier = roundedSquareLargeModifier.padding(Paddings.xlarge)) {
             Text(text = subTitle, fontWeight = FontWeight.Bold)
@@ -89,6 +103,37 @@ fun AccountMultiLineSection(modifier: Modifier = Modifier, title: String, subTit
                             tint = Color.LightGray
                         )
                     }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ModelListView(
+    navHostController: NavHostController,
+    modelList: List<FittingModelInfo>,
+    fittingViewModel: FittingViewModel
+) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "모델 선택",
+            style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.size(12.dp))
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = Modifier
+                .clip(RoundedCornerShape(26.dp))
+                .background(Color.White)
+        ) {
+            items(modelList.size) {
+                RoundedSquareImageItem(imageUri = modelList[it].modelImg.toUri(), icon = null) {
+                    fittingViewModel.setFittingInfoModelId(modelList[it].modelId.toString())
+                    navHostController.navigate(NavigationItem.FittingNav.route)
                 }
             }
         }

@@ -4,6 +4,7 @@ import com.bonobono.data.interceptor.XAccessTokenInterceptor
 import com.dadada.onecloset.BuildConfig
 import com.dadada.onecloset.data.datasource.remote.AccountService
 import com.dadada.onecloset.data.datasource.remote.ClosetService
+import com.dadada.onecloset.data.datasource.remote.FittingService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,13 +25,21 @@ object NetworkModule {
     fun provideOkHttpClient(xAccessTokenInterceptor: XAccessTokenInterceptor): OkHttpClient =
         if (BuildConfig.DEBUG) {
             OkHttpClient.Builder()
+                .connectTimeout(100, TimeUnit.MINUTES)
+                .readTimeout(100, TimeUnit.MINUTES)
+                .writeTimeout(100, TimeUnit.MINUTES)
+                .callTimeout(100, TimeUnit.MINUTES)
+                .pingInterval(3, TimeUnit.SECONDS)
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .addInterceptor(xAccessTokenInterceptor) // JWT 자동 헤더 전송
                 .build()
         } else {
             OkHttpClient.Builder()
-                .readTimeout(5000, TimeUnit.MILLISECONDS)
-                .connectTimeout(5000, TimeUnit.MILLISECONDS)
+                .connectTimeout(100, TimeUnit.MINUTES)
+                .readTimeout(100, TimeUnit.MINUTES)
+                .writeTimeout(100, TimeUnit.MINUTES)
+                .callTimeout(100, TimeUnit.MINUTES)
+                .pingInterval(3, TimeUnit.SECONDS)
                 .addInterceptor(xAccessTokenInterceptor) // JWT 자동 헤더 전송
                 .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build()
@@ -55,5 +64,16 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
             .create(ClosetService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideFittingService(okHttpClient: OkHttpClient): FittingService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.API_KEY)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(FittingService::class.java)
+
 
 }
