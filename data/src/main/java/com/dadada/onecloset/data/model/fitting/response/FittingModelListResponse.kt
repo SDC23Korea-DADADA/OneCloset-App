@@ -1,4 +1,4 @@
-package com.dadada.onecloset.data.model.fitting
+package com.dadada.onecloset.data.model.fitting.response
 
 import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
 

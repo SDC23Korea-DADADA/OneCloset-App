@@ -1,8 +1,8 @@
 package com.dadada.onecloset.data.datasource.remote
 
 import com.dadada.onecloset.data.model.ServerResponse
-import com.dadada.onecloset.data.model.fitting.FittingModelListResponse
-import com.dadada.onecloset.data.model.fitting.FittingResultResponse
+import com.dadada.onecloset.data.model.fitting.response.FittingModelListResponse
+import com.dadada.onecloset.data.model.fitting.response.FittingResultResponse
 import com.dadada.onecloset.domain.model.fitting.FittingInfo
 import com.dadada.onecloset.domain.model.fitting.FittingResultForSave
 import okhttp3.MultipartBody

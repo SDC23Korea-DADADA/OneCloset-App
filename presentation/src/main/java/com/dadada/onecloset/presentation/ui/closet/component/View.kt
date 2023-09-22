@@ -68,11 +68,10 @@ fun ClothTabGridView(
     icon: Int? = null,
     itemClickedStateList: List<Boolean> = mutableStateListOf(),
     onClick: (Int) -> Unit = {},
-    onClickTab: (String) -> Unit = {}
+    onClickTab: (String) -> Unit = {},
+    tabs: List<String> =  listOf("전체", "상의", "하의", "외투", "한벌옷")
 ) {
     var selectedTabIndex by remember { mutableStateOf(0) }
-
-    val tabs = listOf("전체", "상의", "하의", "외투", "한벌옷")
     val tabWidths = remember {
         val tabWidthStateList = mutableStateListOf<Dp>()
         repeat(tabs.size) {

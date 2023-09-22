@@ -30,8 +30,9 @@ class FittingViewModel @Inject constructor(
     private val deleteModelUseCase: DeleteModelUseCase,
     private val putFittingResultUseCase: PutFittingResultUseCase
 ) : ViewModel() {
-    lateinit var fittingInfo: FittingInfo
+    private lateinit var fittingInfo: FittingInfo
     var fittingResult: FittingResult = FittingResult()
+    lateinit var fittingResultForSave: FittingResultForSave
 
     private val _modelPutState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val modelPutState = _modelPutState.asStateFlow()
@@ -68,18 +69,21 @@ class FittingViewModel @Inject constructor(
         _fittingResultState.emit(getFittingResultUseCase.invoke(fittingInfo))
     }
 
-    fun putFittingResult(fittingInfoForSave: FittingResultForSave) = viewModelScope.launch {
+    fun putFittingResult() = viewModelScope.launch {
         _fittingPutState.value = NetworkResult.Loading
-        _fittingPutState.emit(putFittingResultUseCase.invoke(fittingInfoForSave))
+        _fittingPutState.emit(putFittingResultUseCase.invoke(fittingResultForSave))
     }
 
     fun setFittingInfoModelId(modelId: String) {
         fittingInfo = FittingInfo()
         fittingInfo.modelId = modelId
+        fittingResultForSave = FittingResultForSave()
+        fittingResultForSave.modelId = modelId
     }
 
     fun setFittingInfoBottomId(bottomId: String) {
         fittingInfo.bottomId = bottomId
+
     }
 
     fun setFittingInfoTopId(topId: String) {

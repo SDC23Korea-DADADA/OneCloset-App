@@ -1,6 +1,7 @@
 package com.dadada.onecloset.presentation.ui.fitting
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
+import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
@@ -48,9 +50,21 @@ fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: 
         )
 
         when(selectedTabIndex) {
-            0 -> AsyncImage(modifier = Modifier.fillMaxWidth().aspectRatio(1f).padding(Paddings.medium), model = fittingViewModel.fittingResult.originImg, contentDescription = "")
-            else -> AsyncImage(modifier = Modifier.fillMaxWidth().aspectRatio(1f).padding(Paddings.medium), model = fittingViewModel.fittingResult.fittingImg, contentDescription = "")
+            0 -> AsyncImage(modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .padding(Paddings.medium), model = fittingViewModel.fittingResult.originImg, contentDescription = "")
+            else -> AsyncImage(modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .padding(Paddings.medium), model = fittingViewModel.fittingResult.fittingImg, contentDescription = "")
         }
 
+        Spacer(modifier = Modifier.weight(1f))
+
+        RowWithTwoButtons(left = "돌아가기", right = "등록하기", onClickLeft = { /*TODO*/ }) {
+            fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
+            fittingViewModel.putFittingResult()
+        }
     }
 }

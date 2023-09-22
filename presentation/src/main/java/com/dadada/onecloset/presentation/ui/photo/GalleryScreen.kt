@@ -54,6 +54,7 @@ fun GalleryScreen(
 ) {
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     NetworkResultHandler(state = closetAnalysisState) {
+        closetViewModel.cloth.img = it.image
         closetViewModel.cloth.material = it.material
         closetViewModel.cloth.colorCode = it.colorCode
         closetViewModel.cloth.type = it.type

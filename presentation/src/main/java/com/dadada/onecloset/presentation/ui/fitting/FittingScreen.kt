@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.fitting
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,8 +42,6 @@ fun FittingScreen(
     closetViewModel: ClosetViewModel = hiltViewModel()
 ) {
     val fittingResultState by fittingViewModel.fittingResultState.collectAsState()
-    var fittingResult by remember { mutableStateOf(FittingResult()) }
-
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<Cloth>()) }
     var allClothList by remember { mutableStateOf(listOf<Cloth>()) }
@@ -121,12 +120,10 @@ fun FittingScreen(
                 itemClickedStateList = clickedState,
                 onClick = handleItemClick,
                 onClickTab = { upperType ->
-                    clothList = if (upperType == "전체") {
-                        allClothList
-                    } else {
-                        allClothList.filter { it.upperType == upperType }
-                    }
-                }
+                    clothList = allClothList.filter { it.upperType == upperType }
+
+                },
+                tabs = listOf("상의", "하의", "한벌옷")
             )
         }
 
@@ -138,10 +135,11 @@ fun FittingScreen(
             right = "다음",
             onClickLeft = { },
             onClickRight = {
+                val selectedItem = arrayListOf<Int>()
                 when (modeIdx) {
                     0 -> {
                         fittingViewModel.setFittingInfoTopId(selectedItemList[0].clothesId.toString())
-                        fittingViewModel.setFittingInfoBottomId(selectedItemList[0].clothesId.toString())
+                        fittingViewModel.setFittingInfoBottomId(selectedItemList[1].clothesId.toString())
                     }
 
                     1 -> {
@@ -156,6 +154,13 @@ fun FittingScreen(
                         fittingViewModel.setFittingInfoOneId(selectedItemList[0].clothesId.toString())
                     }
                 }
+                selectedItemList.forEach {
+                    selectedItem.add(it.clothesId)
+                    Log.d(TAG, "FittingScreen: ${it.closetId}")
+                }
+                fittingViewModel.fittingResultForSave.clothesIdList = selectedItem
+                Log.d(TAG, "FittingScreen: ${fittingViewModel.fittingResultForSave}")
+
                 fittingViewModel.getFittingResult()
             }
         )

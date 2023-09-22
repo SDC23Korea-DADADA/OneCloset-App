@@ -1,7 +1,7 @@
 package com.dadada.onecloset.data.mapper
 
-import com.dadada.onecloset.data.model.fitting.FittingModelListResponse
-import com.dadada.onecloset.data.model.fitting.FittingResultResponse
+import com.dadada.onecloset.data.model.fitting.response.FittingModelListResponse
+import com.dadada.onecloset.data.model.fitting.response.FittingResultResponse
 import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
 import com.dadada.onecloset.domain.model.fitting.FittingResult
 

@@ -1,7 +1,7 @@
 package com.dadada.onecloset.domain.model.fitting
 
 data class FittingResultForSave(
-    val clothesIdList: List<Int>,
-    val fittingImg: String,
-    val modelId: String
+    var clothesIdList: List<Int> = listOf(),
+    var fittingImg: String = "",
+    var modelId: String = ""
 )

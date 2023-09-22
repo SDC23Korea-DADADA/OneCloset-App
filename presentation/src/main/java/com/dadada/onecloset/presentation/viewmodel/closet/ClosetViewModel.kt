@@ -108,7 +108,6 @@ class ClosetViewModel @Inject constructor(
     fun deleteCloth(id: String) = viewModelScope.launch {
         _clothDeleteState.value = NetworkResult.Loading
         _clothDeleteState.emit(deleteClothUseCase.invoke(id))
-        _clothDeleteState.value = NetworkResult.Idle
     }
 
     fun setSelectedId(id: String) {
