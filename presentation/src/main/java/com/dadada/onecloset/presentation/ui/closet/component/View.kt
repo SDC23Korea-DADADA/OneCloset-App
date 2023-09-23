@@ -22,6 +22,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.ChipColors
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -206,66 +208,127 @@ fun ClothInformView(cloth: ClothesInfo, onClick: () -> Unit = {}) {
             ClothInformRow(title = "재질", content = cloth.material)
             ColorInformRow(title = "색상", content = hexStringToColor(cloth.colorCode))
         }
-
+        Spacer(modifier = Modifier.size(Paddings.large))
         if (cloth.isEmptyAdditionalInfo()) {
-            Spacer(modifier = Modifier.size(Paddings.large))
-            Row(
-                modifier = roundedSquareLargeModifier
-                    .background(BackGroundGray)
-                    .padding(Paddings.large)
-                    .clickable { onClick() },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_lamp),
-                            contentDescription = "",
-                            tint = TextGray
-                        )
-                        Text(
-                            text = "Tip.",
-                            style = Typography.bodyMedium.copy(
-                                color = TextGray,
-                                fontWeight = FontWeight.ExtraBold,
-                                fontSize = 14.sp
-                            )
-                        )
-                    }
-                    Text(
-                        modifier = Modifier.padding(start = Paddings.medium),
-                        text = "추가 정보를 입력해\n더 스마트한 의류 관리를 경험해 보세요!",
-                        style = Typography.bodySmall.copy(
-                            color = TextGray,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = "",
-                    tint = TextGray
-                )
-            }
+            ClothNeedInputAdditionalInformView { onClick() }
+        } else {
+            ClothAdditionalInformView(cloth)
         }
     }
 
 }
 
 @Composable
+fun ClothNeedInputAdditionalInformView(onClick: () -> Unit) {
+    Row(
+        modifier = roundedSquareLargeModifier
+            .background(BackGroundGray)
+            .padding(Paddings.large)
+            .clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_lamp),
+                    contentDescription = "",
+                    tint = TextGray
+                )
+                Text(
+                    text = "Tip.",
+                    style = Typography.bodyMedium.copy(
+                        color = TextGray,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 14.sp
+                    )
+                )
+            }
+            Text(
+                modifier = Modifier.padding(start = Paddings.medium),
+                text = "추가 정보를 입력해\n더 스마트한 의류 관리를 경험해 보세요!",
+                style = Typography.bodySmall.copy(
+                    color = TextGray,
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowRight,
+            contentDescription = "",
+            tint = TextGray
+        )
+    }
+}
+
+@Composable
+fun ClothAdditionalInformView(clothesInfo: ClothesInfo) {
+    Column(modifier = roundedSquareLargeModifier.padding(Paddings.large)) {
+        Column(modifier = Modifier.padding(Paddings.large)) {
+            ClothesAdditionalInfoRow(title = "설명", )
+            Text(text = clothesInfo.description)
+
+            ClothesAdditionalInfoRow(title = "해쉬태그", clothesInfo.hashtagList)
+
+            ClothesAdditionalInfoRow(title = "날씨", clothesInfo.weatherList)
+
+            ClothesAdditionalInfoRow(title = "TPO", clothesInfo.tpoList)
+
+
+        }
+    }
+}
+
+@Composable
+fun ClothesAdditionalInfoRow(title: String, contentList: List<String> = listOf()) {
+    Column(modifier = Modifier.padding(vertical = Paddings.medium)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = title, fontWeight = FontWeight.ExtraBold)
+        }
+        if(contentList.isNotEmpty()) {
+            LazyVerticalGrid(modifier = Modifier.height(48.dp), columns = GridCells.Fixed(4)) {
+                items(contentList.size) {
+                    SuggestionChip(
+                        modifier = Modifier.padding(Paddings.small),
+                        onClick = { /*TODO*/ },
+                        label = { Text(text = contentList[it], color = Color.White) },
+                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = PrimaryBlack))
+                }
+            }
+        }
+    }
+}
+
+
+
+@Composable
 fun ClothInputAdditionalInformDialogView() {
     Column(modifier = roundedSquareLargeModifier.padding(Paddings.xlarge)) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(text = "계절")
         }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(text = "TPO")
         }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(text = "해쉬태그")
         }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(text = "계절")
         }
     }
@@ -321,13 +384,16 @@ fun PutClothAdditionalInfoView(
     chipState: MutableState<MutableList<Boolean>>
 ) {
     Column {
-        Text(text = title, style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold))
+        Text(
+            text = title,
+            style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold)
+        )
         LazyVerticalGrid(columns = GridCells.Fixed(5)) {
             items(contentList.size) {
                 SuggestionChip(
                     modifier = Modifier.padding(Paddings.xsmall),
                     onClick = {
-                        chipState.value = chipState.value.toMutableList().also {state->
+                        chipState.value = chipState.value.toMutableList().also { state ->
                             state[it] = !state[it]
                         }
                     },

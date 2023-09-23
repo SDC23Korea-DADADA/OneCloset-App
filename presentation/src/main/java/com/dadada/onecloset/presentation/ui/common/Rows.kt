@@ -111,7 +111,7 @@ fun ColorInformRow(title: String, content: Color) {
         Text(
             modifier = Modifier.padding(start = Paddings.medium),
             text = title,
-            style = Typography.titleMedium
+            style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold)
         )
         Box(
             modifier = Modifier
@@ -136,7 +136,7 @@ fun ClothInformRow(title: String, content: String) {
         Text(
             modifier = Modifier.padding(start = 8.dp),
             text = title,
-            style = Typography.titleMedium
+            style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold)
         )
         SuggestionChip(
             onClick = { },
