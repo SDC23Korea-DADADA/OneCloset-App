@@ -267,14 +267,9 @@ fun ClothAdditionalInformView(clothesInfo: ClothesInfo) {
         Column(modifier = Modifier.padding(Paddings.large)) {
             ClothesAdditionalInfoRow(title = "설명", )
             Text(text = clothesInfo.description)
-
             ClothesAdditionalInfoRow(title = "해쉬태그", clothesInfo.hashtagList)
-
             ClothesAdditionalInfoRow(title = "날씨", clothesInfo.weatherList)
-
             ClothesAdditionalInfoRow(title = "TPO", clothesInfo.tpoList)
-
-
         }
     }
 }
@@ -288,9 +283,13 @@ fun ClothesAdditionalInfoRow(title: String, contentList: List<String> = listOf()
         ) {
             Text(text = title, fontWeight = FontWeight.ExtraBold)
         }
-        if(contentList.isNotEmpty()) {
-            LazyVerticalGrid(modifier = Modifier.height(48.dp), columns = GridCells.Fixed(4)) {
+
+        if(contentList.isNotEmpty() && contentList[0] != "") {
+            LazyVerticalGrid(modifier = Modifier.height(44.dp), columns = GridCells.Fixed(4)) {
                 items(contentList.size) {
+                    if(contentList[it] == "") {
+                        return@items
+                    }
                     SuggestionChip(
                         modifier = Modifier.padding(Paddings.small),
                         onClick = { /*TODO*/ },
@@ -298,6 +297,9 @@ fun ClothesAdditionalInfoRow(title: String, contentList: List<String> = listOf()
                         colors = SuggestionChipDefaults.suggestionChipColors(containerColor = PrimaryBlack))
                 }
             }
+        } else if(title != "설명") {
+            Spacer(modifier = Modifier.size(Paddings.small))
+            Text(text = "정보를 등록해주세요.", style = Typography.bodySmall.copy(color = TextGray))
         }
     }
 }

@@ -85,7 +85,7 @@ fun ClothScreen(navHostController: NavHostController, clothId: String, closetVie
         topBar = {
             ClothHeader(
                 navController = navHostController,
-                onClickEdit = { },
+                onClickEdit = { showBottomSheet = !showBottomSheet },
                 onClickDelete = { closetViewModel.deleteCloth(clothId) }
             )
         }
