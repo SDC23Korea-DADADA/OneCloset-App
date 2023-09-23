@@ -58,7 +58,12 @@ fun HorizontalCalendar(
     var currentSelectedDate by remember { mutableStateOf(currentDate) }
     var currentMonth: YearMonth by remember { mutableStateOf(YearMonth.now()) }
     var currentPage by remember { mutableStateOf(initialPage) }
-    val pagerState = rememberPagerState(initialPage = initialPage)
+    val pagerState = rememberPagerState(
+        initialPage = initialPage,
+        initialPageOffsetFraction = 0f
+    ) {
+        12
+    }
 
     LaunchedEffect(pagerState.currentPage) {
         val addMonth = (pagerState.currentPage - currentPage).toLong()
@@ -77,7 +82,7 @@ fun HorizontalCalendar(
             modifier = Modifier.padding(20.dp), text = headerText
         )
         HorizontalPager(
-            pageCount = pageCount, state = pagerState
+            state = pagerState
         ) { page ->
             val date = LocalDate.of(
                 config.yearRange.first + page / 12, page % 12 + 1, 1

@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.net.toUri
-import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.common.DropDownRow
 import com.dadada.onecloset.presentation.ui.common.FittingDropDownMenu
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
@@ -29,10 +29,10 @@ private const val TAG = "View"
 @Composable
 fun FittingSelectedClothListView(
     modifier: Modifier = Modifier,
-    clothList: List<Cloth>,
+    clothList: List<ClothesInfo>,
     modeIdx: Int,
     emptyItemList: List<FittingEmptyItem>,
-    selectedItemList: List<Cloth>,
+    selectedItemList: List<ClothesInfo>,
     onClickDropDown: (Int) -> Unit,
 ) {
     var modeClick by remember { mutableStateOf(false) }

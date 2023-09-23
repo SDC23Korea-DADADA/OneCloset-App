@@ -22,6 +22,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -114,10 +115,11 @@ fun ColorInformRow(title: String, content: Color) {
         )
         Box(
             modifier = Modifier
+                .shadow(3.dp, CircleShape)
                 .clip(CircleShape)
                 .size(36.dp)
                 .background(content)
-                .border(1.dp, content, CircleShape)
+                //.border(1.dp, PrimaryBlack, CircleShape)
         )
     }
 }

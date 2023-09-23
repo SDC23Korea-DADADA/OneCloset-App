@@ -1,7 +1,5 @@
 package com.dadada.onecloset.presentation.ui.closet
 
-import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -17,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.ChipEditRow
 import com.dadada.onecloset.presentation.ui.common.ColorEditRow
@@ -30,11 +28,7 @@ import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Typography
-import com.dadada.onecloset.presentation.ui.utils.ClothColor
-import com.dadada.onecloset.presentation.ui.utils.Material
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
-import com.dadada.onecloset.presentation.ui.utils.Type
-import com.dadada.onecloset.presentation.ui.utils.colorToHexString
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
@@ -44,9 +38,9 @@ private const val TAG = "ClothAnalysisScreen"
 fun ClothAnalysisScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
     val clothCareCourseState by closetViewModel.clothCareCourseState.collectAsState()
     NetworkResultHandler(state = clothCareCourseState) {
-        closetViewModel.cloth.laundry = it.laundry
-        closetViewModel.cloth.dryer = it.dryer
-        closetViewModel.cloth.airDressor = it.airDresser
+        closetViewModel.clothesInfo.laundry = it.laundry
+        closetViewModel.clothesInfo.dryer = it.dryer
+        closetViewModel.clothesInfo.airDressor = it.airDresser
         closetViewModel.resetNetworkStates()
         navHostController.navigate(NavigationItem.ClothCourseNav.route)
     }
@@ -57,13 +51,13 @@ fun ClothAnalysisScreen(navHostController: NavHostController, closetViewModel: C
     ) {
         RoundedSquareImageItem(
             modifier = roundedSquareLargeModifier,
-            imageUri = closetViewModel.cloth.img.toUri(),
+            imageUri = closetViewModel.clothesInfo.image.toUri(),
             icon = null,
         ) {
 
         }
         Spacer(modifier = Modifier.size(16.dp))
-        ClothCreateInputView(closetViewModel.cloth)
+        ClothCreateInputView(closetViewModel.clothesInfo)
         Spacer(modifier = Modifier.size(16.dp))
         Text(
             text = "*분석 결과가 정확한가요? 버튼을 클릭하면 수정할 수 있어요!",
@@ -77,7 +71,7 @@ fun ClothAnalysisScreen(navHostController: NavHostController, closetViewModel: C
 }
 
 @Composable
-fun ClothCreateInputView(cloth: Cloth) {
+fun ClothCreateInputView(cloth: ClothesInfo) {
     var showType = remember { mutableStateOf(false) }
     var showColor = remember { mutableStateOf(false) }
     var showMaterial = remember { mutableStateOf(false) }

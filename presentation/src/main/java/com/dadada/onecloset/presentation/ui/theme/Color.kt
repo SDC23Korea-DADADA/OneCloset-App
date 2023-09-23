@@ -12,6 +12,8 @@ val Pink40 = Color(0xFF7D5260)
 
 val PrimaryBlack = Color(0xFF191919)
 val BackGround = Color(0xFFF6F6F6)
+val TextGray = Color(0xFFBFBFBF)
+val BackGroundGray = Color(0xFFE9E9E9)
 val PrimaryBlue = Color(0xFF005CB9)
 val LottieBackGroundGray = Color(0xFFF2F2F2)
 val PointGreen = Color(0xFF3AD088)

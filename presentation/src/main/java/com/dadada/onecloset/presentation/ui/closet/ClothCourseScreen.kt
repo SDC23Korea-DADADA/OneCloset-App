@@ -40,9 +40,9 @@ private const val TAG = "ClothCourseScreen"
 fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
     val list = listOf("세탁", "건조", "에어드레서")
     val contentList = listOf(
-        closetViewModel.cloth.laundry,
-        closetViewModel.cloth.dryer,
-        closetViewModel.cloth.airDressor
+        closetViewModel.clothesInfo.laundry,
+        closetViewModel.clothesInfo.dryer,
+        closetViewModel.clothesInfo.airDressor
     )
 
     val sheetState = rememberModalBottomSheetState()
@@ -61,7 +61,7 @@ fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: Clo
             sheetState = sheetState,
             onDismissRequest = { scope.launch { sheetState.hide() } },
             onClick = {
-                closetViewModel.cloth.closetId = it.toString()
+                closetViewModel.clothesInfo.closetId = it.toString()
                 closetViewModel.putCloth()
             }
         )
@@ -79,7 +79,7 @@ fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: Clo
         ) {
             RoundedSquareImageItem(
                 modifier = roundedSquareLargeModifier,
-                imageUri = closetViewModel.cloth.img.toUri(),
+                imageUri = closetViewModel.clothesInfo.image.toUri(),
                 icon = null,
             ) {
 
