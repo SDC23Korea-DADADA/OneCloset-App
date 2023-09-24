@@ -1,5 +1,7 @@
 package com.dadada.onecloset.presentation.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -47,7 +49,9 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.dadada.onecloset.presentation.ui.NavigationItem.*
+import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
+import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
@@ -106,6 +110,7 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavigationScreen(
@@ -115,6 +120,7 @@ fun MainNavigationScreen(
 ) {
     val closetViewModel: ClosetViewModel = hiltViewModel()
     val mainViewModel: MainViewModel = hiltViewModel()
+    val photoViewModel: PhotoViewModel = hiltViewModel()
     val fittingViewModel: FittingViewModel = hiltViewModel()
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
@@ -129,17 +135,18 @@ fun MainNavigationScreen(
             LogInScreen(navHostController = navController)
         }
         composable(route = MainTabNav.route) {
+            photoViewModel.curMode = Mode.clothes
             MainTabScreen(navController, fittingViewModel)
         }
         composable(route = CameraNav.route) {
-            CameraScreen(navController, closetViewModel = closetViewModel)
+            CameraScreen(navController, closetViewModel = closetViewModel, photoViewModel = photoViewModel, fittingViewModel = fittingViewModel)
         }
         composable(route = ClosetDetailNav.route) {
             val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }
             ClothListScreen(navHostController = navController, closetViewModel = hiltViewModel(parentEntry))
         }
         composable(route = GalleryNav.route) {
-            GalleryScreen(navController, closetViewModel = closetViewModel)
+            GalleryScreen(navController, closetViewModel = closetViewModel, photoViewModel = photoViewModel, fittingViewModel = fittingViewModel)
         }
 
         composable(route = ClothAnalysisNav.route) {
@@ -155,7 +162,7 @@ fun MainNavigationScreen(
             }
         }
         composable(route = AccountNav.route) {
-            MyPageScreen(navHostController = navController, mainViewModel = mainViewModel)
+            MyPageScreen(navHostController = navController, photoViewModel = photoViewModel)
         }
         composable(route = FittingNav.route) {
             FittingScreen(navHostController = navController, fittingViewModel = fittingViewModel)

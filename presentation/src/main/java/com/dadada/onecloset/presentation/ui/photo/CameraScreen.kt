@@ -34,9 +34,11 @@ import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.circleShapeModifier
 import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
+import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
+import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 import com.ujizin.camposer.CameraPreview
 import com.ujizin.camposer.state.CamSelector
 import com.ujizin.camposer.state.CameraState
@@ -53,6 +55,7 @@ fun CameraScreen(
     navHostController: NavHostController,
     photoViewModel: PhotoViewModel = hiltViewModel(),
     closetViewModel: ClosetViewModel,
+    fittingViewModel: FittingViewModel
 ) {
     val cameraState = rememberCameraState()
     val cameraSelector by remember { mutableStateOf(CamSelector.Back) }
@@ -90,9 +93,13 @@ fun CameraScreen(
                     cameraState.takePicture(
                         fileDataSource.imageContentValues
                     ) {
-                        closetViewModel.clothesInfo.image =
-                            fileDataSource.getLastPictureUriPostQ(context).toString()
-                        closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+                        if(photoViewModel.curMode == Mode.clothes) {
+                            closetViewModel.clothesInfo.image =
+                                fileDataSource.getLastPictureUriPostQ(context).toString()
+                            closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+                        } else {
+                            fittingViewModel.putModel(fileDataSource.getLastPictureUriPostQ(context).toString())
+                        }
                     }
                 }) {
                 Icon(
