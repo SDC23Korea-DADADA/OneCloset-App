@@ -43,6 +43,8 @@ fun <T> NetworkResultHandler(state: NetworkResult<T>, action: (data: T) -> Unit)
                 action(state.data)
                 showToast = false
             }
+
+            else -> {}
         }
     }
 }

@@ -143,7 +143,7 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
                 Closet(
                     colorCode = colorToHexString(selectedColor.value),
                     icon = iconResIds[selectedIconIdx.value],
-                    name = "TEST 옷장"
+                    name = textValue
                 )
             )
         }) {

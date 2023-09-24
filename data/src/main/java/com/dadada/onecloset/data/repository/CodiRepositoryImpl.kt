@@ -6,6 +6,7 @@ import com.dadada.onecloset.data.datasource.remote.handleApi
 import com.dadada.onecloset.data.mapper.Converter
 import com.dadada.onecloset.data.mapper.toDomain
 import com.dadada.onecloset.domain.model.NetworkResult
+import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.CodiRegisterInfo
 import com.dadada.onecloset.domain.model.codi.CodiUpdateDate
 import com.dadada.onecloset.domain.repository.CodiRepository
@@ -34,6 +35,14 @@ class CodiRepositoryImpl @Inject constructor(
 
     override suspend fun updateCodiDate(info: CodiUpdateDate): NetworkResult<Unit> {
         return handleApi { codiService.updateDate(info) }
+    }
+
+    override suspend fun getCodiList(): NetworkResult<CodiList> {
+        return handleApi { codiService.getCodiList().toDomain() }
+    }
+
+    override suspend fun getCodiListByMonth(date: String): NetworkResult<CodiList> {
+        return handleApi { codiService.getCodiListByMonth(date).data }
     }
 
 }

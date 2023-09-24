@@ -1,4 +1,4 @@
-package com.dadada.onecloset.data.model.codi
+package com.dadada.onecloset.data.model.codi.response
 
 data class CodiRegisterResponse (
     val code: Int,

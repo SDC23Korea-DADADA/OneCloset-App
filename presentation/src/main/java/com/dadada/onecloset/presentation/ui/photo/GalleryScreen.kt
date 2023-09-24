@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.GalleryPhotoItem
@@ -45,6 +46,7 @@ import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
+import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 private const val TAG = "GalleryScreen"
@@ -54,7 +56,8 @@ fun GalleryScreen(
     navController: NavHostController,
     photoViewModel: PhotoViewModel = hiltViewModel(),
     closetViewModel: ClosetViewModel,
-    fittingViewModel: FittingViewModel
+    fittingViewModel: FittingViewModel,
+    codiViewModel: CodiViewModel,
 ) {
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     NetworkResultHandler(state = closetAnalysisState) {
@@ -83,6 +86,11 @@ fun GalleryScreen(
     LaunchedEffect(Unit) {
         photoViewModel.getPagingPhotos()
     }
+    val codiPutState by codiViewModel.codiPutState.collectAsState()
+    NetworkResultHandler(state = codiPutState) {
+        codiViewModel.resetNetworkStates()
+        navController.popBackStack()
+    }
 
     Scaffold(
         topBar = {
@@ -92,7 +100,8 @@ fun GalleryScreen(
                 isCheckedIdx = isCheckedIdx,
                 closetViewModel = closetViewModel,
                 photoViewModel = photoViewModel,
-                fittingViewModel = fittingViewModel
+                fittingViewModel = fittingViewModel,
+                codiViewModel = codiViewModel
             )
         }
     ) {
@@ -130,7 +139,8 @@ fun GalleryHeader(
     isCheckedIdx: State<Int>,
     fittingViewModel: FittingViewModel,
     closetViewModel: ClosetViewModel,
-    photoViewModel: PhotoViewModel
+    photoViewModel: PhotoViewModel,
+    codiViewModel: CodiViewModel
 ) {
     var showToast by remember { mutableStateOf(false) }
     if(showToast) { ShowToast(text = "모델 등록에 약 2분이 소요돼요!") }
@@ -150,13 +160,19 @@ fun GalleryHeader(
                     if(isCheckedIdx.value == -1) {
                         return@Button
                     }
-                    if(photoViewModel.curMode == Mode.clothes) {
-                        closetViewModel.clothesInfo.image = pagingPhotos[isCheckedIdx.value]?.uri.toString()
-                        closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
-                    } else {
-                        fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())
-                        showToast = true
-                        navController.popBackStack()
+                    when (photoViewModel.curMode) {
+                        Mode.clothes -> {
+                            closetViewModel.clothesInfo.image = pagingPhotos[isCheckedIdx.value]?.uri.toString()
+                            closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+                        }
+                        Mode.codi -> {
+                            codiViewModel.putCodi(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+                        }
+                        else -> {
+                            fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+                            showToast = true
+                            navController.popBackStack()
+                        }
                     }
                 }) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
@@ -164,4 +180,5 @@ fun GalleryHeader(
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
     )
+
 }
