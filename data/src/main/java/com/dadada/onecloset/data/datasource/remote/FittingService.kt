@@ -18,17 +18,23 @@ interface FittingService {
 
     @Multipart
     @POST("api/fitting/model")
-    suspend fun putModel(@Part image: MultipartBody.Part) : ServerResponse
+    suspend fun putModel(@Part image: MultipartBody.Part): ServerResponse
 
     @POST("api/fitting")
-    suspend fun getVirtualFittingResult(@Body fittingInform: FittingInfo) : FittingResultResponse
+    suspend fun getVirtualFittingResult(@Body fittingInform: FittingInfo): FittingResultResponse
 
     @GET("api/fitting/model/list")
-    suspend fun getModelList() : FittingModelListResponse
+    suspend fun getModelList(): FittingModelListResponse
 
     @DELETE("api/fitting/model/{id}")
-    suspend fun deleteModel(@Path(value = "id") id: String) : ServerResponse
+    suspend fun deleteModel(@Path(value = "id") id: String): ServerResponse
 
     @POST("api/fitting/save")
-    suspend fun putFittingResult(@Body fittingResult: FittingResultForSave) : ServerResponse
+    suspend fun putFittingResult(@Body fittingResult: FittingResultForSave): ServerResponse
+
+    @POST("api/fitting/save/{date}")
+    suspend fun putFittingResultWithDate(
+        @Path(value = "date") date: String,
+        @Body fittingResult: FittingResultForSave
+    ): ServerResponse
 }

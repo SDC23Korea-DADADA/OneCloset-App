@@ -83,9 +83,11 @@ fun FittingScreen(
     }
 
     NetworkResultHandler(state = fittingResultState) {
-        fittingViewModel.fittingResult = it
-        fittingViewModel.resetNetworkStates()
-        navHostController.navigate(NavigationItem.FittingResultNav.route)
+        if(it != null) {
+            fittingViewModel.fittingResult = it
+            fittingViewModel.resetNetworkStates()
+            navHostController.navigate(NavigationItem.FittingResultNav.route)
+        }
     }
 
 

@@ -1,47 +1,38 @@
 package com.dadada.onecloset.presentation.ui.coordination
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.coordination.component.HorizontalCalendar
-import com.dadada.onecloset.presentation.ui.coordination.component.SelectCodiView
 import com.dadada.onecloset.presentation.ui.theme.Paddings
-import kotlinx.coroutines.launch
+import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
+import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoordinationCalendarScreen(navHostController: NavHostController) {
+fun CoordinationCalendarScreen(
+    navHostController: NavHostController,
+    codiViewModel: CodiViewModel,
+    photoViewModel: PhotoViewModel,
+    codiViewModel1: CodiViewModel
+) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     if (sheetState.isVisible) {
-        ModalBottomSheet(
-            sheetState = sheetState,
-            onDismissRequest = { scope.launch { sheetState.hide() } },
-            containerColor = Color.White
-        ) {
-            SelectCodiView(onClickRecord = { navHostController.navigate(NavigationItem.GalleryNav.route) }) {
-                navHostController.navigate(NavigationItem.FittingNav.route)
-            }
-        }
+
     }
 
-    Scaffold(
-        floatingActionButton = { CustomFloatingActionButton(icon = Icons.Default.Add) { scope.launch { sheetState.show() } } }
+    HorizontalCalendar(
+        modifier = roundedSquareLargeModifier.padding(Paddings.medium),
+        navController = navHostController,
+        codiViewModel = codiViewModel,
+        photoViewModel = photoViewModel,
     ) {
-        it
-        HorizontalCalendar(modifier = roundedSquareLargeModifier.padding(Paddings.medium), navController = navHostController) {
 
-        }
+
     }
 }

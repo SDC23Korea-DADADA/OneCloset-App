@@ -36,4 +36,11 @@ class FittingRepositoryImpl @Inject constructor(
     override suspend fun putFittingResult(fittingResult: FittingResultForSave): NetworkResult<Unit> {
         return handleApi { fittingService.putFittingResult(fittingResult) }
     }
+
+    override suspend fun putFittingResultWithDate(
+        date: String,
+        fittingResult: FittingResultForSave
+    ): NetworkResult<Unit> {
+        return handleApi { fittingService.putFittingResultWithDate(date, fittingResult) }
+    }
 }

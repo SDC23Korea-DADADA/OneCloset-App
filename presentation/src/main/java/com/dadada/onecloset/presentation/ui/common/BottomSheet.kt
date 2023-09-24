@@ -143,7 +143,7 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
                 Closet(
                     colorCode = colorToHexString(selectedColor.value),
                     icon = iconResIds[selectedIconIdx.value],
-                    name = "TEST 옷장"
+                    name = textValue
                 )
             )
         }) {
@@ -209,6 +209,7 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick:
                     )
                 }
             }
+            Spacer(modifier = Modifier.size(56.dp))
         }
     }
 }
@@ -251,6 +252,7 @@ fun SelectMaterialBottomSheet(show: MutableState<Boolean>, curMaterial: String, 
                     )
                 }
             }
+            Spacer(modifier = Modifier.size(56.dp))
         }
     }
 }
@@ -298,6 +300,7 @@ fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: String, onClic
                     )
                 }
             }
+            Spacer(modifier = Modifier.size(56.dp))
         }
     }
 }
@@ -333,5 +336,6 @@ fun SelectPhotoBottomSheet(
         containerColor = BackGround
     ) {
         SelectPhotoView(onClickCamera = cameraClick, onClickGallery = onClickGallery)
+        Spacer(modifier = Modifier.size(56.dp))
     }
 }

@@ -13,4 +13,5 @@ interface FittingRepository {
     suspend fun getModelList() : NetworkResult<List<FittingModelInfo>>
     suspend fun deleteModel(id: String) : NetworkResult<Unit>
     suspend fun putFittingResult(fittingResult: FittingResultForSave) : NetworkResult<Unit>
+    suspend fun putFittingResultWithDate(date: String, fittingResult: FittingResultForSave) : NetworkResult<Unit>
 }

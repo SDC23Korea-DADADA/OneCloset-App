@@ -5,12 +5,15 @@ import android.content.Context
 import com.dadada.onecloset.data.datasource.local.PreferenceDataSource
 import com.dadada.onecloset.data.datasource.remote.AccountService
 import com.dadada.onecloset.data.datasource.remote.ClosetService
+import com.dadada.onecloset.data.datasource.remote.CodiService
 import com.dadada.onecloset.data.datasource.remote.FittingService
 import com.dadada.onecloset.data.repository.AccountRepositoryImpl
 import com.dadada.onecloset.data.repository.ClosetRepositoryImpl
+import com.dadada.onecloset.data.repository.CodiRepositoryImpl
 import com.dadada.onecloset.data.repository.FittingRepositoryImpl
 import com.dadada.onecloset.domain.repository.AccountRepository
 import com.dadada.onecloset.domain.repository.ClosetRepository
+import com.dadada.onecloset.domain.repository.CodiRepository
 import com.dadada.onecloset.domain.repository.FittingRepository
 import dagger.Module
 import dagger.Provides
@@ -56,6 +59,18 @@ object RepositoryModule {
         return FittingRepositoryImpl(
             fittingService = fittingService,
             context = context
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCodiRepository(
+        codiService: CodiService,
+        @ApplicationContext context: Context
+    ): CodiRepository {
+        return CodiRepositoryImpl(
+            codiService = codiService,
+            context
         )
     }
 }

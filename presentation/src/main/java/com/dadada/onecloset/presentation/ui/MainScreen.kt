@@ -30,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.dadada.onecloset.presentation.ui.NavigationItem.*
 import com.dadada.onecloset.presentation.ui.account.LogInScreen
 import com.dadada.onecloset.presentation.ui.account.MyPageScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
@@ -45,15 +46,15 @@ import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 import com.dadada.onecloset.presentation.ui.photo.PhotoScreen
 import com.dadada.onecloset.presentation.ui.theme.Paddings
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.dadada.onecloset.presentation.ui.NavigationItem.*
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
+import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 private const val TAG = "MainScreen"
 
@@ -122,6 +123,7 @@ fun MainNavigationScreen(
     val mainViewModel: MainViewModel = hiltViewModel()
     val photoViewModel: PhotoViewModel = hiltViewModel()
     val fittingViewModel: FittingViewModel = hiltViewModel()
+    val codiViewModel: CodiViewModel = hiltViewModel()
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
@@ -140,14 +142,30 @@ fun MainNavigationScreen(
             MainTabScreen(navController, fittingViewModel)
         }
         composable(route = CameraNav.route) {
-            CameraScreen(navController, closetViewModel = closetViewModel, photoViewModel = photoViewModel, fittingViewModel = fittingViewModel)
+            CameraScreen(
+                navController,
+                closetViewModel = closetViewModel,
+                photoViewModel = photoViewModel,
+                fittingViewModel = fittingViewModel
+            )
         }
         composable(route = ClosetDetailNav.route) {
-            val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }
-            ClothListScreen(navHostController = navController, closetViewModel = hiltViewModel(parentEntry))
+            photoViewModel.curMode = Mode.clothes
+            val parentEntry =
+                remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }
+            ClothListScreen(
+                navHostController = navController,
+                closetViewModel = hiltViewModel(parentEntry)
+            )
         }
         composable(route = GalleryNav.route) {
-            GalleryScreen(navController, closetViewModel = closetViewModel, photoViewModel = photoViewModel, fittingViewModel = fittingViewModel)
+            GalleryScreen(
+                navController,
+                closetViewModel = closetViewModel,
+                photoViewModel = photoViewModel,
+                fittingViewModel = fittingViewModel,
+                codiViewModel = codiViewModel
+            )
         }
 
         composable(route = ClothAnalysisNav.route) {
@@ -169,7 +187,7 @@ fun MainNavigationScreen(
             FittingScreen(navHostController = navController, fittingViewModel = fittingViewModel)
         }
         composable(route = CoordinationNav.route) {
-            CoordinationScreen(navHostController = navController)
+            CoordinationScreen(navHostController = navController, photoViewModel = photoViewModel, codiViewModel = codiViewModel)
         }
         composable(route = FittingResultNav.route) {
             FittingResultScreen(navController, fittingViewModel)
@@ -178,7 +196,7 @@ fun MainNavigationScreen(
             PhotoScreen()
         }
         composable(route = CoordinationResultNav.route) {
-            CoordinationResultScreen()
+            CoordinationResultScreen(codiViewModel)
         }
     }
 }

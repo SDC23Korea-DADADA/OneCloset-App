@@ -17,9 +17,11 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,25 +36,38 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.dadada.onecloset.domain.model.codi.Codi
+import com.dadada.onecloset.domain.model.codi.CodiList
+import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.model.HorizontalCalendarConfig
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.utils.Mode
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.dateFormat
+import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
+import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.util.Locale
 
-@OptIn(ExperimentalFoundationApi::class)
+private const val TAG = "Calendar"
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HorizontalCalendar(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     currentDate: LocalDate = LocalDate.now(),
     config: HorizontalCalendarConfig = HorizontalCalendarConfig(),
-    onSelectedDate: (LocalDate) -> Unit
+    codiViewModel: CodiViewModel,
+    photoViewModel: PhotoViewModel,
+    onSelectedDate: (LocalDate) -> Unit,
 ) {
+    val codiListState by codiViewModel.codiListByMonth.collectAsState()
+    var codiList by remember { mutableStateOf(CodiList(listOf(), listOf())) }
     val initialPage: Int =
         (currentDate.year - config.yearRange.first) * 12 + currentDate.monthValue - 1
     var currentSelectedDate by remember { mutableStateOf(currentDate) }
@@ -62,13 +77,18 @@ fun HorizontalCalendar(
         initialPage = initialPage,
         initialPageOffsetFraction = 0f
     ) {
-        12
+        (config.yearRange.last - config.yearRange.first) * 12
+    }
+
+    NetworkResultHandler(state = codiListState) {
+        codiList = it
     }
 
     LaunchedEffect(pagerState.currentPage) {
         val addMonth = (pagerState.currentPage - currentPage).toLong()
         currentMonth = currentMonth.plusMonths(addMonth)
         currentPage = pagerState.currentPage
+        codiViewModel.getCodiListByMonth(currentMonth.toString())
     }
 
     LaunchedEffect(currentSelectedDate) {
@@ -77,7 +97,6 @@ fun HorizontalCalendar(
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         val headerText = currentMonth.dateFormat("yyyy년 M월")
-        val pageCount = (config.yearRange.last - config.yearRange.first) * 12
         CalendarHeader(
             modifier = Modifier.padding(20.dp), text = headerText
         )
@@ -88,12 +107,20 @@ fun HorizontalCalendar(
                 config.yearRange.first + page / 12, page % 12 + 1, 1
             )
             if (page in pagerState.currentPage - 1..pagerState.currentPage + 1) { // 페이징 성능 개선을 위한 조건문
-                CalendarMonthItem(modifier = Modifier.fillMaxWidth(),
+                CalendarMonthItem(
+                    modifier = Modifier.fillMaxWidth(),
                     currentDate = date,
+                    currentMonth = currentMonth.toString(),
                     selectedDate = currentSelectedDate,
                     onSelectedDate = { date ->
                         currentSelectedDate = date
-                    }, navController = navController)
+                        codiViewModel.codiRegisterInfo.date = date.toString()
+                    },
+                    navController = navController,
+                    codiList = codiList,
+                    photoViewModel = photoViewModel,
+                    codiViewModel = codiViewModel
+                )
             }
         }
     }
@@ -114,10 +141,14 @@ fun CalendarHeader(
 @Composable
 fun CalendarMonthItem(
     modifier: Modifier = Modifier,
+    currentMonth: String,
     currentDate: LocalDate,
     selectedDate: LocalDate,
     onSelectedDate: (LocalDate) -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    codiList: CodiList,
+    photoViewModel: PhotoViewModel,
+    codiViewModel: CodiViewModel
 ) {
     val lastDay by remember { mutableStateOf(currentDate.lengthOfMonth()) }
     val firstDayOfWeek by remember { mutableStateOf(currentDate.dayOfWeek.value) }
@@ -128,7 +159,7 @@ fun CalendarMonthItem(
         LazyVerticalGrid(
             modifier = Modifier.fillMaxHeight(), columns = GridCells.Fixed(7)
         ) {
-            if(firstDayOfWeek < 7) {
+            if (firstDayOfWeek < 7) {
                 for (i in 1 until firstDayOfWeek + 1) { // 처음 날짜가 시작하는 요일 전까지 빈 박스 생성
                     item {
                         Box(
@@ -140,6 +171,14 @@ fun CalendarMonthItem(
                 }
             }
             items(days) { day ->
+                val curFittingItem = codiList.fittingList.find { it.wearingAtDay == "$currentMonth-$day" }
+                val curDailyItem = codiList.codiList.find { it.wearingAtDay == "$currentMonth-$day" }
+
+                var imageUrl = curFittingItem?.fittingThumbnailImg
+                if (curDailyItem != null) {
+                    imageUrl = curDailyItem.thumbnailImg
+                }
+
                 val date = currentDate.withDayOfMonth(day)
                 val isSelected = remember(selectedDate) {
                     selectedDate.compareTo(date) == 0
@@ -150,7 +189,12 @@ fun CalendarMonthItem(
                     isToday = date == LocalDate.now(),
                     isSelected = isSelected,
                     onSelectedDate = onSelectedDate,
-                    navController
+                    navController = navController,
+                    imageUrl = imageUrl,
+                    codiViewModel = codiViewModel,
+                    photoViewModel = photoViewModel,
+                    curFittingItem = curFittingItem,
+                    curDailyItem = curDailyItem
                 )
             }
         }
@@ -165,18 +209,34 @@ fun CalendarDay(
     isToday: Boolean,
     isSelected: Boolean,
     onSelectedDate: (LocalDate) -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    codiViewModel: CodiViewModel,
+    photoViewModel: PhotoViewModel,
+    imageUrl: String?,
+    curFittingItem: Fitting?,
+    curDailyItem: Codi?
 ) {
+    val current = LocalDate.now()
     val hasEvent = false
+    val modifierClickable = if (imageUrl == null && date <= current) modifier.clickable {
+        onSelectedDate(date)
+        photoViewModel.curMode = Mode.codi
+        navController.navigate(NavigationItem.GalleryNav.route)
+    } else if (imageUrl == null && date > current) {
+        modifier
+    } else {
+        modifier.clickable {
+            onSelectedDate(date)
+            codiViewModel.curFittingItem = curFittingItem
+            codiViewModel.curDailyCodiItem = curDailyItem
+            navController.navigate(NavigationItem.CoordinationResultNav.route)
+        }
+    }
     Box(
-        modifier = modifier
+        modifier = modifierClickable
             .fillMaxWidth()
             .aspectRatio(0.7f)
-            .clip(shape = RoundedCornerShape(10.dp))
-            .clickable {
-                onSelectedDate(date)
-                navController.navigate(NavigationItem.CoordinationResultNav.route)
-            },
+            .clip(shape = RoundedCornerShape(10.dp)),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -187,25 +247,16 @@ fun CalendarDay(
                 .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            AsyncImage(model = "", contentDescription = "", contentScale = ContentScale.Crop)
+            AsyncImage(model = imageUrl, contentDescription = "", contentScale = ContentScale.Crop)
         }
 
-
         Text(
-            modifier = Modifier.padding(4.dp),
             textAlign = TextAlign.Center,
             text = date.dayOfMonth.toString(),
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = if (imageUrl == null) Color.Black else Color.White
         )
 
-        if (hasEvent) {
-            Box(
-                modifier = Modifier
-                    .size(4.dp)
-                    .clip(shape = RoundedCornerShape(4.dp))
-            )
-        }
     }
 }
 
@@ -214,7 +265,8 @@ fun DayOfWeek(
     modifier: Modifier = Modifier
 ) {
     Row(modifier) {
-        val reorderedDays = listOf(DayOfWeek.SUNDAY) + DayOfWeek.values().filter { it != DayOfWeek.SUNDAY }
+        val reorderedDays =
+            listOf(DayOfWeek.SUNDAY) + DayOfWeek.values().filter { it != DayOfWeek.SUNDAY }
         reorderedDays.forEach { dayOfWeek ->
             val color =
                 if (dayOfWeek == DayOfWeek.SUNDAY) Color.Red else PrimaryBlack

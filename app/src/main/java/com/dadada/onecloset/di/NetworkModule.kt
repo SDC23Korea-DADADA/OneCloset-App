@@ -4,6 +4,7 @@ import com.bonobono.data.interceptor.XAccessTokenInterceptor
 import com.dadada.onecloset.BuildConfig
 import com.dadada.onecloset.data.datasource.remote.AccountService
 import com.dadada.onecloset.data.datasource.remote.ClosetService
+import com.dadada.onecloset.data.datasource.remote.CodiService
 import com.dadada.onecloset.data.datasource.remote.FittingService
 import dagger.Module
 import dagger.Provides
@@ -74,6 +75,16 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
             .create(FittingService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideCodiService(okHttpClient: OkHttpClient): CodiService =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.API_KEY)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+            .create(CodiService::class.java)
 
 
 }
