@@ -33,6 +33,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.Typography
@@ -116,6 +117,7 @@ fun CustomListItem(content: String, onClick: () -> Unit) {
     )
 }
 
+private const val TAG = "Item"
 @Composable
 fun CircleImageView(modifier: Modifier = Modifier, url: String) {
     Box(
@@ -126,7 +128,7 @@ fun CircleImageView(modifier: Modifier = Modifier, url: String) {
         AsyncImage(
             modifier = Modifier
                 .align(Alignment.Center),
-            model = url,
+            model = url.toUri(),
             contentDescription = "사진",
             contentScale = ContentScale.Crop
         )
@@ -181,6 +183,7 @@ fun RoundedSquareImageItem(
     modifier: Modifier = Modifier,
     imageUri: Uri,
     icon: Int?,
+    isUploading: Boolean = true,
     onClick: () -> Unit
 ) {
     Box(
@@ -196,6 +199,20 @@ fun RoundedSquareImageItem(
             contentScale = ContentScale.Crop
         )
 
+        if (!isUploading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.LightGray.copy(alpha = 0.5f))
+            ) {
+                Text(
+                    text = "등록중",
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
 
         icon?.let {
             Image(

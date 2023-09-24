@@ -99,3 +99,8 @@ sealed class ClothColor(val id: Int, val color: Color) {
         }
     }
 }
+
+object Mode {
+    const val model = "모델 등록"
+    const val clothes = "의류 등록"
+}

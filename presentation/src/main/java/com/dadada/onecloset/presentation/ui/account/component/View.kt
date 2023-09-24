@@ -85,13 +85,23 @@ fun AccountSingleLineSection(
 }
 
 @Composable
-fun AccountMultiLineSection(modifier: Modifier = Modifier, title: String, subTitleList: List<Int>) {
+fun AccountMultiLineSection(
+    modifier: Modifier = Modifier,
+    title: String,
+    subTitleList: List<Int>,
+    onClickList: List<() -> Unit>
+) {
     Column(modifier = modifier) {
         AccountTitleView(title = title)
 
         Column(modifier = roundedSquareLargeModifier.padding(Paddings.xlarge)) {
-            subTitleList.forEach {
-                Row(modifier = Modifier.padding(vertical = Paddings.medium),verticalAlignment = Alignment.CenterVertically) {
+            subTitleList.forEachIndexed { index, it ->
+                Row(
+                    modifier = Modifier
+                        .padding(vertical = Paddings.medium)
+                        .clickable (onClick =  onClickList[index]),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(text = stringResource(id = it))
                     Spacer(modifier = Modifier.weight(1f))
                     if (it == AccountText.VERSION.id) {
@@ -131,10 +141,17 @@ fun ModelListView(
                 .background(Color.White)
         ) {
             items(modelList.size) {
-                RoundedSquareImageItem(imageUri = modelList[it].modelImg.toUri(), icon = null) {
-                    fittingViewModel.setFittingInfoModelId(modelList[it].modelId.toString())
-                    navHostController.navigate(NavigationItem.FittingNav.route)
+                if(modelList[it].regist) {
+                    RoundedSquareImageItem(imageUri = modelList[it].modelImg.toUri(), icon = null) {
+                        fittingViewModel.setFittingInfoModelId(modelList[it].modelId.toString())
+                        navHostController.navigate(NavigationItem.FittingNav.route)
+                    }
+                } else {
+                    RoundedSquareImageItem(isUploading = modelList[it].regist, imageUri = modelList[it].modelImg.toUri(), icon = null) {
+
+                    }
                 }
+
             }
         }
     }

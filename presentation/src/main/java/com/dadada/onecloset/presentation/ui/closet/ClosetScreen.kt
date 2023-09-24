@@ -60,6 +60,7 @@ fun ClosetScreen(
     val networkResultState by closetViewModel.networkResultState.collectAsState()
     var closetList by remember { mutableStateOf(listOf<Closet>()) }
 
+
     LaunchedEffect(closetListState) {
         closetViewModel.getClosetList()
     }

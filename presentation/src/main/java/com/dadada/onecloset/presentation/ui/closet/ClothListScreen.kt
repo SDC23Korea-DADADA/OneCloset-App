@@ -22,6 +22,8 @@ import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
+import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 private const val TAG = "ClothListScreen"
@@ -31,6 +33,16 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
     var allClothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
+
+    var clickCourse by remember { mutableStateOf(false) }
+    if (clickCourse) {
+        PermissionRequester(
+            permission = Permissions.readExternalStoragePermission,
+            onDismissRequest = { clickCourse = !clickCourse },
+            onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) }) {
+            clickCourse = !clickCourse
+        }
+    }
 
     LaunchedEffect(Unit) {
         closetViewModel.getClothList()
@@ -53,8 +65,6 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
         }
     }
 
-    Log.d(TAG, "ClothListScreen: $clothList")
-
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +72,7 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             .padding(top = 24.dp),
         floatingActionButton = {
             CustomFloatingActionButton(icon = Icons.Default.Add) {
-                navHostController.navigate(NavigationItem.GalleryNav.route)
+                clickCourse = !clickCourse
             }
         },
     ) {

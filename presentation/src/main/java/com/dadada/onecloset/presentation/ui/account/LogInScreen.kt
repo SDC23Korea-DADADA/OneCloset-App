@@ -69,7 +69,7 @@ fun LogInScreen(
             AccountInfo(
                 accountInfo!!.accessToken,
                 accountInfo!!.refreshToken,
-                it.profileImage,
+                it.profileImg,
                 it.gender,
                 it.nickName,
                 it.email,

@@ -12,6 +12,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.domain.usecase.GetGalleryPagingDataSourceUseCase
+import com.dadada.onecloset.presentation.ui.utils.Mode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,8 @@ private const val TAG = "PhotoViewModel"
 class PhotoViewModel @Inject constructor(
     private val getGalleryPagingDataSourceUseCase: GetGalleryPagingDataSourceUseCase
 ) : ViewModel() {
+    var curMode = Mode.clothes
+
     private val _photoList = MutableStateFlow<PagingData<Photo>>(PagingData.empty())
     val photoList: StateFlow<PagingData<Photo>>
         get() = _photoList.asStateFlow()

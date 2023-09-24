@@ -38,11 +38,14 @@ import com.dadada.onecloset.presentation.ui.common.GalleryPhotoItem
 import com.dadada.onecloset.presentation.ui.common.PhotoItem
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
+import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
+import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 private const val TAG = "GalleryScreen"
 
@@ -51,6 +54,7 @@ fun GalleryScreen(
     navController: NavHostController,
     photoViewModel: PhotoViewModel = hiltViewModel(),
     closetViewModel: ClosetViewModel,
+    fittingViewModel: FittingViewModel
 ) {
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     NetworkResultHandler(state = closetAnalysisState) {
@@ -65,9 +69,7 @@ fun GalleryScreen(
 
     val pagingPhotos = photoViewModel.photoList.collectAsLazyPagingItems()
     val isCheckedIdx = photoViewModel.isCheckedIdx.collectAsState()
-    var onClick by remember {
-        mutableStateOf(false)
-    }
+    var onClick by remember { mutableStateOf(false) }
 
     if(onClick) {
         PermissionRequester(
@@ -88,7 +90,9 @@ fun GalleryScreen(
                 navController = navController,
                 pagingPhotos = pagingPhotos,
                 isCheckedIdx = isCheckedIdx,
-                closetViewModel = closetViewModel
+                closetViewModel = closetViewModel,
+                photoViewModel = photoViewModel,
+                fittingViewModel = fittingViewModel
             )
         }
     ) {
@@ -124,8 +128,12 @@ fun GalleryHeader(
     navController: NavHostController,
     pagingPhotos: LazyPagingItems<Photo>,
     isCheckedIdx: State<Int>,
-    closetViewModel: ClosetViewModel
+    fittingViewModel: FittingViewModel,
+    closetViewModel: ClosetViewModel,
+    photoViewModel: PhotoViewModel
 ) {
+    var showToast by remember { mutableStateOf(false) }
+    if(showToast) { ShowToast(text = "모델 등록에 약 2분이 소요돼요!") }
     TopAppBar(
         modifier = Modifier.padding(vertical = 8.dp),
         title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
@@ -139,8 +147,17 @@ fun GalleryHeader(
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 onClick = {
-                    closetViewModel.clothesInfo.image = pagingPhotos[isCheckedIdx.value]?.uri.toString()
-                    closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+                    if(isCheckedIdx.value == -1) {
+                        return@Button
+                    }
+                    if(photoViewModel.curMode == Mode.clothes) {
+                        closetViewModel.clothesInfo.image = pagingPhotos[isCheckedIdx.value]?.uri.toString()
+                        closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+                    } else {
+                        fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+                        showToast = true
+                        navController.popBackStack()
+                    }
                 }) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
             }
