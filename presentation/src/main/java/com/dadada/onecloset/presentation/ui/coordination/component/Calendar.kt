@@ -62,7 +62,7 @@ fun HorizontalCalendar(
         initialPage = initialPage,
         initialPageOffsetFraction = 0f
     ) {
-        12
+        (config.yearRange.last - config.yearRange.first) * 12
     }
 
     LaunchedEffect(pagerState.currentPage) {
@@ -77,7 +77,6 @@ fun HorizontalCalendar(
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         val headerText = currentMonth.dateFormat("yyyy년 M월")
-        val pageCount = (config.yearRange.last - config.yearRange.first) * 12
         CalendarHeader(
             modifier = Modifier.padding(20.dp), text = headerText
         )

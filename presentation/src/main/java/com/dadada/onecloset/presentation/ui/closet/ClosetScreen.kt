@@ -82,6 +82,7 @@ fun ClosetScreen(
             containerColor = Color.White
         ) {
             BottomSheetAddCloset(closetViewModel)
+            Spacer(modifier = Modifier.size(56.dp))
         }
         
 //        AlertDialog(onDismissRequest = { /*TODO*/ }, confirmButton = { /*TODO*/ }, text = {

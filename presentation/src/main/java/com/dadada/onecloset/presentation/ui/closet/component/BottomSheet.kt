@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
@@ -71,6 +72,7 @@ fun SelectClosetBottomSheet(
             Spacer(modifier = Modifier.size(Paddings.large))
 
             ClosetListView(closetList = closetList, onClick = onClick)
+            Spacer(modifier = Modifier.size(56.dp))
         }
     }
 }
@@ -141,6 +143,7 @@ fun PutClothAdditionalInfoBottomSheet(
             }) {
                 Text(text = "등록")
             }
+            Spacer(modifier = Modifier.size(56.dp))
         }
     }
 }

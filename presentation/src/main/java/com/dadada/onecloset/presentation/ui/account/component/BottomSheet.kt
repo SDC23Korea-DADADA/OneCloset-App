@@ -1,5 +1,7 @@
 package com.dadada.onecloset.presentation.ui.account.component
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -11,6 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
 import com.dadada.onecloset.presentation.ui.theme.BackGround
@@ -47,5 +51,6 @@ fun FittingModelListBottomSheet(
         containerColor = BackGround
     ) {
         ModelListView(navHostController, modelList, fittingViewModel)
+        Spacer(modifier = Modifier.size(56.dp))
     }
 }
