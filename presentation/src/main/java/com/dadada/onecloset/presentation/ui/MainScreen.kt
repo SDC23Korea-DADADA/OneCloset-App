@@ -132,7 +132,7 @@ fun MainNavigationScreen(
             MainTabScreen(navController, fittingViewModel)
         }
         composable(route = CameraNav.route) {
-            CameraScreen()
+            CameraScreen(navController, closetViewModel = closetViewModel)
         }
         composable(route = ClosetDetailNav.route) {
             val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }

@@ -66,7 +66,7 @@ class ClosetRepositoryImpl @Inject constructor(
         val inputStream = context.contentResolver.openInputStream(Uri.parse(image))
         val bitmap = BitmapFactory.decodeStream(inputStream)
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val byteArray = baos.toByteArray()
 
         val imageRequestBody = RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)
