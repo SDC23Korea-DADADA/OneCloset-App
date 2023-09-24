@@ -136,6 +136,7 @@ fun MainNavigationScreen(
         }
         composable(route = MainTabNav.route) {
             photoViewModel.curMode = Mode.clothes
+            photoViewModel.setCheckedIndex(-1)
             MainTabScreen(navController, fittingViewModel)
         }
         composable(route = CameraNav.route) {

@@ -9,6 +9,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +27,8 @@ import com.dadada.onecloset.presentation.ui.common.CircleImageView
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.Mode
+import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
+import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
@@ -40,10 +44,19 @@ fun MyPageScreen(
     val appModelContents = AccountText.appModelContents
     val accountInfo by accountViewModel.accountInfo.collectAsState()
 
+    var clickCourse by remember { mutableStateOf(false) }
+    if (clickCourse) {
+        PermissionRequester(
+            permission = Permissions.readExternalStoragePermission,
+            onDismissRequest = { clickCourse = !clickCourse },
+            onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) }) {
+            clickCourse = !clickCourse
+        }
+    }
 
     val onClickModelRegister = {
         photoViewModel.curMode = Mode.model
-        navHostController.navigate(NavigationItem.GalleryNav.route)
+        clickCourse = !clickCourse
     }
     val onClickModel = listOf(onClickModelRegister)
 

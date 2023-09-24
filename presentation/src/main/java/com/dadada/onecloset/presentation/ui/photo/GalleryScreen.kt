@@ -147,6 +147,9 @@ fun GalleryHeader(
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 onClick = {
+                    if(isCheckedIdx.value == -1) {
+                        return@Button
+                    }
                     if(photoViewModel.curMode == Mode.clothes) {
                         closetViewModel.clothesInfo.image = pagingPhotos[isCheckedIdx.value]?.uri.toString()
                         closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
