@@ -42,4 +42,5 @@ interface CodiService {
 
     @GET("api/fitting/list/month/{date}")
     suspend fun getCodiListByMonth(@Path(value = "date") date: String) : CodiListResponse
+
 }

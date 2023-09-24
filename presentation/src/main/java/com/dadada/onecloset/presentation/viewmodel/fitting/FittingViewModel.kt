@@ -11,6 +11,7 @@ import com.dadada.onecloset.domain.usecase.fitting.DeleteModelUseCase
 import com.dadada.onecloset.domain.usecase.fitting.GetFittingResultUseCase
 import com.dadada.onecloset.domain.usecase.fitting.GetModelListUseCase
 import com.dadada.onecloset.domain.usecase.fitting.PutFittingResultUseCase
+import com.dadada.onecloset.domain.usecase.fitting.PutFittingResultWithDateUseCase
 import com.dadada.onecloset.domain.usecase.fitting.PutModelUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import java.nio.file.Path
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +30,8 @@ class FittingViewModel @Inject constructor(
     private val getFittingResultUseCase: GetFittingResultUseCase,
     private val getModelListUseCase: GetModelListUseCase,
     private val deleteModelUseCase: DeleteModelUseCase,
-    private val putFittingResultUseCase: PutFittingResultUseCase
+    private val putFittingResultUseCase: PutFittingResultUseCase,
+    private val putFittingResultWithDateUseCase: PutFittingResultWithDateUseCase
 ) : ViewModel() {
     private lateinit var fittingInfo: FittingInfo
     var fittingResult: FittingResult = FittingResult()
@@ -70,8 +73,15 @@ class FittingViewModel @Inject constructor(
     }
 
     fun putFittingResult() = viewModelScope.launch {
+        fittingResultForSave.clothesIdList= fittingResultForSave.clothesIdList.filter { it != -1 }
         _fittingPutState.value = NetworkResult.Loading
         _fittingPutState.emit(putFittingResultUseCase.invoke(fittingResultForSave))
+    }
+
+    fun putFittingResultWithDate(date: String) = viewModelScope.launch {
+        fittingResultForSave.clothesIdList= fittingResultForSave.clothesIdList.filter { it != -1 }
+        _fittingPutState.value = NetworkResult.Loading
+        _fittingPutState.emit(putFittingResultWithDateUseCase.invoke(date, fittingResultForSave))
     }
 
     fun setFittingInfoModelId(modelId: String) {

@@ -1,11 +1,13 @@
 package com.dadada.onecloset.presentation.ui.fitting
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -16,11 +18,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
 import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
 import com.dadada.onecloset.presentation.ui.common.screenModifier
+import com.dadada.onecloset.presentation.ui.fitting.component.MyDatePickerDialog
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
+
+private const val TAG = "FittingResultScreen"
 
 @Composable
 fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: FittingViewModel) {
@@ -38,6 +45,38 @@ fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: 
         tabWidthStateList
     }
 
+    var date by remember {
+        mutableStateOf("Open date picker dialog")
+    }
+
+    var showDatePicker by remember {
+        mutableStateOf(false)
+    }
+
+    val putResultState by fittingViewModel.fittingPutState.collectAsState()
+    NetworkResultHandler(state = putResultState) {
+        navHostController.navigate(NavigationItem.CoordinationNav.route) {
+            popUpTo(NavigationItem.GalleryNav.route) {inclusive = true}
+        }
+    }
+
+    if (showDatePicker) {
+        MyDatePickerDialog(
+            onDateSelected = { date = it },
+            onDismiss = { showDatePicker = false },
+            onPass = {
+                fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
+                fittingViewModel.putFittingResult()
+            },
+            onPlan = {
+                fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
+                fittingViewModel.putFittingResultWithDate(it)
+            }
+        )
+    }
+
+    Log.d(TAG, "FittingResultScreen: $date")
+
     Column(
         modifier = screenModifier
     ) {
@@ -49,22 +88,32 @@ fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: 
             tabClick = handleTabClick
         )
 
-        when(selectedTabIndex) {
-            0 -> AsyncImage(modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .padding(Paddings.medium), model = fittingViewModel.fittingResult.originImg, contentDescription = "")
-            else -> AsyncImage(modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .padding(Paddings.medium), model = fittingViewModel.fittingResult.fittingImg, contentDescription = "")
+        when (selectedTabIndex) {
+            0 -> AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .padding(Paddings.medium),
+                model = fittingViewModel.fittingResult.originImg,
+                contentDescription = ""
+            )
+
+            else -> AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .padding(Paddings.medium),
+                model = fittingViewModel.fittingResult.fittingImg,
+                contentDescription = ""
+            )
         }
 
         Spacer(modifier = Modifier.weight(1f))
 
         RowWithTwoButtons(left = "돌아가기", right = "등록하기", onClickLeft = { /*TODO*/ }) {
-            fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
-            fittingViewModel.putFittingResult()
+//            fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
+//            fittingViewModel.putFittingResult()
+            showDatePicker = !showDatePicker
         }
     }
 }
