@@ -16,7 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
@@ -29,8 +29,8 @@ private const val TAG = "ClothListScreen"
 @Composable
 fun ClothListScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
     val clothListState by closetViewModel.clothListState.collectAsState()
-    var clothList by remember { mutableStateOf(listOf<Cloth>()) }
-    var allClothList by remember { mutableStateOf(listOf<Cloth>()) }
+    var clothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
+    var allClothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
 
     LaunchedEffect(Unit) {
         closetViewModel.getClothList()

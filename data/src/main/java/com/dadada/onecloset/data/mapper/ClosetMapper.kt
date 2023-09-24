@@ -7,7 +7,7 @@ import com.dadada.onecloset.data.model.closet.response.ClothListResponse
 import com.dadada.onecloset.data.model.closet.response.ClothRegisterResponse
 import com.dadada.onecloset.data.model.closet.response.ClothResponse
 import com.dadada.onecloset.domain.model.Closet
-import com.dadada.onecloset.domain.model.Cloth
+import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.domain.model.ClothAnalysis
 import com.dadada.onecloset.domain.model.ClothCareCourse
 
@@ -15,11 +15,11 @@ fun ClosetListResponse.toDomain(): List<Closet> {
     return data
 }
 
-fun ClothListResponse.toDomain() : List<Cloth> {
+fun ClothListResponse.toDomain() : List<ClothesInfo> {
     return data
 }
 
-fun ClothResponse.toDomain() : Cloth {
+fun ClothResponse.toDomain() : ClothesInfo {
     return data
 }
 

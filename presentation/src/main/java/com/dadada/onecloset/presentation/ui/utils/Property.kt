@@ -1,12 +1,7 @@
 package com.dadada.onecloset.presentation.ui.utils
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import com.dadada.onecloset.presentation.ui.theme.BeigeColor
-import com.dadada.onecloset.presentation.ui.theme.BrownColor
-import com.dadada.onecloset.presentation.ui.theme.GoldColor
-import com.dadada.onecloset.presentation.ui.theme.KhakiColor
-import com.dadada.onecloset.presentation.ui.theme.LavenderColor
-import com.dadada.onecloset.presentation.ui.theme.MintColor
 import com.dadada.onecloset.presentation.ui.theme.NavyColor
 import com.dadada.onecloset.presentation.ui.theme.PinkColor
 import com.dadada.onecloset.presentation.ui.theme.PurpleColor
@@ -29,7 +24,7 @@ sealed class Type(val id: Int, val category: String, val name: String) {
 
     object Coat: Type(31, "아우터", "코트")
     object Jacket: Type(32, "아우터", "재킷")
-    object Jumper: Type(33, "아우터", "점퍼/ZIP-UP")
+    object Jumper: Type(33, "아우터", "점퍼/짚업")
     object Padding: Type(34, "아우터", "패딩")
     object Cardigan: Type(36, "아우터", "가디건")
     object Vest: Type(37, "아우터", "베스트")
@@ -59,12 +54,12 @@ sealed class Material(val id: Int, val name: String) {
     object Leader: Material(8, "가죽")
     object Knit: Material(2, "니트")
     object Denim: Material(3, "데님")
-    object Cotton: Material(1, "면/폴리")
-    object Chiffon: Material(4, "쉬폰")
-    object Corduroy: Material(9, "코드류이")
+    object Cotton: Material(1, "면")
+    object Chiffon: Material(4, "시폰")
+    object Corduroy: Material(9, "코듀로이")
     object Tweed: Material(6, "트위드")
     object Padding: Material(5, "패딩")
-    object Fur: Material(7, "퍼/플리스")
+    object Fur: Material(7, "플리스")
     object Other: Material(0, "기타")
 
     companion object {
@@ -75,26 +70,28 @@ sealed class Material(val id: Int, val name: String) {
 }
 
 sealed class ClothColor(val id: Int, val color: Color) {
-    object Black: ClothColor(1, Color.Black)
-    object Gold: ClothColor(2, GoldColor)
-    object Gray: ClothColor(3, Color.Gray)
-    object Green: ClothColor(4, Color.Green)
+    object Black: ClothColor(1, Color(0xFF000000))
+    object Gold: ClothColor(2, Color(0xFF000080))
+    object Gray: ClothColor(3, Color(0xFF888888))
+    object Green: ClothColor(4, Color(0xFF008000))
     object Navy: ClothColor(5, NavyColor)
-    object Lavender: ClothColor(6, LavenderColor)
-    object Red: ClothColor(7, Color.Red)
-    object Mint: ClothColor(8, MintColor)
-    object Beige: ClothColor(9, BeigeColor)
-    object Brown: ClothColor(10, BrownColor)
-    object Blue: ClothColor(11, Color.Blue)
-    object SkyBlue: ClothColor(12, SkyBlueColor)
+    object Lavender: ClothColor(6, Color(0xFFE6E6FA))
+    object Red: ClothColor(7, Color(0xFFFF0000))
+    object Mint: ClothColor(8, Color(0xFF92B8B1))
+    object Beige: ClothColor(9, Color(0xFFD4B886))
+    object Brown: ClothColor(10, Color(0xFF964b00))
+    object Blue: ClothColor(11, Color(0xFF0000FF))
+    object SkyBlue: ClothColor(12, Color(0xFF87CEEB))
     object Silver: ClothColor(13, SilverColor)
-    object Yellow: ClothColor(14, Color.Yellow)
-    object Wine: ClothColor(15, WineColor)
-    object Khaki: ClothColor(16, KhakiColor)
-    object Purple: ClothColor(17, PurpleColor)
-    object Pink: ClothColor(18, PinkColor)
-    object White: ClothColor(19, Color.White)
-    object Other: ClothColor(20, Color.White)
+    object Yellow: ClothColor(14, Color(0xFFFFFF00))
+    object Wine: ClothColor(15, Color(0xFF9F0A28))
+    object Khaki: ClothColor(16, Color(0xFF8f784b))
+    object Purple: ClothColor(17, Color(0xFF800080))
+    object Pink: ClothColor(18, Color(0xFFFFC0CB))
+
+    object Orange: ClothColor(21, Color(0xFFFFA500))
+    object White: ClothColor(19, Color(0xFFFFFFFF))
+    object Other: ClothColor(22, Color.White)
 
     companion object {
         fun getAllColor(): List<ClothColor> {

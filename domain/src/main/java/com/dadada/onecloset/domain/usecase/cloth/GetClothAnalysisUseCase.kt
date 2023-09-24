@@ -1,6 +1,5 @@
 package com.dadada.onecloset.domain.usecase.cloth
 
-import com.dadada.onecloset.domain.model.Cloth
 import com.dadada.onecloset.domain.model.ClothAnalysis
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.repository.ClosetRepository

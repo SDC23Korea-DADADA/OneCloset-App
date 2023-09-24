@@ -5,5 +5,6 @@ data class ClothCareCourse(
     val careTip: List<String>,
     val dryer: String,
     val laundry: String,
-    val laundryTip: List<String>
+    val laundryTip: List<String>,
+    val image: String
 )

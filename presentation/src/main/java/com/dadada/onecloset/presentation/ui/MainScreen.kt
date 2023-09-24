@@ -1,6 +1,5 @@
 package com.dadada.onecloset.presentation.ui
 
-import android.net.Uri
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -13,7 +12,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -50,7 +47,9 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.dadada.onecloset.presentation.ui.NavigationItem.*
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
+import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 private const val TAG = "MainScreen"
 
@@ -115,6 +114,8 @@ fun MainNavigationScreen(
     startDestination: String
 ) {
     val closetViewModel: ClosetViewModel = hiltViewModel()
+    val mainViewModel: MainViewModel = hiltViewModel()
+    val fittingViewModel: FittingViewModel = hiltViewModel()
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
@@ -128,10 +129,10 @@ fun MainNavigationScreen(
             LogInScreen(navHostController = navController)
         }
         composable(route = MainTabNav.route) {
-            MainTabScreen(navController)
+            MainTabScreen(navController, fittingViewModel)
         }
         composable(route = CameraNav.route) {
-            CameraScreen()
+            CameraScreen(navController, closetViewModel = closetViewModel)
         }
         composable(route = ClosetDetailNav.route) {
             val parentEntry = remember(it) { navController.getBackStackEntry(NavigationRouteName.TAB) }
@@ -154,16 +155,16 @@ fun MainNavigationScreen(
             }
         }
         composable(route = AccountNav.route) {
-            MyPageScreen()
+            MyPageScreen(navHostController = navController, mainViewModel = mainViewModel)
         }
         composable(route = FittingNav.route) {
-            FittingScreen(navHostController = navController)
+            FittingScreen(navHostController = navController, fittingViewModel = fittingViewModel)
         }
         composable(route = CoordinationNav.route) {
             CoordinationScreen(navHostController = navController)
         }
         composable(route = FittingResultNav.route) {
-            FittingResultScreen()
+            FittingResultScreen(navController, fittingViewModel)
         }
         composable(route = PhotoNav.route) {
             PhotoScreen()

@@ -1,7 +1,9 @@
 package com.dadada.onecloset.presentation.ui.photo
 
-import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,21 +28,46 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.circleShapeModifier
-import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.ujizin.camposer.CameraPreview
 import com.ujizin.camposer.state.CamSelector
+import com.ujizin.camposer.state.CameraState
+import com.ujizin.camposer.state.ImageCaptureResult
 import com.ujizin.camposer.state.rememberCameraState
-import java.io.File
 import kotlin.math.min
 
+private const val TAG = "CameraScreen"
+
+private val fileDataSource = FileDataSource()
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun CameraScreen() {
+fun CameraScreen(
+    navHostController: NavHostController,
+    photoViewModel: PhotoViewModel = hiltViewModel(),
+    closetViewModel: ClosetViewModel,
+) {
     val cameraState = rememberCameraState()
     val cameraSelector by remember { mutableStateOf(CamSelector.Back) }
     val context = LocalContext.current
     var sliderPosition by remember { mutableStateOf(1f) }
+
+    val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
+    NetworkResultHandler(state = closetAnalysisState) {
+        closetViewModel.clothesInfo.image = it.image
+        closetViewModel.clothesInfo.material = it.material
+        closetViewModel.clothesInfo.colorCode = it.colorCode
+        closetViewModel.clothesInfo.type = it.type
+        closetViewModel.resetNetworkStates()
+        navHostController.navigate(NavigationItem.ClothAnalysisNav.route)
+    }
 
     CameraPreview(
         cameraState = cameraState,
@@ -56,7 +84,17 @@ fun CameraScreen() {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Box(modifier = circleShapeModifier.size(64.dp)) {
+            Box(modifier = circleShapeModifier
+                .size(64.dp)
+                .clickable {
+                    cameraState.takePicture(
+                        fileDataSource.imageContentValues
+                    ) {
+                        closetViewModel.clothesInfo.image =
+                            fileDataSource.getLastPictureUriPostQ(context).toString()
+                        closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+                    }
+                }) {
                 Icon(
                     modifier = Modifier.align(Alignment.Center),
                     painter = painterResource(id = R.drawable.ic_camera),
@@ -102,6 +140,3 @@ fun DrawGuidelinesAndFilter() {
 
 }
 
-private fun Context.createNewFile() = File(
-    filesDir, "${System.currentTimeMillis()}.jpg"
-).apply { createNewFile() }

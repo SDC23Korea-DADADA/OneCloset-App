@@ -54,9 +54,10 @@ fun GalleryScreen(
 ) {
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     NetworkResultHandler(state = closetAnalysisState) {
-        closetViewModel.cloth.material = it.material
-        closetViewModel.cloth.colorCode = it.colorCode
-        closetViewModel.cloth.type = it.type
+        closetViewModel.clothesInfo.image = it.image
+        closetViewModel.clothesInfo.material = it.material
+        closetViewModel.clothesInfo.colorCode = it.colorCode
+        closetViewModel.clothesInfo.type = it.type
         closetViewModel.resetNetworkStates()
         navController.navigate(NavigationItem.ClothAnalysisNav.route)
     }
@@ -138,8 +139,8 @@ fun GalleryHeader(
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 onClick = {
-                    closetViewModel.cloth.img = pagingPhotos[isCheckedIdx.value]?.uri.toString()
-                    closetViewModel.putClothAnalysis(closetViewModel.cloth.img)
+                    closetViewModel.clothesInfo.image = pagingPhotos[isCheckedIdx.value]?.uri.toString()
+                    closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
                 }) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
             }

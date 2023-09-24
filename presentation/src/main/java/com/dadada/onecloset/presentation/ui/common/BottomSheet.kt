@@ -31,6 +31,7 @@ import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -140,7 +141,6 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
         Button(modifier = Modifier.fillMaxWidth(), onClick = {
             closetViewModel.putCloset(
                 Closet(
-                    closetId = 5,
                     colorCode = colorToHexString(selectedColor.value),
                     icon = iconResIds[selectedIconIdx.value],
                     name = "TEST 옷장"
@@ -157,11 +157,12 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
 fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick: (String) -> Unit) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    var chipIdx by remember {
-        mutableStateOf(0)
-    }
+    var chipIdx by remember { mutableStateOf(0) }
     val category = listOf("상의", "하의", "아우터", "한벌옷")
-    val list = Type.getTypesByCategory("상의")
+    var list by remember { mutableStateOf(Type.getTypesByCategory(category[chipIdx])) }
+    LaunchedEffect(key1 = chipIdx) {
+        list = Type.getTypesByCategory(category[chipIdx])
+    }
     ModalBottomSheet(
         sheetState = sheetState, onDismissRequest = {
             scope.launch {

@@ -8,8 +8,8 @@ import com.dadada.onecloset.data.model.closet.response.ClothListResponse
 import com.dadada.onecloset.data.model.closet.response.ClothRegisterResponse
 import com.dadada.onecloset.data.model.closet.response.ClothResponse
 import com.dadada.onecloset.domain.model.Closet
+import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -39,19 +39,8 @@ interface ClosetService {
     @GET("api/clothes/list/{id}")
     suspend fun getClothList(@Path(value = "id") id: String) : ClothListResponse
 
-    @Multipart
     @POST("api/clothes")
-    suspend fun putCloth(
-        @Part image: MultipartBody.Part,
-        @Part type: MultipartBody.Part,
-        @Part colorCode: MultipartBody.Part,
-        @Part material: MultipartBody.Part,
-        @Part description: MultipartBody.Part,
-        @Part hashtagList: MultipartBody.Part,
-        @Part weatherList: MultipartBody.Part,
-        @Part tpoList: MultipartBody.Part,
-        @Part closetId: MultipartBody.Part
-    ) : ClothRegisterResponse
+    suspend fun putCloth(@Body clothesInfoRequest: ClothesInfo) : ClothRegisterResponse
 
 
     @GET("api/clothes/{id}")
@@ -66,4 +55,7 @@ interface ClosetService {
 
     @GET("/api/clothes/material/{material}")
     suspend fun getClothCareCourse(@Path(value = "material") material: String) : ClothCareCourseResponse
+
+    @PUT("/api/clothes")
+    suspend fun updateClothes(@Body cloth: ClothesInfo): ServerResponse
 }

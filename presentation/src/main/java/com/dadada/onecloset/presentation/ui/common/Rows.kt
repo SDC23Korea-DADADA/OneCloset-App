@@ -22,6 +22,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -110,14 +111,15 @@ fun ColorInformRow(title: String, content: Color) {
         Text(
             modifier = Modifier.padding(start = Paddings.medium),
             text = title,
-            style = Typography.titleMedium
+            style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold)
         )
         Box(
             modifier = Modifier
+                .shadow(3.dp, CircleShape)
                 .clip(CircleShape)
                 .size(36.dp)
                 .background(content)
-                .border(1.dp, content, CircleShape)
+                //.border(1.dp, PrimaryBlack, CircleShape)
         )
     }
 }
@@ -134,7 +136,7 @@ fun ClothInformRow(title: String, content: String) {
         Text(
             modifier = Modifier.padding(start = 8.dp),
             text = title,
-            style = Typography.titleMedium
+            style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold)
         )
         SuggestionChip(
             onClick = { },
