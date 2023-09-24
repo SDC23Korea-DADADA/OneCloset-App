@@ -14,19 +14,34 @@ private const val TAG = "NetworkResultHandler"
 @Composable
 fun <T> NetworkResultHandler(state: NetworkResult<T>, action: (data: T) -> Unit) {
     var isLoading by remember { mutableStateOf(false) }
+    var showToast by remember { mutableStateOf(false) }
     if(isLoading) {
         GalaxyLoadingView()
+    }
+
+    if(showToast) {
+        ShowToast(text = "네트워크 연결을 확인해주세요.")
     }
 
     LaunchedEffect(state) {
         Log.d(TAG, "NetworkResultHandler: ${state}")
         when (state) {
-            is NetworkResult.Error -> { } // Handle the error here.
-            NetworkResult.Idle -> { isLoading = false } // Handle the idle state here.
-            NetworkResult.Loading -> { isLoading = true }
+            is NetworkResult.Error -> {
+                isLoading = false
+                showToast = true
+            } // Handle the error here.
+            NetworkResult.Idle -> {
+                isLoading = false
+                showToast = false
+            } // Handle the idle state here.
+            NetworkResult.Loading -> {
+                isLoading = true
+                showToast = false
+            }
             is NetworkResult.Success -> {
                 isLoading = false
                 action(state.data)
+                showToast = false
             }
         }
     }

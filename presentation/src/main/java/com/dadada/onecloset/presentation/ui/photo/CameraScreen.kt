@@ -36,6 +36,7 @@ import com.dadada.onecloset.presentation.ui.common.circleShapeModifier
 import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
@@ -72,6 +73,9 @@ fun CameraScreen(
         navHostController.navigate(NavigationItem.ClothAnalysisNav.route)
     }
 
+    var showToast by remember { mutableStateOf(false) }
+    if(showToast) { ShowToast(text = "모델 등록에 약 1분이 소요돼요!") }
+
     CameraPreview(
         cameraState = cameraState,
         camSelector = cameraSelector,
@@ -99,6 +103,8 @@ fun CameraScreen(
                             closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
                         } else {
                             fittingViewModel.putModel(fileDataSource.getLastPictureUriPostQ(context).toString())
+                            showToast = true
+                            navHostController.popBackStack()
                         }
                     }
                 }) {

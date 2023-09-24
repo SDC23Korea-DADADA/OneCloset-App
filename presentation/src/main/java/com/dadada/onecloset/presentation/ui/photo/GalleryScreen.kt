@@ -42,6 +42,7 @@ import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
@@ -68,9 +69,7 @@ fun GalleryScreen(
 
     val pagingPhotos = photoViewModel.photoList.collectAsLazyPagingItems()
     val isCheckedIdx = photoViewModel.isCheckedIdx.collectAsState()
-    var onClick by remember {
-        mutableStateOf(false)
-    }
+    var onClick by remember { mutableStateOf(false) }
 
     if(onClick) {
         PermissionRequester(
@@ -133,6 +132,8 @@ fun GalleryHeader(
     closetViewModel: ClosetViewModel,
     photoViewModel: PhotoViewModel
 ) {
+    var showToast by remember { mutableStateOf(false) }
+    if(showToast) { ShowToast(text = "모델 등록에 약 2분이 소요돼요!") }
     TopAppBar(
         modifier = Modifier.padding(vertical = 8.dp),
         title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
@@ -151,6 +152,7 @@ fun GalleryHeader(
                         closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
                     } else {
                         fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+                        showToast = true
                         navController.popBackStack()
                     }
                 }) {
