@@ -1,6 +1,5 @@
 package com.dadada.onecloset.presentation.ui.coordination.component
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,16 +18,13 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,18 +36,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.CodiList
+import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.model.HorizontalCalendarConfig
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
-import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.ui.utils.dateFormat
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
-import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -119,7 +115,11 @@ fun HorizontalCalendar(
                     onSelectedDate = { date ->
                         currentSelectedDate = date
                         codiViewModel.codiRegisterInfo.date = date.toString()
-                    }, navController = navController, codiList = codiList, photoViewModel = photoViewModel
+                    },
+                    navController = navController,
+                    codiList = codiList,
+                    photoViewModel = photoViewModel,
+                    codiViewModel = codiViewModel
                 )
             }
         }
@@ -147,7 +147,8 @@ fun CalendarMonthItem(
     onSelectedDate: (LocalDate) -> Unit,
     navController: NavHostController,
     codiList: CodiList,
-    photoViewModel: PhotoViewModel
+    photoViewModel: PhotoViewModel,
+    codiViewModel: CodiViewModel
 ) {
     val lastDay by remember { mutableStateOf(currentDate.lengthOfMonth()) }
     val firstDayOfWeek by remember { mutableStateOf(currentDate.dayOfWeek.value) }
@@ -170,11 +171,13 @@ fun CalendarMonthItem(
                 }
             }
             items(days) { day ->
-                var imageUrl: String? = ""
-                imageUrl =
-                    codiList.fittingList.find { it.wearingAtDay == "$currentMonth-$day" }?.fittingThumbnailImg
-                imageUrl =
-                    codiList.codiList.find { it.wearingAtDay == "$currentMonth-$day" }?.thumbnailImg
+                val curFittingItem = codiList.fittingList.find { it.wearingAtDay == "$currentMonth-$day" }
+                val curDailyItem = codiList.codiList.find { it.wearingAtDay == "$currentMonth-$day" }
+
+                var imageUrl = curFittingItem?.fittingThumbnailImg
+                if (curDailyItem != null) {
+                    imageUrl = curDailyItem.thumbnailImg
+                }
 
                 val date = currentDate.withDayOfMonth(day)
                 val isSelected = remember(selectedDate) {
@@ -188,7 +191,10 @@ fun CalendarMonthItem(
                     onSelectedDate = onSelectedDate,
                     navController = navController,
                     imageUrl = imageUrl,
-                    photoViewModel = photoViewModel
+                    codiViewModel = codiViewModel,
+                    photoViewModel = photoViewModel,
+                    curFittingItem = curFittingItem,
+                    curDailyItem = curDailyItem
                 )
             }
         }
@@ -204,8 +210,11 @@ fun CalendarDay(
     isSelected: Boolean,
     onSelectedDate: (LocalDate) -> Unit,
     navController: NavHostController,
+    codiViewModel: CodiViewModel,
     photoViewModel: PhotoViewModel,
-    imageUrl: String?
+    imageUrl: String?,
+    curFittingItem: Fitting?,
+    curDailyItem: Codi?
 ) {
     val current = LocalDate.now()
     val hasEvent = false
@@ -213,9 +222,15 @@ fun CalendarDay(
         onSelectedDate(date)
         photoViewModel.curMode = Mode.codi
         navController.navigate(NavigationItem.GalleryNav.route)
-    } else Modifier.clickable {
-        onSelectedDate(date)
-        navController.navigate(NavigationItem.CoordinationResultNav.route)
+    } else if (imageUrl == null && date > current) {
+        modifier
+    } else {
+        modifier.clickable {
+            onSelectedDate(date)
+            codiViewModel.curFittingItem = curFittingItem
+            codiViewModel.curDailyCodiItem = curDailyItem
+            navController.navigate(NavigationItem.CoordinationResultNav.route)
+        }
     }
     Box(
         modifier = modifierClickable
@@ -236,20 +251,12 @@ fun CalendarDay(
         }
 
         Text(
-            modifier = Modifier.padding(4.dp),
             textAlign = TextAlign.Center,
             text = date.dayOfMonth.toString(),
             fontWeight = FontWeight.Bold,
             color = if (imageUrl == null) Color.Black else Color.White
         )
 
-        if (hasEvent) {
-            Box(
-                modifier = Modifier
-                    .size(4.dp)
-                    .clip(shape = RoundedCornerShape(4.dp))
-            )
-        }
     }
 }
 

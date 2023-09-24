@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.NetworkResult
+import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.CodiRegisterInfo
+import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.domain.usecase.codi.DeleteCodiUseCase
 import com.dadada.onecloset.domain.usecase.codi.GetCodiListByMonthUseCase
 import com.dadada.onecloset.domain.usecase.codi.GetCodiListUseCase
@@ -28,6 +30,9 @@ class CodiViewModel @Inject constructor(
     private val getCodiListByMonthUseCase: GetCodiListByMonthUseCase,
 ) : ViewModel() {
     val codiRegisterInfo = CodiRegisterInfo()
+    var curFittingItem: Fitting? = Fitting()
+    var curDailyCodiItem: Codi? = Codi()
+
     private val _codiListState = MutableStateFlow<NetworkResult<CodiList>>(NetworkResult.Idle)
     val codiListState = _codiListState.asStateFlow()
 
@@ -36,6 +41,8 @@ class CodiViewModel @Inject constructor(
 
     private val _codiPutState = MutableStateFlow<NetworkResult<Long>>(NetworkResult.Idle)
     val codiPutState = _codiPutState.asStateFlow()
+
+
     fun getCodiList() = viewModelScope.launch {
         _codiListState.value = NetworkResult.Loading
         _codiListState.emit(getCodiListUseCase.invoke())

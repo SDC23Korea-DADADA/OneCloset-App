@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.coordination
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -56,7 +57,7 @@ fun CoordinationScreen(
     }
 
     Column(
-        modifier = screenModifier
+        modifier = screenModifier,
     ) {
         CustomTabRow(
             modifier = Modifier,
@@ -65,6 +66,7 @@ fun CoordinationScreen(
             tabWidths = tabWidths,
             tabClick = handleTabClick
         )
+
 
         when (selectedTabIndex) {
             0 -> CoordinationCalendarScreen(navHostController = navHostController, codiViewModel, photoViewModel = photoViewModel, codiViewModel)

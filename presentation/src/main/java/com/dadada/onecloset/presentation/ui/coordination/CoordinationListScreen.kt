@@ -3,11 +3,14 @@ package com.dadada.onecloset.presentation.ui.coordination
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Codi
@@ -23,7 +26,7 @@ fun CoordinationCodiListScreen(navHostController: NavHostController, itemList: L
 
     Column(modifier = roundedSquareLargeModifier) {
         Box(
-            modifier = roundedSquareLargeModifier.aspectRatio(1f)
+            modifier = roundedSquareLargeModifier.fillMaxSize()
         ) {
             LazyVerticalGrid(
                 modifier = Modifier
@@ -51,7 +54,7 @@ fun CoordinationFittingListScreen(navHostController: NavHostController, itemList
 
     Column(modifier = roundedSquareLargeModifier) {
         Box(
-            modifier = roundedSquareLargeModifier.aspectRatio(1f)
+            modifier = roundedSquareLargeModifier.fillMaxSize()
         ) {
             LazyVerticalGrid(
                 modifier = Modifier

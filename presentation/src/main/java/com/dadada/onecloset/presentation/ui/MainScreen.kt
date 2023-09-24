@@ -196,7 +196,7 @@ fun MainNavigationScreen(
             PhotoScreen()
         }
         composable(route = CoordinationResultNav.route) {
-            CoordinationResultScreen()
+            CoordinationResultScreen(codiViewModel)
         }
     }
 }
