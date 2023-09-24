@@ -40,7 +40,6 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             permission = Permissions.readExternalStoragePermission,
             onDismissRequest = { clickCourse = !clickCourse },
             onPermissionGranted = {
-
                 navHostController.navigate(NavigationItem.GalleryNav.route)
             }) {
             clickCourse = !clickCourse
@@ -54,6 +53,7 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
     NetworkResultHandler(state = clothListState) {
         clothList = it
         allClothList = it
+        Log.d(TAG, "ClothListScreen: $allClothList")
     }
 
     var showSelectPhotoBottomSheet by remember { mutableStateOf(false) }
