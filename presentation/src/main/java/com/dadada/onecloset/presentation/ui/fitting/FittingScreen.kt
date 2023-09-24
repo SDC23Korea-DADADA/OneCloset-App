@@ -114,7 +114,7 @@ fun FittingScreen(
             )
             Spacer(modifier = Modifier.size(12.dp))
             ClothTabGridView(
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally).padding(bottom = 56.dp),
                 navHostController = navHostController,
                 clothItems = clothList,
                 icon = R.drawable.ic_checked,
