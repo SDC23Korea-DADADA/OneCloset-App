@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
@@ -35,7 +36,6 @@ fun CoordinationCodiListScreen(navHostController: NavHostController, itemList: L
             ) {
                 items(itemList.size) {
                     RoundedSquareImageItem(
-                        modifier = roundedSquareMediumModifier,
                         imageUri = itemList[it].thumbnailImg.toUri(),
                         icon = null,
                         onClick = { },
@@ -63,10 +63,11 @@ fun CoordinationFittingListScreen(navHostController: NavHostController, itemList
             ) {
                 items(itemList.size) {
                     RoundedSquareImageItem(
-                        modifier = roundedSquareMediumModifier,
                         imageUri = itemList[it].fittingThumbnailImg.toUri(),
                         icon = null,
-                        onClick = { },
+                        onClick = {
+                                  navHostController.navigate(NavigationItem.PhotoNav.route)
+                        },
                     )
                 }
             }
