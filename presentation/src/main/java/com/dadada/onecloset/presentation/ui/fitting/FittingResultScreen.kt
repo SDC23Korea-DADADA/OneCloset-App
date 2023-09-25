@@ -55,8 +55,9 @@ fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: 
 
     val putResultState by fittingViewModel.fittingPutState.collectAsState()
     NetworkResultHandler(state = putResultState) {
+        fittingViewModel.resetNetworkStates()
         navHostController.navigate(NavigationItem.CoordinationNav.route) {
-            popUpTo(NavigationItem.GalleryNav.route) {inclusive = true}
+            popUpTo(NavigationItem.FittingNav.route) { inclusive = true }
         }
     }
 
