@@ -1,7 +1,5 @@
 package com.dadada.onecloset.presentation.ui.fitting.component
 
-import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,13 +10,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DisplayMode
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SelectableDates
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,9 +32,7 @@ import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.FittingEmptyItem
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 private const val TAG = "View"
 
@@ -108,11 +100,7 @@ fun MyDatePickerDialog(
     onPass: (String) -> Unit,
     onPlan: (String) -> Unit
 ) {
-    val datePickerState = rememberDatePickerState(selectableDates = object : SelectableDates {
-        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-            return utcTimeMillis <= System.currentTimeMillis()
-        }
-    })
+    val datePickerState = rememberDatePickerState()
 
     val selectedDate = datePickerState.selectedDateMillis?.let {
         convertMillisToDate(it)
