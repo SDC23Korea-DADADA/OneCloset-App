@@ -12,7 +12,7 @@ fun iconHandler(iconId: Int): Int {
 }
 
 fun hexStringToColor(hex: String): Color {
-    if(hex == "") {
+    if(hex == "0") {
         return Color.Magenta
     }
     return Color(android.graphics.Color.parseColor(hex))
