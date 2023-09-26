@@ -166,7 +166,8 @@ fun GalleryHeader(
                             closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
                         }
                         Mode.codi -> {
-                            codiViewModel.putCodi(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+                            codiViewModel.codiRegisterInfo.imagePath = pagingPhotos[isCheckedIdx.value]?.uri.toString()
+                            navController.navigate(NavigationItem.CoordinationRegisterNav.route)
                         }
                         else -> {
                             fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())

@@ -221,14 +221,19 @@ fun CalendarDay(
     val modifierClickable = if (imageUrl == null && date <= current) modifier.clickable {
         onSelectedDate(date)
         photoViewModel.curMode = Mode.codi
+        codiViewModel.codiRegisterInfo.date = date.toString()
         navController.navigate(NavigationItem.GalleryNav.route)
     } else if (imageUrl == null && date > current) {
         modifier
     } else {
         modifier.clickable {
             onSelectedDate(date)
-            codiViewModel.curFittingItem = curFittingItem
-            codiViewModel.curDailyCodiItem = curDailyItem
+            if (curFittingItem != null) {
+                codiViewModel.curFittingItem = curFittingItem
+            }
+            if (curDailyItem != null) {
+                codiViewModel.curDailyCodiItem = curDailyItem
+            }
             navController.navigate(NavigationItem.CoordinationResultNav.route)
         }
     }

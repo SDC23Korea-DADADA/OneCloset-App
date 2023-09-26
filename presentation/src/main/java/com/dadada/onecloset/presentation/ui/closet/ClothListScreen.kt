@@ -73,7 +73,7 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             .padding(horizontal = 16.dp)
             .padding(top = 24.dp),
         floatingActionButton = {
-            CustomFloatingActionButton(icon = Icons.Default.Add) {
+            CustomFloatingActionButton(title = "의류",icon = Icons.Default.Add) {
                 clickCourse = !clickCourse
             }
         },

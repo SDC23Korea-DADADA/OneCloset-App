@@ -30,8 +30,8 @@ class CodiViewModel @Inject constructor(
     private val getCodiListByMonthUseCase: GetCodiListByMonthUseCase,
 ) : ViewModel() {
     val codiRegisterInfo = CodiRegisterInfo()
-    var curFittingItem: Fitting? = Fitting()
-    var curDailyCodiItem: Codi? = Codi()
+    var curFittingItem: Fitting = Fitting()
+    var curDailyCodiItem: Codi = Codi()
 
     private val _codiListState = MutableStateFlow<NetworkResult<CodiList>>(NetworkResult.Idle)
     val codiListState = _codiListState.asStateFlow()
@@ -53,9 +53,9 @@ class CodiViewModel @Inject constructor(
         _codiListByMonthState.emit(getCodiListByMonthUseCase.invoke(date))
     }
 
-    fun putCodi(imagePath: String) = viewModelScope.launch {
+    fun putCodi() = viewModelScope.launch {
         _codiPutState.value = NetworkResult.Loading
-        _codiPutState.emit(putCodiUseCase.invoke(imagePath, codiRegisterInfo))
+        _codiPutState.emit(putCodiUseCase.invoke(codiRegisterInfo))
     }
 
     fun resetNetworkStates() {

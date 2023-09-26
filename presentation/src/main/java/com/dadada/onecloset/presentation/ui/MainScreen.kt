@@ -37,6 +37,7 @@ import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothScreen
+import com.dadada.onecloset.presentation.ui.coordination.CoordinationRegisterScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationResultScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationScreen
 import com.dadada.onecloset.presentation.ui.fitting.FittingResultScreen
@@ -187,7 +188,12 @@ fun MainNavigationScreen(
             FittingScreen(navHostController = navController, fittingViewModel = fittingViewModel)
         }
         composable(route = CoordinationNav.route) {
-            CoordinationScreen(navHostController = navController, photoViewModel = photoViewModel, codiViewModel = codiViewModel)
+            CoordinationScreen(
+                navHostController = navController,
+                photoViewModel = photoViewModel,
+                codiViewModel = codiViewModel,
+                fittingViewModel = fittingViewModel
+            )
         }
         composable(route = FittingResultNav.route) {
             FittingResultScreen(navController, fittingViewModel)
@@ -196,7 +202,10 @@ fun MainNavigationScreen(
             PhotoScreen()
         }
         composable(route = CoordinationResultNav.route) {
-            CoordinationResultScreen(codiViewModel)
+            CoordinationResultScreen(codiViewModel, navController)
+        }
+        composable(route = CoordinationRegisterNav.route) {
+            CoordinationRegisterScreen(navHostController = navController, codiViewModel = codiViewModel)
         }
     }
 }
