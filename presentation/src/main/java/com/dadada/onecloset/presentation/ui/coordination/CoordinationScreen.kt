@@ -110,12 +110,14 @@ fun CoordinationScreen(
 
                 1 -> CoordinationCodiListScreen(
                     navHostController = navHostController,
-                    codiList.codiList
+                    codiList.codiList,
+                    codiViewModel
                 )
 
                 else -> CoordinationFittingListScreen(
                     navHostController = navHostController,
-                    codiList.fittingList
+                    codiList.fittingList,
+                    codiViewModel
                 )
             }
         }

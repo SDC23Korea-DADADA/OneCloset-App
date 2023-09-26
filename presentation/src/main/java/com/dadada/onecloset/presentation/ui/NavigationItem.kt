@@ -71,6 +71,17 @@ sealed class NavigationItem(override val route: String, override val title: Stri
         override val title: String = NavigationTitle.COORDINATION_RESULT
     }
 
+    object CoordinationDetailNav: Destination {
+        override val route: String = NavigationRouteName.COORDINATION_DETAIL
+        override val title: String = NavigationTitle.COORDINATION_DETAIL
+    }
+
+    object CoordinationFittingDetailNav: Destination {
+        override val route: String = NavigationRouteName.COORDINATION_FITTING_DETAIL
+        override val title: String = NavigationTitle.COORDINATION_FITTING_DETAIL
+    }
+
+
     object GalleryNav: Destination {
         override val route: String = NavigationRouteName.GALLERY
         override val title: String = NavigationTitle.GALLERY
@@ -131,6 +142,8 @@ object NavigationRouteName {
     const val COORDINATION = "coordination"
     const val COORDINATION_REGISTER = "coordination_register"
     const val COORDINATION_RESULT = "coordination_result"
+    const val COORDINATION_DETAIL = "coordination_detail"
+    const val COORDINATION_FITTING_DETAIL = "coordination_fitting_detail"
     const val FITTING_RESULT = "fitting_result"
     const val PHOTO = "photo"
 }
@@ -151,6 +164,8 @@ object NavigationTitle {
     const val COORDINATION = "데일리코디"
     const val COORDINATION_REGISTER = "코디 등록"
     const val COORDINATION_RESULT = "coordination"
+    const val COORDINATION_DETAIL = "코디 상세"
+    const val COORDINATION_FITTING_DETAIL = "계획 상세"
     const val FITTING_RESULT = "가상피팅 결과"
     const val PHOTO = "사진"
 }

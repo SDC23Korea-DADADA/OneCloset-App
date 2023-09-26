@@ -2,28 +2,23 @@ package com.dadada.onecloset.presentation.ui.coordination
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Codi
-import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
-import com.dadada.onecloset.presentation.ui.coordination.component.CoordinationListView
+import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 
 @Composable
-fun CoordinationCodiListScreen(navHostController: NavHostController, itemList: List<Codi>) {
+fun CoordinationCodiListScreen(navHostController: NavHostController, itemList: List<Codi>, codiViewModel: CodiViewModel) {
 
     Column(modifier = roundedSquareLargeModifier) {
         Box(
@@ -38,7 +33,10 @@ fun CoordinationCodiListScreen(navHostController: NavHostController, itemList: L
                     RoundedSquareImageItem(
                         imageUri = itemList[it].thumbnailImg.toUri(),
                         icon = null,
-                        onClick = { },
+                        onClick = {
+                            codiViewModel.curDailyCodiItem = itemList[it]
+                            navHostController.navigate(NavigationItem.CoordinationDetailNav.route)
+                        },
                     )
                 }
             }
@@ -49,8 +47,7 @@ fun CoordinationCodiListScreen(navHostController: NavHostController, itemList: L
 
 
 @Composable
-fun CoordinationFittingListScreen(navHostController: NavHostController, itemList: List<Fitting>) {
-
+fun CoordinationFittingListScreen(navHostController: NavHostController, itemList: List<Fitting>, codiViewModel: CodiViewModel) {
 
     Column(modifier = roundedSquareLargeModifier) {
         Box(
@@ -66,7 +63,8 @@ fun CoordinationFittingListScreen(navHostController: NavHostController, itemList
                         imageUri = itemList[it].fittingThumbnailImg.toUri(),
                         icon = null,
                         onClick = {
-                                  navHostController.navigate(NavigationItem.PhotoNav.route)
+                            codiViewModel.curFittingItem = itemList[it]
+                            navHostController.navigate(NavigationItem.CoordinationFittingDetailNav.route)
                         },
                     )
                 }
