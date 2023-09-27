@@ -236,12 +236,14 @@ fun registerImage(
         Mode.codi -> {
             codiViewModel.codiRegisterInfo.imagePath =
                 pagingPhotos[isCheckedIdx.value]?.uri.toString()
+            closetViewModel.resetNetworkStates()
             navController.navigate(NavigationItem.CoordinationRegisterNav.route)
         }
 
         else -> {
             fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())
             showToast.value = true
+            closetViewModel.resetNetworkStates()
             navController.popBackStack()
         }
     }

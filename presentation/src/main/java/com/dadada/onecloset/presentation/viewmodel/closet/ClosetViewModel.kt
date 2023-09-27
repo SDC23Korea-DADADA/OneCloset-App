@@ -154,6 +154,7 @@ class ClosetViewModel @Inject constructor(
         _clothAnalysisState.value = NetworkResult.Idle
         _clothCareCourseState.value = NetworkResult.Idle
         _clothesUpdateState.value = NetworkResult.Idle
+        _clothesValidationState.value = NetworkResult.Idle
     }
 
 }
