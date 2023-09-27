@@ -43,4 +43,9 @@ class FittingRepositoryImpl @Inject constructor(
     ): NetworkResult<Unit> {
         return handleApi { fittingService.putFittingResultWithDate(date, fittingResult) }
     }
+
+    override suspend fun deleteFitting(id: String): NetworkResult<Unit> {
+        return handleApi { fittingService.deleteFitting(id) }
+    }
+
 }

@@ -7,6 +7,7 @@ import com.dadada.onecloset.domain.model.fitting.FittingInfo
 import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
 import com.dadada.onecloset.domain.model.fitting.FittingResult
 import com.dadada.onecloset.domain.model.fitting.FittingResultForSave
+import com.dadada.onecloset.domain.usecase.fitting.DeleteFittingUseCase
 import com.dadada.onecloset.domain.usecase.fitting.DeleteModelUseCase
 import com.dadada.onecloset.domain.usecase.fitting.GetFittingResultUseCase
 import com.dadada.onecloset.domain.usecase.fitting.GetModelListUseCase
@@ -31,7 +32,8 @@ class FittingViewModel @Inject constructor(
     private val getModelListUseCase: GetModelListUseCase,
     private val deleteModelUseCase: DeleteModelUseCase,
     private val putFittingResultUseCase: PutFittingResultUseCase,
-    private val putFittingResultWithDateUseCase: PutFittingResultWithDateUseCase
+    private val putFittingResultWithDateUseCase: PutFittingResultWithDateUseCase,
+    private val deleteFittingUseCase: DeleteFittingUseCase
 ) : ViewModel() {
     private lateinit var fittingInfo: FittingInfo
     var fittingResult: FittingResult = FittingResult()
@@ -51,6 +53,9 @@ class FittingViewModel @Inject constructor(
 
     private val _fittingPutState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val fittingPutState = _fittingPutState.asStateFlow()
+
+    private val _fittingDeleteState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
+    val fittingDeleteState = _fittingDeleteState.asStateFlow()
 
     fun putModel(imagePath: String) = viewModelScope.launch {
         _modelPutState.value = NetworkResult.Loading
@@ -82,6 +87,11 @@ class FittingViewModel @Inject constructor(
         fittingResultForSave.clothesIdList= fittingResultForSave.clothesIdList.filter { it != -1 }
         _fittingPutState.value = NetworkResult.Loading
         _fittingPutState.emit(putFittingResultWithDateUseCase.invoke(date, fittingResultForSave))
+    }
+
+    fun deleteFitting(id: String) = viewModelScope.launch {
+        _fittingDeleteState.value = NetworkResult.Loading
+        _fittingDeleteState.emit(deleteFittingUseCase.invoke(id))
     }
 
     fun setFittingInfoModelId(modelId: String) {

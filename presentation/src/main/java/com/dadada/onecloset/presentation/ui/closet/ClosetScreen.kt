@@ -96,6 +96,7 @@ fun ClosetScreen(
         floatingActionButton = {
             CustomFloatingActionButton(
                 modifier = Modifier.padding(bottom = 80.dp),
+                title = "옷장",
                 icon = Icons.Default.Add
             ) { scope.launch { sheetState.show() } }
         },

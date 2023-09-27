@@ -341,6 +341,51 @@ fun ClothInputAdditionalInformDialogView() {
 @Composable
 fun ClothHeader(
     navController: NavHostController,
+    isEdit: Boolean = true,
+    onClickEdit: () -> Unit,
+    onClickDelete: () -> Unit
+) {
+    var expandDropDown by remember {
+        mutableStateOf(false)
+    }
+
+    TopAppBar(
+        modifier = Modifier.padding(vertical = 8.dp),
+        title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(Icons.Filled.ArrowBack, contentDescription = "back")
+            }
+        },
+        actions = {
+            Box {
+                IconButton(onClick = {
+                    expandDropDown = !expandDropDown
+                }) {
+                    Icon(Icons.Filled.MoreVert, contentDescription = "more options")
+                }
+                if (expandDropDown) {
+                    DropDownMenu(
+                        modifier = roundedSquareMediumModifier,
+                        isEdit = isEdit,
+                        expanded = expandDropDown,
+                        onClickEdit = onClickEdit,
+                        onClickDelete = onClickDelete
+                    ) {
+                        expandDropDown = !expandDropDown
+                    }
+                }
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DeleteHeader(
+    navController: NavHostController,
+    isEdit: Boolean = true,
     onClickEdit: () -> Unit,
     onClickDelete: () -> Unit
 ) {
@@ -378,6 +423,9 @@ fun ClothHeader(
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
     )
 }
+
+
+
 
 @Composable
 fun PutClothAdditionalInfoView(

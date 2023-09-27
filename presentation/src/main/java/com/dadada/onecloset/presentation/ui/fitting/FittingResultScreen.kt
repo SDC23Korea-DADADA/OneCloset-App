@@ -76,7 +76,6 @@ fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: 
         )
     }
 
-    Log.d(TAG, "FittingResultScreen: $date")
 
     Column(
         modifier = screenModifier

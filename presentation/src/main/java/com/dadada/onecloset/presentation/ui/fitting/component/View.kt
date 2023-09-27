@@ -117,7 +117,7 @@ fun MyDatePickerDialog(
                 }
 
                 ) {
-                    Text(text = "계획하기")
+                    Text(text = "등록하기")
                 }
             },
             dismissButton = {

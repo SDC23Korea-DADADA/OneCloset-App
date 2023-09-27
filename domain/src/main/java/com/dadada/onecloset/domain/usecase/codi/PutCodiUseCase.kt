@@ -8,7 +8,7 @@ import javax.inject.Inject
 class PutCodiUseCase @Inject constructor(
     private val codiRepository: CodiRepository
 ) {
-    suspend operator fun invoke(imagePath: String, info: CodiRegisterInfo): NetworkResult<Long> {
-        return codiRepository.putCodi(imagePath, info)
+    suspend operator fun invoke(info: CodiRegisterInfo): NetworkResult<Long> {
+        return codiRepository.putCodi(info)
     }
 }

@@ -1,6 +1,8 @@
 package com.dadada.onecloset.domain.model.codi
 
 data class CodiRegisterInfo (
+    var imagePath: String = "",
     var date: String = "",
-    val clothesList: List<Int> = listOf(),
+    var clothesList: List<Int> = listOf(),
 )
+

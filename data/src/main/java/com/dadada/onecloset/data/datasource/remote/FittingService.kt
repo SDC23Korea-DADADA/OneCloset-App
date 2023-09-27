@@ -37,4 +37,8 @@ interface FittingService {
         @Path(value = "date") date: String,
         @Body fittingResult: FittingResultForSave
     ): ServerResponse
+
+    @DELETE("api/fitting/{id}")
+    suspend fun deleteFitting(@Path(value = "id") id: String) : ServerResponse
+
 }
