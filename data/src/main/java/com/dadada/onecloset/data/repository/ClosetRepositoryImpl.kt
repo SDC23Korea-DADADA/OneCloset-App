@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import com.dadada.onecloset.data.datasource.remote.ClosetService
 import com.dadada.onecloset.data.datasource.remote.handleApi
+import com.dadada.onecloset.data.mapper.Converter
 import com.dadada.onecloset.data.mapper.toDomain
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
@@ -82,5 +83,9 @@ class ClosetRepositoryImpl @Inject constructor(
 
     override suspend fun updateClothes(clothesInfo: ClothesInfo): NetworkResult<Unit> {
         return handleApi { closetService.updateClothes(clothesInfo) }
+    }
+
+    override suspend fun checkClothes(image: String): NetworkResult<Boolean> {
+        return handleApi { closetService.checkClothes(Converter.createMultipartBodyPart(context, image)).data }
     }
 }

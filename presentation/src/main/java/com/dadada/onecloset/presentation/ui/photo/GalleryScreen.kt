@@ -18,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +38,7 @@ import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.GalleryPhotoItem
 import com.dadada.onecloset.presentation.ui.common.PhotoItem
+import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.utils.Mode
@@ -74,7 +76,7 @@ fun GalleryScreen(
     val isCheckedIdx = photoViewModel.isCheckedIdx.collectAsState()
     var onClick by remember { mutableStateOf(false) }
 
-    if(onClick) {
+    if (onClick) {
         PermissionRequester(
             permission = Permissions.cameraPermission,
             onDismissRequest = { onClick = !onClick },
@@ -118,7 +120,11 @@ fun GalleryScreen(
                     val actualIndex = index - 1
                     val isCurrentItemChecked = isCheckedIdx.value == actualIndex
                     pagingPhotos[actualIndex]?.let { galleryImage ->
-                        GalleryPhotoItem(url = galleryImage.uri, actualIndex, isCurrentItemChecked) {
+                        GalleryPhotoItem(
+                            url = galleryImage.uri,
+                            actualIndex,
+                            isCurrentItemChecked
+                        ) {
                             photoViewModel.setCheckedIndex(actualIndex)
                         }
                     }
@@ -142,8 +148,49 @@ fun GalleryHeader(
     photoViewModel: PhotoViewModel,
     codiViewModel: CodiViewModel
 ) {
-    var showToast by remember { mutableStateOf(false) }
-    if(showToast) { ShowToast(text = "모델 등록에 약 2분이 소요돼요!") }
+    val validationState by closetViewModel.clothesValidationState.collectAsState()
+
+    var showToast = remember { mutableStateOf(false) }
+    if (showToast.value) {
+        ShowToast(text = "모델 등록에 약 2분이 소요돼요!")
+    }
+    var showDialog by remember { mutableStateOf(false) }
+    if (showDialog) {
+        TwoButtonDialog(
+            onDismissRequest = { navController.popBackStack() },
+            onConfirmation = {
+                registerImage(
+                    navController,
+                    pagingPhotos,
+                    isCheckedIdx,
+                    showToast,
+                    fittingViewModel,
+                    closetViewModel,
+                    photoViewModel,
+                    codiViewModel
+                )
+            },
+            dialogTitle = "알림",
+            dialogText = "의류가 아닙니다!\n그래도 계속 할까요?",
+        )
+    }
+    NetworkResultHandler(state = validationState) {
+        if (it) {
+            registerImage(
+                navController,
+                pagingPhotos,
+                isCheckedIdx,
+                showToast,
+                fittingViewModel,
+                closetViewModel,
+                photoViewModel,
+                codiViewModel
+            )
+        } else {
+            showDialog = !showDialog
+        }
+    }
+
     TopAppBar(
         modifier = Modifier.padding(vertical = 8.dp),
         title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
@@ -157,24 +204,10 @@ fun GalleryHeader(
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 onClick = {
-                    if(isCheckedIdx.value == -1) {
+                    if (isCheckedIdx.value == -1) {
                         return@Button
                     }
-                    when (photoViewModel.curMode) {
-                        Mode.clothes -> {
-                            closetViewModel.clothesInfo.image = pagingPhotos[isCheckedIdx.value]?.uri.toString()
-                            closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
-                        }
-                        Mode.codi -> {
-                            codiViewModel.codiRegisterInfo.imagePath = pagingPhotos[isCheckedIdx.value]?.uri.toString()
-                            navController.navigate(NavigationItem.CoordinationRegisterNav.route)
-                        }
-                        else -> {
-                            fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())
-                            showToast = true
-                            navController.popBackStack()
-                        }
-                    }
+                    closetViewModel.checkClothes(pagingPhotos[isCheckedIdx.value]?.uri.toString())
                 }) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
             }
@@ -182,4 +215,34 @@ fun GalleryHeader(
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
     )
 
+}
+
+fun registerImage(
+    navController: NavHostController,
+    pagingPhotos: LazyPagingItems<Photo>,
+    isCheckedIdx: State<Int>,
+    showToast: MutableState<Boolean>,
+    fittingViewModel: FittingViewModel,
+    closetViewModel: ClosetViewModel,
+    photoViewModel: PhotoViewModel,
+    codiViewModel: CodiViewModel
+) {
+    when (photoViewModel.curMode) {
+        Mode.clothes -> {
+            closetViewModel.clothesInfo.image = pagingPhotos[isCheckedIdx.value]?.uri.toString()
+            closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+        }
+
+        Mode.codi -> {
+            codiViewModel.codiRegisterInfo.imagePath =
+                pagingPhotos[isCheckedIdx.value]?.uri.toString()
+            navController.navigate(NavigationItem.CoordinationRegisterNav.route)
+        }
+
+        else -> {
+            fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+            showToast.value = true
+            navController.popBackStack()
+        }
+    }
 }
