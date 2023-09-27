@@ -109,6 +109,7 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
                     Icon(Icons.Filled.AccountCircle, contentDescription = "")
                 }
             }
+
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
     )

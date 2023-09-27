@@ -28,6 +28,7 @@ class CodiViewModel @Inject constructor(
     private val deleteCodiUseCase: DeleteCodiUseCase,
     private val getCodiListUseCase: GetCodiListUseCase,
     private val getCodiListByMonthUseCase: GetCodiListByMonthUseCase,
+
 ) : ViewModel() {
     val codiRegisterInfo = CodiRegisterInfo()
     var curFittingItem: Fitting = Fitting()
@@ -41,6 +42,9 @@ class CodiViewModel @Inject constructor(
 
     private val _codiPutState = MutableStateFlow<NetworkResult<Long>>(NetworkResult.Idle)
     val codiPutState = _codiPutState.asStateFlow()
+
+    private val _codiDeleteState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
+    val codiDeleteState = _codiDeleteState.asStateFlow()
 
 
     fun getCodiList() = viewModelScope.launch {
@@ -56,6 +60,11 @@ class CodiViewModel @Inject constructor(
     fun putCodi() = viewModelScope.launch {
         _codiPutState.value = NetworkResult.Loading
         _codiPutState.emit(putCodiUseCase.invoke(codiRegisterInfo))
+    }
+
+    fun deleteCodi() = viewModelScope.launch {
+        _codiDeleteState.value = NetworkResult.Loading
+        _codiDeleteState.emit(deleteCodiUseCase.invoke(curDailyCodiItem.id.toString()))
     }
 
     fun resetNetworkStates() {

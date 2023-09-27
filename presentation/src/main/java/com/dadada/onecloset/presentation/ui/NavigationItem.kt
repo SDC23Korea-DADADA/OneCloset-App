@@ -7,111 +7,113 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.dadada.onecloset.presentation.R
 
 sealed class NavigationItem(override val route: String, override val title: String) : Destination {
-    object LogInNav: Destination {
+    object LogInNav : Destination {
         override val route: String = NavigationRouteName.LOGIN
         override val title: String = NavigationTitle.LOGIN
     }
 
-    object MainTabNav: Destination {
+    object MainTabNav : Destination {
         override val route: String = NavigationRouteName.TAB
         override val title: String = NavigationTitle.TAB
     }
+
     object HomeNav : Destination {
         override val route: String = NavigationRouteName.HOME
         override val title: String = NavigationTitle.HOME
     }
 
-    object ClosetNav: Destination {
+    object ClosetNav : Destination {
         override val route: String = NavigationRouteName.CLOSET
         override val title: String = NavigationTitle.CLOSET
     }
 
-    object CameraNav: Destination {
+    object CameraNav : Destination {
         override val route: String = NavigationRouteName.CAMERA
         override val title: String = NavigationTitle.CAMERA
     }
 
-    object ClosetDetailNav: Destination {
+    object ClosetDetailNav : Destination {
         override val route: String = NavigationRouteName.CLOSET_DETAIL
         override val title: String = NavigationTitle.CLOSET_DETAIL
     }
 
-    object ClothAnalysisNav: Destination {
+    object ClothAnalysisNav : Destination {
         override val route: String = NavigationRouteName.CLOTH_ANALYSIS
         override val title: String = NavigationTitle.CLOTH_ANALYSIS
     }
 
-    object ClothCourseNav: Destination {
+    object ClothCourseNav : Destination {
         override val route: String = NavigationRouteName.CLOTH_COURSE
         override val title: String = NavigationTitle.CLOTH_COURSE
     }
 
-    object ClothNav: Destination {
+    object ClothNav : Destination {
         override val route: String = NavigationRouteName.CLOTH
         override val title: String = NavigationTitle.CLOTH
     }
 
-    object FittingNav: Destination {
+    object FittingNav : Destination {
         override val route: String = NavigationRouteName.FITTING
         override val title: String = NavigationTitle.FITTING
     }
 
-    object CoordinationNav: Destination {
+    object CoordinationNav : Destination {
         override val route: String = NavigationRouteName.COORDINATION
         override val title: String = NavigationTitle.COORDINATION
     }
 
-    object CoordinationRegisterNav: Destination {
+    object CoordinationRegisterNav : Destination {
         override val route: String = NavigationRouteName.COORDINATION_REGISTER
         override val title: String = NavigationTitle.COORDINATION_REGISTER
     }
 
-    object CoordinationResultNav: Destination {
+    object CoordinationResultNav : Destination {
         override val route: String = NavigationRouteName.COORDINATION_RESULT
         override val title: String = NavigationTitle.COORDINATION_RESULT
     }
 
-    object CoordinationDetailNav: Destination {
+    object CoordinationDetailNav : Destination {
         override val route: String = NavigationRouteName.COORDINATION_DETAIL
         override val title: String = NavigationTitle.COORDINATION_DETAIL
     }
 
-    object CoordinationFittingDetailNav: Destination {
+    object CoordinationFittingDetailNav : Destination {
         override val route: String = NavigationRouteName.COORDINATION_FITTING_DETAIL
         override val title: String = NavigationTitle.COORDINATION_FITTING_DETAIL
     }
 
 
-    object GalleryNav: Destination {
+    object GalleryNav : Destination {
         override val route: String = NavigationRouteName.GALLERY
         override val title: String = NavigationTitle.GALLERY
     }
 
-    object AccountNav: Destination {
+    object AccountNav : Destination {
         override val route: String = NavigationRouteName.ACCOUNT
         override val title: String = NavigationTitle.ACCOUNT
     }
 
-    object PhotoNav: Destination {
+    object PhotoNav : Destination {
         override val route: String = NavigationRouteName.PHOTO
         override val title: String = NavigationTitle.PHOTO
     }
 
-    object FittingResultNav: Destination {
+    object FittingResultNav : Destination {
         override val route: String = NavigationRouteName.FITTING_RESULT
         override val title: String = NavigationTitle.FITTING_RESULT
     }
 
     companion object {
-        fun isNoToolbar(route: String?) : Boolean {
-            return when(route) {
-                CameraNav.route, GalleryNav.route, LogInNav.route, "${ClothNav.route}/{clothId}" -> true
+        fun isNoToolbar(route: String?): Boolean {
+            return when (route) {
+                CoordinationFittingDetailNav.route, CoordinationDetailNav.route, CameraNav.route, GalleryNav.route, LogInNav.route, "${ClothNav.route}/{clothId}" -> true
+
                 else -> false
             }
         }
 
-        fun getToolbarIcon(route: String?) : ImageVector? {
-            return when(route) {
+        fun getToolbarIcon(route: String?): ImageVector? {
+            return when (route) {
                 ClothNav.route -> Icons.Default.MoreVert
                 MainTabNav.route -> Icons.Default.AccountCircle
                 else -> null
@@ -128,7 +130,7 @@ interface Destination {
 
 object NavigationRouteName {
     const val LOGIN = "login"
-    const val TAB ="tab"
+    const val TAB = "tab"
     const val HOME = "home"
     const val CLOSET = "closet"
     const val CAMERA = "camera"
@@ -150,7 +152,7 @@ object NavigationRouteName {
 
 object NavigationTitle {
     const val LOGIN = "로그인"
-    const val TAB ="탭"
+    const val TAB = "탭"
     const val HOME = "빠른 실행"
     const val CLOSET = "옷장"
     const val CAMERA = "카메라"

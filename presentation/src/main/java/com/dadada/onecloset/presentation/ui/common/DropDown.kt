@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 fun DropDownMenu(
     modifier: Modifier = Modifier,
     expanded: Boolean,
+    isEdit: Boolean = true,
     onClickEdit: () -> Unit,
     onClickDelete: () -> Unit,
     onDismissRequest: () -> Unit
@@ -25,10 +26,12 @@ fun DropDownMenu(
             expanded = expanded,
             onDismissRequest = { onDismissRequest() },
         ) {
-            DropdownMenuItem(onClick = {
-                onClickEdit()
-                onDismissRequest()
-            }, text = { Text("수정") })
+            if(isEdit) {
+                DropdownMenuItem(onClick = {
+                    onClickEdit()
+                    onDismissRequest()
+                }, text = { Text("수정") })
+            }
             DropdownMenuItem(onClick = {
                 onClickDelete()
                 onDismissRequest()
