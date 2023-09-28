@@ -69,33 +69,35 @@ sealed class Material(val id: Int, val name: String) {
     }
 }
 
-sealed class ClothColor(val id: Int, val color: Color) {
-    object Black: ClothColor(1, Color(0xFF000000))
-    object Gold: ClothColor(2, Color(0xFF000080))
-    object Gray: ClothColor(3, Color(0xFF888888))
-    object Green: ClothColor(4, Color(0xFF008000))
-    object Navy: ClothColor(5, NavyColor)
-    object Lavender: ClothColor(6, Color(0xFFE6E6FA))
-    object Red: ClothColor(7, Color(0xFFFF0000))
-    object Mint: ClothColor(8, Color(0xFF92B8B1))
-    object Beige: ClothColor(9, Color(0xFFD4B886))
-    object Brown: ClothColor(10, Color(0xFF964b00))
-    object Blue: ClothColor(11, Color(0xFF0000FF))
-    object SkyBlue: ClothColor(12, Color(0xFF87CEEB))
-    object Silver: ClothColor(13, SilverColor)
-    object Yellow: ClothColor(14, Color(0xFFFFFF00))
-    object Wine: ClothColor(15, Color(0xFF9F0A28))
-    object Khaki: ClothColor(16, Color(0xFF8f784b))
-    object Purple: ClothColor(17, Color(0xFF800080))
-    object Pink: ClothColor(18, Color(0xFFFFC0CB))
+sealed class ClothColor(val id: Int, val color: Color, val name: String) {
+    object Black: ClothColor(1, Color(0xFF000000), "블랙")
+    object Gray: ClothColor(3, Color(0xFF888888), "그레이")
+    object Green: ClothColor(4, Color(0xFF008000), "그린")
+    object Navy: ClothColor(5, Color(0xFF000080), "네이비")
+    object Lavender: ClothColor(6, Color(0xFFE6E6FA), "라벤더")
+    object Red: ClothColor(7, Color(0xFFFF0000), "레드")
+    object Mint: ClothColor(8, Color(0xFF92B8B1), "민트")
+    object Beige: ClothColor(9, Color(0xFFD4B886), "베이지")
+    object Brown: ClothColor(10, Color(0xFF964b00), "브라운")
+    object Blue: ClothColor(11, Color(0xFF0000FF), "블루")
+    object SkyBlue: ClothColor(12, Color(0xFF87CEEB), "스카이블루")
+    object Yellow: ClothColor(14, Color(0xFFFFFF00), "옐로우")
+    object Wine: ClothColor(15, Color(0xFF9F0A28), "와인")
+    object Khaki: ClothColor(16, Color(0xFF8f784b), "카키")
+    object Purple: ClothColor(17, Color(0xFF800080), "퍼플")
+    object Pink: ClothColor(18, Color(0xFFFFC0CB), "핑크")
 
-    object Orange: ClothColor(21, Color(0xFFFFA500))
-    object White: ClothColor(19, Color(0xFFFFFFFF))
-    object Other: ClothColor(22, Color.White)
+    object Orange: ClothColor(21, Color(0xFFFFA500), "오렌지")
+    object White: ClothColor(19, Color(0xFFFFFFFF), "화이트")
+    object Other: ClothColor(22, Color.Magenta, "다채색")
 
     companion object {
         fun getAllColor(): List<ClothColor> {
-            return ClothColor::class.sealedSubclasses.mapNotNull { it.objectInstance as? ClothColor }
+            return listOf(
+                Black, Gray, Green, Navy, Lavender, Red, Mint,
+                Beige, Brown, Blue, SkyBlue, Yellow, Wine, Khaki,
+                Purple, Pink, Orange, White, Other
+            )
         }
     }
 }

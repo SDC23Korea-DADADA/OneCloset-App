@@ -133,7 +133,7 @@ fun ClothGridView(
     onClick: (Int) -> Unit = {}
 ) {
     var icon: Int? = icon
-    Log.d(TAG, "ClothGridView: ${itemClickedStateList.size}")
+
     LazyVerticalGrid(
         modifier = Modifier.padding(horizontal = 4.dp),
         columns = GridCells.Fixed(3),
@@ -206,7 +206,7 @@ fun ClothInformView(cloth: ClothesInfo, onClick: () -> Unit = {}) {
         ) {
             ClothInformRow("종류", cloth.type)
             ClothInformRow(title = "재질", content = cloth.material)
-            ColorInformRow(title = "색상", content = hexStringToColor(cloth.colorCode))
+            ColorInformRow(title = "색상", content = hexStringToColor(cloth.colorCode), colorName = cloth.color)
         }
         Spacer(modifier = Modifier.size(Paddings.large))
         if (cloth.isEmptyAdditionalInfo()) {

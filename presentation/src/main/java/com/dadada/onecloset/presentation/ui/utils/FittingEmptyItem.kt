@@ -9,11 +9,11 @@ sealed class FittingEmptyItem(val icon: Int, val content: String, val upperType:
 
     companion object {
         fun getList(): List<List<FittingEmptyItem>> {
-            val emptyTopBottom = listOf(EmptyTop, EmptyBottom)
+            //val emptyTopBottom = listOf(EmptyTop, EmptyBottom)
             val emptyTop = listOf(EmptyTop)
             val emptyBottom = listOf(EmptyBottom)
             val emptyOne = listOf(EmptyOne)
-            return listOf(emptyTopBottom, emptyTop, emptyBottom, emptyOne)
+            return listOf(emptyTop, emptyBottom, emptyOne)
         }
     }
 }

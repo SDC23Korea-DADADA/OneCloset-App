@@ -1,6 +1,5 @@
 package com.dadada.onecloset.presentation.ui.fitting
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,10 +45,19 @@ fun FittingScreen(
     var allClothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
 
     var clickedState by remember { mutableStateOf(listOf<Boolean>()) }
+    var clickedTopState by remember { mutableStateOf(listOf<Boolean>()) }
+    var clickedBottomState by remember { mutableStateOf(listOf<Boolean>()) }
     val emptyItemList: List<List<FittingEmptyItem>> = FittingEmptyItem.getList()
     var curEmptyItemList: List<FittingEmptyItem> by remember { mutableStateOf(emptyItemList[0]) }
     var modeIdx by remember { mutableStateOf(0) }
-    var selectedItemList by remember { mutableStateOf(arrayListOf<ClothesInfo>(ClothesInfo(), ClothesInfo())) }
+
+    var selectedItemList by remember {
+        mutableStateOf(
+            arrayListOf<ClothesInfo>(
+                ClothesInfo(),
+            )
+        )
+    }
     var selectedItemSize by remember { mutableStateOf(emptyItemList[modeIdx].size) }
 
 
@@ -65,11 +73,19 @@ fun FittingScreen(
         clickedState = newClickedState
     }
 
+
+    val tabsList = listOf(listOf("상의"), listOf("하의"), listOf("한벌옷"))
+    var tabsListState by remember {
+        mutableStateOf(tabsList[modeIdx])
+    }
+
     LaunchedEffect(key1 = modeIdx) {
+        clothList = allClothList.filter { it.upperType == tabsList[modeIdx][0] }
         curEmptyItemList = emptyItemList[modeIdx]
         selectedItemSize = emptyItemList[modeIdx].size
         selectedItemList = ArrayList(List(selectedItemSize) { ClothesInfo() })
         clickedState = List(clothList.size) { false }
+        tabsListState = tabsList[modeIdx]
     }
 
     LaunchedEffect(Unit) {
@@ -77,17 +93,17 @@ fun FittingScreen(
     }
 
     NetworkResultHandler(state = clothListState) {
-        clothList = it.filter { it.upperType == emptyItemList[modeIdx][0].upperType }
         allClothList = it
+        clothList = allClothList.filter {
+            it.upperType == tabsList[modeIdx][0]
+        }
         clickedState = List(clothList.size) { false }
     }
 
     NetworkResultHandler(state = fittingResultState) {
-        if(it != null) {
-            fittingViewModel.fittingResult = it
-            fittingViewModel.resetNetworkStates()
-            navHostController.navigate(NavigationItem.FittingResultNav.route)
-        }
+        fittingViewModel.fittingResult = it
+        fittingViewModel.resetNetworkStates()
+        navHostController.navigate(NavigationItem.FittingResultNav.route)
     }
 
 
@@ -101,8 +117,6 @@ fun FittingScreen(
             showSelectPhotoBottomSheet = !showSelectPhotoBottomSheet
         }
     }
-
-
     Box(modifier = Modifier.padding(16.dp)) {
         Column() {
             FittingSelectedClothListView(
@@ -113,8 +127,11 @@ fun FittingScreen(
                 onClickDropDown = { modeIdx = it }
             )
             Spacer(modifier = Modifier.size(12.dp))
+
             ClothTabGridView(
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally).padding(bottom = 56.dp),
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .padding(bottom = 56.dp),
                 navHostController = navHostController,
                 clothItems = clothList,
                 icon = R.drawable.ic_checked,
@@ -122,9 +139,8 @@ fun FittingScreen(
                 onClick = handleItemClick,
                 onClickTab = { upperType ->
                     clothList = allClothList.filter { it.upperType == upperType }
-
                 },
-                tabs = listOf("상의", "하의", "한벌옷")
+                tabs = tabsListState
             )
         }
 
@@ -138,16 +154,16 @@ fun FittingScreen(
             onClickRight = {
                 val selectedItem = arrayListOf<Int>()
                 when (modeIdx) {
+//                    0 -> {
+//                        fittingViewModel.setFittingInfoTopId(selectedItemList[0].clothesId.toString())
+//                        fittingViewModel.setFittingInfoBottomId(selectedItemList[1].clothesId.toString())
+//                    }
+
                     0 -> {
                         fittingViewModel.setFittingInfoTopId(selectedItemList[0].clothesId.toString())
-                        fittingViewModel.setFittingInfoBottomId(selectedItemList[1].clothesId.toString())
                     }
 
                     1 -> {
-                        fittingViewModel.setFittingInfoTopId(selectedItemList[0].clothesId.toString())
-                    }
-
-                    2 -> {
                         fittingViewModel.setFittingInfoBottomId(selectedItemList[0].clothesId.toString())
                     }
 
@@ -157,18 +173,18 @@ fun FittingScreen(
                 }
                 selectedItemList.forEach {
                     selectedItem.add(it.clothesId)
-                    Log.d(TAG, "FittingScreen: ${it.closetId}")
                 }
                 fittingViewModel.fittingResultForSave.clothesIdList = selectedItem
-                Log.d(TAG, "FittingScreen: ${fittingViewModel.fittingResultForSave}")
-
                 fittingViewModel.getFittingResult()
             }
         )
     }
 }
 
-fun replaceClothById(selectedItemList: ArrayList<ClothesInfo>, targetId: Int): ArrayList<ClothesInfo> {
+fun replaceClothById(
+    selectedItemList: ArrayList<ClothesInfo>,
+    targetId: Int
+): ArrayList<ClothesInfo> {
     val newList = ArrayList(selectedItemList)
     val index = newList.indexOfFirst { it.clothesId == targetId }
     if (index != -1) {
@@ -177,7 +193,10 @@ fun replaceClothById(selectedItemList: ArrayList<ClothesInfo>, targetId: Int): A
     return newList
 }
 
-fun putClothById(selectedItemList: ArrayList<ClothesInfo>, newCloth: ClothesInfo): ArrayList<ClothesInfo> {
+fun putClothById(
+    selectedItemList: ArrayList<ClothesInfo>,
+    newCloth: ClothesInfo
+): ArrayList<ClothesInfo> {
     val newList = ArrayList(selectedItemList)
     val index = newList.indexOfFirst { it.clothesId == -1 }
     if (index != -1) {

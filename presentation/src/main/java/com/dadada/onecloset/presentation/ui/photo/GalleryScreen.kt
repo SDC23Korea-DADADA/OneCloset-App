@@ -67,6 +67,7 @@ fun GalleryScreen(
         closetViewModel.clothesInfo.image = it.image
         closetViewModel.clothesInfo.material = it.material
         closetViewModel.clothesInfo.colorCode = it.colorCode
+        closetViewModel.clothesInfo.color = it.color
         closetViewModel.clothesInfo.type = it.type
         closetViewModel.resetNetworkStates()
         navController.navigate(NavigationItem.ClothAnalysisNav.route)

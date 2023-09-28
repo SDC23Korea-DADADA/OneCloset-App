@@ -4,7 +4,7 @@ data class ClothesInfo(
     var airDressor: String = "",
     val careTipList: List<Any> = listOf(),
     val clothesId: Int = -1,
-    val color: String = "",
+    var color: String = "",
     var colorCode: String = "",
     var description: String = "1",
     var dryer: String = "",

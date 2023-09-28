@@ -1,6 +1,8 @@
 package com.dadada.onecloset.presentation.ui.coordination.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,6 +43,8 @@ import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.model.HorizontalCalendarConfig
 import com.dadada.onecloset.presentation.ui.NavigationItem
+import com.dadada.onecloset.presentation.ui.theme.BackGround
+import com.dadada.onecloset.presentation.ui.theme.BackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.Mode
@@ -244,17 +248,19 @@ fun CalendarDay(
             .clip(shape = RoundedCornerShape(10.dp)),
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .padding(4.dp)
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .clip(CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            AsyncImage(model = imageUrl, contentDescription = "", contentScale = ContentScale.Crop)
+        if(imageUrl != null) {
+            Box(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .clip(CircleShape)
+                    .border(1.dp, BackGroundGray, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                AsyncImage(model = imageUrl, contentDescription = "", contentScale = ContentScale.Crop)
+            }
         }
-
         Text(
             textAlign = TextAlign.Center,
             text = date.dayOfMonth.toString(),
