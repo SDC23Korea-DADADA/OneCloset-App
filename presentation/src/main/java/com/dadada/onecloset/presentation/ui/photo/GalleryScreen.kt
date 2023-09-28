@@ -62,6 +62,7 @@ fun GalleryScreen(
     codiViewModel: CodiViewModel,
 ) {
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
+    val validationState by closetViewModel.clothesValidationState.collectAsState()
     NetworkResultHandler(state = closetAnalysisState) {
         closetViewModel.clothesInfo.image = it.image
         closetViewModel.clothesInfo.material = it.material
@@ -75,6 +76,49 @@ fun GalleryScreen(
     val pagingPhotos = photoViewModel.photoList.collectAsLazyPagingItems()
     val isCheckedIdx = photoViewModel.isCheckedIdx.collectAsState()
     var onClick by remember { mutableStateOf(false) }
+
+    var showToast = remember { mutableStateOf(false) }
+    if (showToast.value) {
+        ShowToast(text = "모델 등록에 약 2분이 소요돼요!")
+    }
+    var showDialog by remember { mutableStateOf(false) }
+    if (showDialog) {
+        TwoButtonDialog(
+            onDismissRequest = { showDialog = !showDialog },
+            onConfirmation = {
+                registerImage(
+                    navController,
+                    pagingPhotos,
+                    isCheckedIdx,
+                    showToast,
+                    fittingViewModel,
+                    closetViewModel,
+                    photoViewModel,
+                    codiViewModel
+                )
+                showDialog = !showDialog
+            },
+            dialogTitle = "알림",
+            dialogText = "의류가 아닙니다!\n그래도 계속 할까요?",
+        )
+    }
+
+    NetworkResultHandler(state = validationState) {
+        if (it) {
+            registerImage(
+                navController,
+                pagingPhotos,
+                isCheckedIdx,
+                showToast,
+                fittingViewModel,
+                closetViewModel,
+                photoViewModel,
+                codiViewModel
+            )
+        } else {
+            showDialog = !showDialog
+        }
+    }
 
     if (onClick) {
         PermissionRequester(
@@ -103,7 +147,8 @@ fun GalleryScreen(
                 closetViewModel = closetViewModel,
                 photoViewModel = photoViewModel,
                 fittingViewModel = fittingViewModel,
-                codiViewModel = codiViewModel
+                codiViewModel = codiViewModel,
+                showToast = showToast
             )
         }
     ) {
@@ -146,51 +191,9 @@ fun GalleryHeader(
     fittingViewModel: FittingViewModel,
     closetViewModel: ClosetViewModel,
     photoViewModel: PhotoViewModel,
-    codiViewModel: CodiViewModel
+    codiViewModel: CodiViewModel,
+    showToast: MutableState<Boolean>
 ) {
-    val validationState by closetViewModel.clothesValidationState.collectAsState()
-
-    var showToast = remember { mutableStateOf(false) }
-    if (showToast.value) {
-        ShowToast(text = "모델 등록에 약 2분이 소요돼요!")
-    }
-    var showDialog by remember { mutableStateOf(false) }
-    if (showDialog) {
-        TwoButtonDialog(
-            onDismissRequest = { navController.popBackStack() },
-            onConfirmation = {
-                registerImage(
-                    navController,
-                    pagingPhotos,
-                    isCheckedIdx,
-                    showToast,
-                    fittingViewModel,
-                    closetViewModel,
-                    photoViewModel,
-                    codiViewModel
-                )
-            },
-            dialogTitle = "알림",
-            dialogText = "의류가 아닙니다!\n그래도 계속 할까요?",
-        )
-    }
-    NetworkResultHandler(state = validationState) {
-        if (it) {
-            registerImage(
-                navController,
-                pagingPhotos,
-                isCheckedIdx,
-                showToast,
-                fittingViewModel,
-                closetViewModel,
-                photoViewModel,
-                codiViewModel
-            )
-        } else {
-            showDialog = !showDialog
-        }
-    }
-
     TopAppBar(
         modifier = Modifier.padding(vertical = 8.dp),
         title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
@@ -207,7 +210,25 @@ fun GalleryHeader(
                     if (isCheckedIdx.value == -1) {
                         return@Button
                     }
-                    closetViewModel.checkClothes(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+                    when (photoViewModel.curMode) {
+                        Mode.clothes -> {
+                            closetViewModel.checkClothes(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+                        }
+
+                        Mode.codi -> {
+                            codiViewModel.codiRegisterInfo.imagePath =
+                                pagingPhotos[isCheckedIdx.value]?.uri.toString()
+                            closetViewModel.resetNetworkStates()
+                            navController.navigate(NavigationItem.CoordinationRegisterNav.route)
+                        }
+
+                        else -> {
+                            fittingViewModel.putModel(pagingPhotos[isCheckedIdx.value]?.uri.toString())
+                            showToast.value = true
+                            closetViewModel.resetNetworkStates()
+                            navController.popBackStack()
+                        }
+                    }
                 }) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
             }
