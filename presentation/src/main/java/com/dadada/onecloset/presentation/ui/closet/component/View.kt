@@ -133,7 +133,7 @@ fun ClothGridView(
     onClick: (Int) -> Unit = {}
 ) {
     var icon: Int? = icon
-    Log.d(TAG, "ClothGridView: ${itemClickedStateList.size}")
+
     LazyVerticalGrid(
         modifier = Modifier.padding(horizontal = 4.dp),
         columns = GridCells.Fixed(3),

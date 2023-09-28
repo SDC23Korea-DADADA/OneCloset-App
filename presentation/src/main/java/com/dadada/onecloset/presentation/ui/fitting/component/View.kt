@@ -46,7 +46,7 @@ fun FittingSelectedClothListView(
     onClickDropDown: (Int) -> Unit,
 ) {
     var modeClick by remember { mutableStateOf(false) }
-    val modeTitleList = listOf<String>("상하의", "상의", "하의", "한벌옷")
+    val modeTitleList = listOf<String>("상의", "하의", "한벌옷")
 
     Column(
         modifier = roundedSquareLargeModifier,
