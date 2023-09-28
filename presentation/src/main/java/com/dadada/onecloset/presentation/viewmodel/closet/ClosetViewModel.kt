@@ -19,6 +19,7 @@ import com.dadada.onecloset.domain.usecase.cloth.GetClothListUseCase
 import com.dadada.onecloset.domain.usecase.cloth.GetClothUseCase
 import com.dadada.onecloset.domain.usecase.cloth.PutClothUseCase
 import com.dadada.onecloset.domain.usecase.cloth.UpdateClothesUseCase
+import com.dadada.onecloset.domain.usecase.cloth.ValidateClothesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,7 +39,8 @@ class ClosetViewModel @Inject constructor(
     private val deleteClothUseCase: DeleteClothUseCase,
     private val putClothAnalysisUseCase: GetClothAnalysisUseCase,
     private val getClothCareCourseUseCase: GetClothCareCourseUseCase,
-    private val updateClothesUseCase: UpdateClothesUseCase
+    private val updateClothesUseCase: UpdateClothesUseCase,
+    private val validateClothesUseCase: ValidateClothesUseCase
 ) : ViewModel() {
     private val _closetListState = MutableStateFlow<NetworkResult<List<Closet>>>(NetworkResult.Idle)
     val closetListState = _closetListState.asStateFlow()
@@ -68,6 +70,9 @@ class ClosetViewModel @Inject constructor(
     private val _clothCareCourseState =
         MutableStateFlow<NetworkResult<ClothCareCourse>>(NetworkResult.Idle)
     val clothCareCourseState = _clothCareCourseState.asStateFlow()
+
+    private val _clothesValidationState = MutableStateFlow<NetworkResult<Boolean>>(NetworkResult.Idle)
+    val clothesValidationState = _clothesValidationState.asStateFlow()
 
     private lateinit var selectedClosetId: String
     var clothesInfo = ClothesInfo()
@@ -134,6 +139,11 @@ class ClosetViewModel @Inject constructor(
         _clothesUpdateState.emit(updateClothesUseCase.invoke(clothesInfo))
     }
 
+    fun checkClothes(imagePath: String) = viewModelScope.launch {
+        _clothesValidationState.value = NetworkResult.Loading
+        _clothesValidationState.emit(validateClothesUseCase.invoke(imagePath))
+    }
+
     fun resetNetworkStates() {
         _closetListState.value = NetworkResult.Idle
         _clothListState.value = NetworkResult.Idle
@@ -144,6 +154,7 @@ class ClosetViewModel @Inject constructor(
         _clothAnalysisState.value = NetworkResult.Idle
         _clothCareCourseState.value = NetworkResult.Idle
         _clothesUpdateState.value = NetworkResult.Idle
+        _clothesValidationState.value = NetworkResult.Idle
     }
 
 }

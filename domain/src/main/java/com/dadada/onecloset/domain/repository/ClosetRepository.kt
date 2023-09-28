@@ -20,4 +20,5 @@ interface ClosetRepository {
     suspend fun getClothAnalysis(image: String) : NetworkResult<ClothAnalysis>
     suspend fun getClothCareCourse(material: String) : NetworkResult<ClothCareCourse>
     suspend fun updateClothes(clothesInfo: ClothesInfo) : NetworkResult<Unit>
+    suspend fun checkClothes(image: String) : NetworkResult<Boolean>
 }

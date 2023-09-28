@@ -7,6 +7,7 @@ import com.dadada.onecloset.data.model.closet.response.ClothCareCourseResponse
 import com.dadada.onecloset.data.model.closet.response.ClothListResponse
 import com.dadada.onecloset.data.model.closet.response.ClothRegisterResponse
 import com.dadada.onecloset.data.model.closet.response.ClothResponse
+import com.dadada.onecloset.data.model.closet.response.ClothesCheckResponse
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import okhttp3.MultipartBody
@@ -58,4 +59,8 @@ interface ClosetService {
 
     @PUT("/api/clothes")
     suspend fun updateClothes(@Body cloth: ClothesInfo): ServerResponse
+
+    @Multipart
+    @POST("/api/clothes/check")
+    suspend fun checkClothes(@Part image: MultipartBody.Part) : ClothesCheckResponse
 }

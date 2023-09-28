@@ -150,7 +150,8 @@ fun MainNavigationScreen(
                 navController,
                 closetViewModel = closetViewModel,
                 photoViewModel = photoViewModel,
-                fittingViewModel = fittingViewModel
+                fittingViewModel = fittingViewModel,
+                codiViewModel = codiViewModel
             )
         }
         composable(route = ClosetDetailNav.route) {

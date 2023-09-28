@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
+import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.common.circleShapeModifier
 import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
 import com.dadada.onecloset.presentation.ui.utils.Mode
@@ -39,6 +40,7 @@ import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
+import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 import com.ujizin.camposer.CameraPreview
 import com.ujizin.camposer.state.CamSelector
@@ -56,13 +58,15 @@ fun CameraScreen(
     navHostController: NavHostController,
     photoViewModel: PhotoViewModel = hiltViewModel(),
     closetViewModel: ClosetViewModel,
-    fittingViewModel: FittingViewModel
+    fittingViewModel: FittingViewModel,
+    codiViewModel: CodiViewModel
 ) {
     val cameraState = rememberCameraState()
     val cameraSelector by remember { mutableStateOf(CamSelector.Back) }
     val context = LocalContext.current
     var sliderPosition by remember { mutableStateOf(1f) }
 
+    val validationState by closetViewModel.clothesValidationState.collectAsState()
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     NetworkResultHandler(state = closetAnalysisState) {
         closetViewModel.clothesInfo.image = it.image
@@ -71,6 +75,27 @@ fun CameraScreen(
         closetViewModel.clothesInfo.type = it.type
         closetViewModel.resetNetworkStates()
         navHostController.navigate(NavigationItem.ClothAnalysisNav.route)
+    }
+
+    var showDialog by remember { mutableStateOf(false) }
+    if (showDialog) {
+        TwoButtonDialog(
+            onDismissRequest = { showDialog = !showDialog },
+            onConfirmation = {
+                closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+                showDialog = !showDialog
+            },
+            dialogTitle = "알림",
+            dialogText = "의류가 아닙니다!\n그래도 계속 할까요?",
+        )
+    }
+
+    NetworkResultHandler(state = validationState) {
+        if (it) {
+            closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
+        } else {
+            showDialog = !showDialog
+        }
     }
 
     var showToast by remember { mutableStateOf(false) }
@@ -97,14 +122,27 @@ fun CameraScreen(
                     cameraState.takePicture(
                         fileDataSource.imageContentValues
                     ) {
-                        if(photoViewModel.curMode == Mode.clothes) {
-                            closetViewModel.clothesInfo.image =
-                                fileDataSource.getLastPictureUriPostQ(context).toString()
-                            closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
-                        } else {
-                            fittingViewModel.putModel(fileDataSource.getLastPictureUriPostQ(context).toString())
-                            showToast = true
-                            navHostController.popBackStack()
+                        val curImagePath = fileDataSource
+                            .getLastPictureUriPostQ(context)
+                            .toString()
+                        when (photoViewModel.curMode) {
+                            Mode.clothes -> {
+                                closetViewModel.checkClothes(curImagePath)
+                                closetViewModel.clothesInfo.image = curImagePath
+                            }
+
+                            Mode.codi -> {
+                                codiViewModel.codiRegisterInfo.imagePath = curImagePath
+                                closetViewModel.resetNetworkStates()
+                                navHostController.navigate(NavigationItem.CoordinationRegisterNav.route)
+                            }
+
+                            else -> {
+                                fittingViewModel.putModel(curImagePath)
+                                showToast = true
+                                closetViewModel.resetNetworkStates()
+                                navHostController.popBackStack()
+                            }
                         }
                     }
                 }) {
