@@ -29,6 +29,7 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.colorToHexString
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
@@ -79,6 +80,8 @@ fun ClothCreateInputView(cloth: ClothesInfo) {
     var type by remember { mutableStateOf(cloth.type) }
     var material by remember { mutableStateOf(cloth.material) }
     var colorCode by remember { mutableStateOf(cloth.colorCode) }
+    var colorName by remember { mutableStateOf(cloth.color) }
+
 
     if (showType.value) {
         SelectTypeBottomSheet(show = showType, type) {
@@ -96,8 +99,9 @@ fun ClothCreateInputView(cloth: ClothesInfo) {
 
     if (showColor.value) {
         SelectColorBottomSheet(show = showColor, curColor = colorCode) {
-            colorCode = it
-            cloth.colorCode = it
+            colorCode = colorToHexString(it.color)
+            cloth.colorCode = colorToHexString(it.color)
+            colorName = it.name
         }
     }
 
@@ -107,7 +111,7 @@ fun ClothCreateInputView(cloth: ClothesInfo) {
         Spacer(modifier = Modifier.size(12.dp))
         ChipEditRow("종류", type, reverse = showType)
         ChipEditRow("재질", material, reverse = showMaterial)
-        ColorEditRow("색상", hexStringToColor(colorCode), reverse = showColor)
+        ColorEditRow("색상", hexStringToColor(colorCode), name = colorName, reverse = showColor)
         Spacer(modifier = Modifier.size(12.dp))
     }
 }

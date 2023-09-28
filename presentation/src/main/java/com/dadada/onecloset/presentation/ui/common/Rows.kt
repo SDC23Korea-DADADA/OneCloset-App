@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.common
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,7 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -28,13 +28,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
-import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
+import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @Composable
-fun DropDownRow(modifier: Modifier = Modifier, component: @Composable () -> Unit, reverse: Boolean, onClick: () -> Unit) {
+fun DropDownRow(
+    modifier: Modifier = Modifier,
+    component: @Composable () -> Unit,
+    reverse: Boolean,
+    onClick: () -> Unit
+) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         component()
         DropDownButton(reverse = reverse) {
@@ -72,7 +77,7 @@ fun ChipEditRow(title: String, content: String, reverse: MutableState<Boolean>) 
 }
 
 @Composable
-fun ColorEditRow(title: String, content: Color, reverse: MutableState<Boolean>) {
+fun ColorEditRow(title: String, content: Color, name: String = "", reverse: MutableState<Boolean>) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -87,13 +92,11 @@ fun ColorEditRow(title: String, content: Color, reverse: MutableState<Boolean>) 
         )
         DropDownRow(
             component = {
-                Box(
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .size(36.dp)
-                        .background(content)
-                        .border(1.dp, Color.Black, CircleShape)
-                )
+                if(name == "다채색") {
+                    OtherColorItem()
+                } else {
+                    ColorItem(color = content, name = name)
+                }
             },
             reverse = reverse.value,
             onClick = { reverse.value = !reverse.value }
@@ -102,7 +105,7 @@ fun ColorEditRow(title: String, content: Color, reverse: MutableState<Boolean>) 
 }
 
 @Composable
-fun ColorInformRow(title: String, content: Color) {
+fun ColorInformRow(title: String, content: Color, colorName: String) {
     Row(
         modifier = screenModifier.padding(vertical = Paddings.small),
         verticalAlignment = Alignment.CenterVertically,
@@ -113,14 +116,11 @@ fun ColorInformRow(title: String, content: Color) {
             text = title,
             style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold)
         )
-        Box(
-            modifier = Modifier
-                .shadow(3.dp, CircleShape)
-                .clip(CircleShape)
-                .size(36.dp)
-                .background(content)
-                //.border(1.dp, PrimaryBlack, CircleShape)
-        )
+        if(content == Color.Magenta) {
+            OtherColorItem()
+        } else {
+            ColorItem(color = content, name = colorName)
+        }
     }
 }
 

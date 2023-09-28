@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,9 +18,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -43,15 +39,16 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Blue
+import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.ClothColor
@@ -216,7 +213,11 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick:
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectMaterialBottomSheet(show: MutableState<Boolean>, curMaterial: String, onClick: (String) -> Unit) {
+fun SelectMaterialBottomSheet(
+    show: MutableState<Boolean>,
+    curMaterial: String,
+    onClick: (String) -> Unit
+) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val list = Material.getAllMaterial()
@@ -259,7 +260,11 @@ fun SelectMaterialBottomSheet(show: MutableState<Boolean>, curMaterial: String, 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: String, onClick: (String) -> Unit) {
+fun SelectColorBottomSheet(
+    show: MutableState<Boolean>,
+    curColor: String,
+    onClick: (ClothColor) -> Unit
+) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val list = ClothColor.getAllColor()
@@ -281,27 +286,66 @@ fun SelectColorBottomSheet(show: MutableState<Boolean>, curColor: String, onClic
 
             Spacer(modifier = Modifier.size(12.dp))
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(44.dp),
+                columns = GridCells.Adaptive(56.dp),
                 modifier = Modifier
                     .clip(RoundedCornerShape(26.dp))
                     .background(Color.White)
             ) {
                 items(list.size) {
-                    Box(modifier = Modifier
-                        .padding(8.dp)
-                        .clip(CircleShape)
-                        .size(32.dp)
-                        .background(list[it].color)
-                        .border(1.dp, Color.Black, CircleShape)
-                        .clickable {
-                            onClick(colorToHexString(list[it].color))
+                    // 다채색을 나타내는 아이템인 경우
+                    if (it == list.size - 1) {
+                        OtherColorItem(Modifier.clickable {
+                            onClick(list[it])
                             show.value = !show.value
-                        }
-                    )
+                        })
+                    } else {
+                        ColorItem(modifier = Modifier.clickable {
+                            onClick(list[it])
+                            show.value = !show.value
+                        }, color = list[it].color, name = list[it].name)
+                    }
                 }
             }
             Spacer(modifier = Modifier.size(56.dp))
         }
+    }
+}
+
+@Composable
+fun OtherColorItem(modifier: Modifier = Modifier) {
+    val gradientColors =
+        listOf(Color.Red, Color.Blue, Color.Green) // 원하는 색상들로 수정
+    Column(
+        modifier = modifier.padding(Paddings.small),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(32.dp)
+                .background(brush = Brush.linearGradient(colors = gradientColors))
+                .border(1.dp, Color.Black, CircleShape)
+        )
+        Text(text = "다채색", style = Typography.bodySmall, color = Color.Black)
+    }
+}
+
+@Composable
+fun ColorItem(modifier: Modifier = Modifier, color: Color, name: String) {
+    Column(
+        modifier = modifier.padding(Paddings.small),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .size(32.dp)
+                .background(color = color)
+                .border(1.dp, Color.Black, CircleShape)
+        )
+        Text(text = name, style = Typography.bodySmall.copy(color = Color.Black))
     }
 }
 
