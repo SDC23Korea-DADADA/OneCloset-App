@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -64,6 +65,9 @@ fun GalleryScreen(
     fittingViewModel: FittingViewModel,
     codiViewModel: CodiViewModel,
 ) {
+    DisposableEffect(Unit) {
+        onDispose { closetViewModel.resetNetworkStates() }
+    }
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     val validationState by closetViewModel.clothesValidationState.collectAsState()
     NetworkResultHandler(state = closetAnalysisState, loadingType = LoadingType.ANALYSIS,mainViewModel = mainViewModel) {
@@ -103,7 +107,7 @@ fun GalleryScreen(
                 showDialog = !showDialog
             },
             dialogTitle = "알림",
-            dialogText = "의류가 아닙니다!\n그래도 계속 할까요?",
+            dialogText = "의류 이미지가 아닌 것 같아요! 그래도 계속할까요?",
         )
     }
 
