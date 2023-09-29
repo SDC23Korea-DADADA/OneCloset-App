@@ -105,8 +105,13 @@ fun ClothCourseScreen(
                 .align(Alignment.BottomCenter)
                 .background(BackGround),
             left = "취소",
-            right = "등록하기",
-            onClickLeft = { /*TODO*/ }) {
+            right = "등록",
+            onClickLeft = {
+                closetViewModel.resetNetworkStates()
+                navHostController.navigate(NavigationItem.MainTabNav.route) {
+                    popUpTo(NavigationItem.MainTabNav.route) { inclusive = true }
+                }
+            }) {
             scope.launch { sheetState.show() }
         }
     }

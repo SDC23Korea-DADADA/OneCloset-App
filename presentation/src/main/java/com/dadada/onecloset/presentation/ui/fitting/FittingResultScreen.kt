@@ -116,9 +116,11 @@ fun FittingResultScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        RowWithTwoButtons(left = "돌아가기", right = "등록하기", onClickLeft = { /*TODO*/ }) {
-//            fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
-//            fittingViewModel.putFittingResult()
+        RowWithTwoButtons(left = "돌아가기", right = "등록하기", onClickLeft = {
+            navHostController.navigate(NavigationItem.MainTabNav.route) {
+                popUpTo(NavigationItem.MainTabNav.route) { inclusive = true }
+            }
+        }) {
             showDatePicker = !showDatePicker
         }
     }

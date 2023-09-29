@@ -71,7 +71,10 @@ fun ClothAnalysisScreen(
             style = Typography.titleSmall.copy(color = Gray)
         )
         Spacer(modifier = Modifier.weight(1f))
-        RowWithTwoButtons(left = "다시하기", right = "추천받기", onClickLeft = { /*TODO*/ }) {
+        RowWithTwoButtons(left = "취소", right = "다음", onClickLeft = {
+            closetViewModel.resetNetworkStates()
+            navHostController.popBackStack()
+        }) {
             closetViewModel.getClothCare()
         }
     }
