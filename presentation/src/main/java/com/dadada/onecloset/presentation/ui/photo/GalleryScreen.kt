@@ -41,6 +41,7 @@ import com.dadada.onecloset.presentation.ui.common.PhotoItem
 import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
+import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
@@ -65,7 +66,7 @@ fun GalleryScreen(
 ) {
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     val validationState by closetViewModel.clothesValidationState.collectAsState()
-    NetworkResultHandler(state = closetAnalysisState, mainViewModel = mainViewModel) {
+    NetworkResultHandler(state = closetAnalysisState, loadingType = LoadingType.ANALYSIS,mainViewModel = mainViewModel) {
         closetViewModel.clothesInfo.image = it.image
         closetViewModel.clothesInfo.material = it.material
         closetViewModel.clothesInfo.colorCode = it.colorCode
@@ -106,7 +107,7 @@ fun GalleryScreen(
         )
     }
 
-    NetworkResultHandler(state = validationState, mainViewModel = mainViewModel) {
+    NetworkResultHandler(state = validationState, loadingType = LoadingType.VALIDATION,mainViewModel = mainViewModel) {
         if (it) {
             registerImage(
                 navController,

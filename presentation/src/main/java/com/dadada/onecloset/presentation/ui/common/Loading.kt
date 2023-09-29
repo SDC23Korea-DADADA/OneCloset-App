@@ -8,6 +8,7 @@ import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,6 +51,7 @@ fun LoadingView(
             .fillMaxSize()
             .background(Color.Gray.copy(alpha = 0.7f)) // 회색 틴트 처리
             .zIndex(1f) // Z-index 설정, 1f 이상의 값이면 다른 오브젝트 위에 올라가게 됩니다.
+            .pointerInput(Unit) { detectTapGestures {} }
         ,
         contentAlignment = Alignment.Center
     ) {
@@ -104,7 +107,8 @@ fun GalaxyLoadingView(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .zIndex(1f) // Z-index 설정, 1f 이상의 값이면 다른 오브젝트 위에 올라가게 됩니다.
+            .zIndex(1f)
+            .pointerInput(Unit) { detectTapGestures {} } // Z-index 설정, 1f 이상의 값이면 다른 오브젝트 위에 올라가게 됩니다.
     ) {
         Box(
             modifier = Modifier

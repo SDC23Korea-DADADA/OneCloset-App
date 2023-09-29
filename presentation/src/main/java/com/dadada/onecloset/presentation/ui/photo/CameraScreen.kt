@@ -35,6 +35,7 @@ import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.common.circleShapeModifier
 import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
+import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
@@ -70,7 +71,7 @@ fun CameraScreen(
 
     val validationState by closetViewModel.clothesValidationState.collectAsState()
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
-    NetworkResultHandler(state = closetAnalysisState, mainViewModel = mainViewModel) {
+    NetworkResultHandler(state = closetAnalysisState, loadingType = LoadingType.ANALYSIS,mainViewModel = mainViewModel) {
         closetViewModel.clothesInfo.image = it.image
         closetViewModel.clothesInfo.material = it.material
         closetViewModel.clothesInfo.colorCode = it.colorCode
@@ -92,7 +93,7 @@ fun CameraScreen(
         )
     }
 
-    NetworkResultHandler(state = validationState, mainViewModel = mainViewModel) {
+    NetworkResultHandler(state = validationState, loadingType = LoadingType.VALIDATION,mainViewModel = mainViewModel) {
         if (it) {
             closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
         } else {

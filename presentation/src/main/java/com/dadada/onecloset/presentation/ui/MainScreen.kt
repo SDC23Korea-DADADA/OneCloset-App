@@ -82,13 +82,13 @@ fun MainScreen(startDestination: String) {
     if(loadingState) {
         when(mainViewModel.loadingType) {
             LoadingType.FITTING -> {
-                LoadingView(animation = R.raw.animation_analysis_fitting, text = "가상 피팅에는 최대 1분이 소요돼요!")
+                LoadingView(animation = R.raw.animation_loading_fitting, text = "가상 피팅 결과에 최대 1분이 소요돼요!")
             }
             LoadingType.VALIDATION -> {
-
+                LoadingView(animation = R.raw.animation_loading_validation, text = "의류 이미지가 맞나요? 확인 중이에요..")
             }
             LoadingType.ANALYSIS -> {
-
+                LoadingView(animation = R.raw.animation_loading_analysis, text = "의류를 분석 중이에요!")
             }
             else -> {
                 GalaxyLoadingView()
