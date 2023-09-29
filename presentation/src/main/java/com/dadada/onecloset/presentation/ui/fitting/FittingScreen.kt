@@ -153,7 +153,7 @@ fun FittingScreen(
                 .background(BackGround),
             left = "취소",
             right = "다음",
-            onClickLeft = { },
+            onClickLeft = { navHostController.popBackStack() },
             onClickRight = {
                 val selectedItem = arrayListOf<Int>()
                 when (modeIdx) {

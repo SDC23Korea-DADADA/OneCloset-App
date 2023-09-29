@@ -14,9 +14,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +40,7 @@ import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun AccountTitleView(title: String) {
@@ -99,7 +103,7 @@ fun AccountMultiLineSection(
                 Row(
                     modifier = Modifier
                         .padding(vertical = Paddings.medium)
-                        .clickable (onClick =  onClickList[index]),
+                        .clickable(onClick = onClickList[index]),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = stringResource(id = it))
@@ -119,12 +123,15 @@ fun AccountMultiLineSection(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ModelListView(
     navHostController: NavHostController,
     modelList: List<FittingModelInfo>,
+    sheetState: SheetState,
     fittingViewModel: FittingViewModel
 ) {
+    val scope = rememberCoroutineScope()
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
             modifier = Modifier.fillMaxWidth(),
@@ -144,6 +151,7 @@ fun ModelListView(
                 if(modelList[it].regist) {
                     RoundedSquareImageItem(imageUri = modelList[it].modelImg.toUri(), icon = null) {
                         fittingViewModel.setFittingInfoModelId(modelList[it].modelId.toString())
+                        scope.launch { sheetState.hide() }
                         navHostController.navigate(NavigationItem.FittingNav.route)
                     }
                 } else {
