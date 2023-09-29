@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.coordination.component
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.dadada.onecloset.domain.model.codi.Clothes
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
@@ -95,7 +97,8 @@ fun CodiResultView(
     codiViewModel: CodiViewModel
 ) {
     RoundedSquareImageItem(imageUri = imagePath.toUri(), icon = null) {
-
+        val encodedPath = Uri.encode(imagePath)
+        navController.navigate("${NavigationItem.PhotoNav.route}/${encodedPath}")
     }
 
     Spacer(modifier = Modifier.size(Paddings.large))

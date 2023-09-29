@@ -235,8 +235,11 @@ fun MainNavigationScreen(
         composable(route = FittingResultNav.route) {
             FittingResultScreen(navController, mainViewModel, fittingViewModel)
         }
-        composable(route = PhotoNav.route) {
-            PhotoScreen()
+        composable(route = "${PhotoNav.route}/{imagePath}") {
+            val imagePath = it.arguments?.getString("imagePath")
+            if (imagePath != null) {
+                PhotoScreen(navController, imagePath)
+            }
         }
         composable(route = CoordinationResultNav.route) {
             CoordinationResultScreen(codiViewModel, navController)
