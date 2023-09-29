@@ -105,7 +105,7 @@ fun ClothCourseScreen(
                 .align(Alignment.BottomCenter)
                 .background(BackGround),
             left = "취소",
-            right = "등록",
+            right = "저장",
             onClickLeft = {
                 closetViewModel.resetNetworkStates()
                 navHostController.navigate(NavigationItem.MainTabNav.route) {

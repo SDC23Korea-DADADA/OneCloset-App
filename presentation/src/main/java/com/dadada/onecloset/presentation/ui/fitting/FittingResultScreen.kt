@@ -116,7 +116,7 @@ fun FittingResultScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        RowWithTwoButtons(left = "돌아가기", right = "등록하기", onClickLeft = {
+        RowWithTwoButtons(left = "취소", right = "저장", onClickLeft = {
             navHostController.navigate(NavigationItem.MainTabNav.route) {
                 popUpTo(NavigationItem.MainTabNav.route) { inclusive = true }
             }
