@@ -5,10 +5,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -24,11 +27,17 @@ import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
+import kotlinx.coroutines.launch
 
 private const val TAG = "HomeScreen"
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navHostController: NavHostController, mainViewModel: MainViewModel, fittingViewModel: FittingViewModel) {
+fun HomeScreen(
+    navHostController: NavHostController,
+    mainViewModel: MainViewModel,
+    fittingViewModel: FittingViewModel
+) {
     var clickCourse by remember { mutableStateOf(false) }
     if (clickCourse) {
         PermissionRequester(
@@ -39,14 +48,16 @@ fun HomeScreen(navHostController: NavHostController, mainViewModel: MainViewMode
         }
     }
 
-    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
 
-    if (showBottomSheet) {
+    if (sheetState.isVisible) {
         FittingModelListBottomSheet(
             navHostController,
             mainViewModel = mainViewModel,
             fittingViewModel = fittingViewModel,
-            onDismissRequest = { showBottomSheet = !showBottomSheet })
+            sheetState = sheetState,
+            onDismissRequest = { scope.launch { sheetState.hide() } })
     }
 
 
@@ -70,7 +81,7 @@ fun HomeScreen(navHostController: NavHostController, mainViewModel: MainViewMode
             title = stringResource(R.string.fitting),
             content = stringResource(R.string.home_fitting_guide),
             animation = R.raw.animation_fitting,
-            onClick = { showBottomSheet = !showBottomSheet }
+            onClick = { scope.launch { sheetState.show() } }
         )
     }
 }

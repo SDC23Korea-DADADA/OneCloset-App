@@ -3,8 +3,10 @@ package com.dadada.onecloset.presentation.ui.fitting
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -94,12 +97,13 @@ fun FittingResultScreen(
             tabClick = handleTabClick
         )
 
+        Spacer(modifier = Modifier.weight(1f))
         when (selectedTabIndex) {
             0 -> AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .padding(Paddings.medium),
+                    .padding(Paddings.xlarge)
+                    .clip(RoundedCornerShape(26.dp)),
                 model = fittingViewModel.fittingResult.originImg,
                 contentDescription = ""
             )
@@ -107,8 +111,8 @@ fun FittingResultScreen(
             else -> AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .padding(Paddings.medium),
+                    .padding(Paddings.xlarge)
+                    .clip(RoundedCornerShape(26.dp)),
                 model = fittingViewModel.fittingResult.fittingImg,
                 contentDescription = ""
             )
@@ -116,9 +120,11 @@ fun FittingResultScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        RowWithTwoButtons(left = "돌아가기", right = "등록하기", onClickLeft = { /*TODO*/ }) {
-//            fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
-//            fittingViewModel.putFittingResult()
+        RowWithTwoButtons(left = "취소", right = "저장", onClickLeft = {
+            navHostController.navigate(NavigationItem.MainTabNav.route) {
+                popUpTo(NavigationItem.MainTabNav.route) { inclusive = true }
+            }
+        }) {
             showDatePicker = !showDatePicker
         }
     }

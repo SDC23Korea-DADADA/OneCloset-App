@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.closet
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
+import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.ClothCourseView
 import com.dadada.onecloset.presentation.ui.closet.component.ClothHeader
 import com.dadada.onecloset.presentation.ui.closet.component.ClothInformView
@@ -98,7 +100,8 @@ fun ClothScreen(navHostController: NavHostController, mainViewModel: MainViewMod
                     imageUri = cloth.image.toUri(),
                     icon = null,
                 ) {
-
+                    val encodedPath = Uri.encode(cloth.image)
+                    navHostController.navigate("${NavigationItem.PhotoNav.route}/${encodedPath}")
                 }
 
                 CustomTabRow(
