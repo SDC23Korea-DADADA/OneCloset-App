@@ -24,12 +24,17 @@ import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 private const val TAG = "ClothListScreen"
 
 @Composable
-fun ClothListScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
+fun ClothListScreen(
+    navHostController: NavHostController,
+    mainViewModel: MainViewModel,
+    closetViewModel: ClosetViewModel
+) {
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
     var allClothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
@@ -50,7 +55,7 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
         closetViewModel.getClothList()
     }
 
-    NetworkResultHandler(state = clothListState) {
+    NetworkResultHandler(state = clothListState, mainViewModel = mainViewModel) {
         clothList = it
         allClothList = it
         Log.d(TAG, "ClothListScreen: $allClothList")
@@ -73,7 +78,7 @@ fun ClothListScreen(navHostController: NavHostController, closetViewModel: Close
             .padding(horizontal = 16.dp)
             .padding(top = 24.dp),
         floatingActionButton = {
-            CustomFloatingActionButton(title = "의류",icon = Icons.Default.Add) {
+            CustomFloatingActionButton(title = "의류", icon = Icons.Default.Add) {
                 clickCourse = !clickCourse
             }
         },

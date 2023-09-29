@@ -1,6 +1,5 @@
 package com.dadada.onecloset.presentation.ui.fitting
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -25,12 +24,17 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.fitting.component.MyDatePickerDialog
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 private const val TAG = "FittingResultScreen"
 
 @Composable
-fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: FittingViewModel) {
+fun FittingResultScreen(
+    navHostController: NavHostController,
+    mainViewModel: MainViewModel,
+    fittingViewModel: FittingViewModel
+) {
     var selectedTabIndex by remember { mutableStateOf(0) }
     val handleTabClick = { newIndex: Int ->
         selectedTabIndex = newIndex
@@ -54,7 +58,7 @@ fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: 
     }
 
     val putResultState by fittingViewModel.fittingPutState.collectAsState()
-    NetworkResultHandler(state = putResultState) {
+    NetworkResultHandler(state = putResultState, mainViewModel = mainViewModel) {
         fittingViewModel.resetNetworkStates()
         navHostController.navigate(NavigationItem.CoordinationNav.route) {
             popUpTo(NavigationItem.FittingNav.route) { inclusive = true }
@@ -66,11 +70,13 @@ fun FittingResultScreen(navHostController: NavHostController, fittingViewModel: 
             onDateSelected = { date = it },
             onDismiss = { showDatePicker = false },
             onPass = {
-                fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
+                fittingViewModel.fittingResultForSave.fittingImg =
+                    fittingViewModel.fittingResult.fittingImg
                 fittingViewModel.putFittingResult()
             },
             onPlan = {
-                fittingViewModel.fittingResultForSave.fittingImg = fittingViewModel.fittingResult.fittingImg
+                fittingViewModel.fittingResultForSave.fittingImg =
+                    fittingViewModel.fittingResult.fittingImg
                 fittingViewModel.putFittingResultWithDate(it)
             }
         )

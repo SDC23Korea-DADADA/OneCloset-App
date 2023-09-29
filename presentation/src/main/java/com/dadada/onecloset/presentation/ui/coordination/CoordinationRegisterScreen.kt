@@ -29,12 +29,14 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.fitting.component.MyDatePickerDialog
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 
 @Composable
 fun CoordinationRegisterScreen(
     navHostController: NavHostController,
+    mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
     closetViewModel: ClosetViewModel = hiltViewModel()
 ) {
@@ -51,7 +53,7 @@ fun CoordinationRegisterScreen(
     }
 
     val codiPutState by codiViewModel.codiPutState.collectAsState()
-    NetworkResultHandler(state = codiPutState) {
+    NetworkResultHandler(state = codiPutState, mainViewModel = mainViewModel) {
         codiViewModel.curDailyCodiItem.id = it
         navHostController.navigate(NavigationItem.CoordinationNav.route) {
             popUpTo(NavigationItem.GalleryNav.route) { inclusive = true }
@@ -63,7 +65,7 @@ fun CoordinationRegisterScreen(
         closetViewModel.getBasicClothList()
     }
 
-    NetworkResultHandler(state = clothListState) {
+    NetworkResultHandler(state = clothListState, mainViewModel = mainViewModel) {
         allClothList = it
         clothList = it
         clickedState = List(clothList.size) { false }

@@ -34,13 +34,14 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.coordination.component.CodiResultView
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 @Composable
-fun CoordinationDetailScreen(codiViewModel: CodiViewModel, navController: NavHostController) {
+fun CoordinationDetailScreen(mainViewModel: MainViewModel, codiViewModel: CodiViewModel, navController: NavHostController) {
     val deleteState by codiViewModel.codiDeleteState.collectAsState()
-    NetworkResultHandler(state = deleteState) {
+    NetworkResultHandler(state = deleteState, mainViewModel = mainViewModel) {
         navController.popBackStack()
     }
     Scaffold(
@@ -67,12 +68,13 @@ fun CoordinationDetailScreen(codiViewModel: CodiViewModel, navController: NavHos
 
 @Composable
 fun CoordinationFittingDetailScreen(
+    mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
     navController: NavHostController,
     fittingViewModel: FittingViewModel = hiltViewModel()
 ) {
     val deleteState by fittingViewModel.fittingDeleteState.collectAsState()
-    NetworkResultHandler(state = deleteState) {
+    NetworkResultHandler(state = deleteState, mainViewModel = mainViewModel) {
         navController.popBackStack()
     }
     var selectedTabIndex by remember { mutableStateOf(0) }

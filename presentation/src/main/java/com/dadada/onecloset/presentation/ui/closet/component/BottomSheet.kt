@@ -32,6 +32,7 @@ import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
@@ -39,6 +40,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SelectClosetBottomSheet(
     modifier: Modifier = Modifier,
+    mainViewModel: MainViewModel,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     onClick: (Int) -> Unit,
@@ -52,7 +54,7 @@ fun SelectClosetBottomSheet(
         closetViewModel.getClosetList()
     }
 
-    NetworkResultHandler(state = closetListState) {
+    NetworkResultHandler(state = closetListState, mainViewModel = mainViewModel) {
         closetList = it
     }
 

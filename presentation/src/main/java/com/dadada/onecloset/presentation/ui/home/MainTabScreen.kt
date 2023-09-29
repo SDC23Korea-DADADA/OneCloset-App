@@ -18,10 +18,11 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.ClosetScreen
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 @Composable
-fun MainTabScreen(navHostController: NavHostController, fittingViewModel: FittingViewModel) {
+fun MainTabScreen(navHostController: NavHostController, mainViewModel: MainViewModel, fittingViewModel: FittingViewModel) {
     var selectedTabIndex by rememberSaveable { mutableStateOf(0) }
     val handleTabClick = { newIndex: Int ->
         selectedTabIndex = newIndex
@@ -42,8 +43,8 @@ fun MainTabScreen(navHostController: NavHostController, fittingViewModel: Fittin
             .padding(horizontal = 16.dp)
     ) {
         when (selectedTabIndex) {
-            0 -> HomeScreen(navHostController, fittingViewModel)
-            else -> ClosetScreen(navHostController)
+            0 -> HomeScreen(navHostController, mainViewModel, fittingViewModel)
+            else -> ClosetScreen(navHostController, mainViewModel)
         }
         CustomTabRow(
             modifier = Modifier.align(Alignment.BottomCenter),

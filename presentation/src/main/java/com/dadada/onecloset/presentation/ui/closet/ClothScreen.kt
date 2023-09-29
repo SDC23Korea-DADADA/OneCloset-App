@@ -30,11 +30,12 @@ import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 private const val TAG = "ClothScreen"
 @Composable
-fun ClothScreen(navHostController: NavHostController, clothId: String, closetViewModel: ClosetViewModel = hiltViewModel()) {
+fun ClothScreen(navHostController: NavHostController, mainViewModel: MainViewModel, clothId: String, closetViewModel: ClosetViewModel = hiltViewModel()) {
     val clothState by closetViewModel.clothState.collectAsState()
     var cloth by remember { mutableStateOf(ClothesInfo()) }
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -51,15 +52,15 @@ fun ClothScreen(navHostController: NavHostController, clothId: String, closetVie
         closetViewModel.getCloth(clothId)
     }
 
-    NetworkResultHandler(state = clothState) {
+    NetworkResultHandler(state = clothState, mainViewModel = mainViewModel) {
         cloth = it
     }
 
-    NetworkResultHandler(state = clothDeleteState) {
+    NetworkResultHandler(state = clothDeleteState, mainViewModel = mainViewModel) {
         navHostController.popBackStack()
     }
 
-    NetworkResultHandler(state = clothUpdateState) {
+    NetworkResultHandler(state = clothUpdateState, mainViewModel = mainViewModel) {
         closetViewModel.getCloth(clothId)
         showBottomSheet = !showBottomSheet
     }

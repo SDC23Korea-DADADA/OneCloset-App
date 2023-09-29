@@ -31,12 +31,14 @@ import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
 
 @Composable
 fun MyPageScreen(
     navHostController: NavHostController,
+    mainViewModel: MainViewModel,
     photoViewModel: PhotoViewModel,
     accountViewModel: AccountViewModel = hiltViewModel(),
 ) {
@@ -46,7 +48,7 @@ fun MyPageScreen(
     val accountInfo by accountViewModel.accountInfo.collectAsState()
     val leaveUser by accountViewModel.leaveUserState.collectAsState()
 
-    NetworkResultHandler(state = leaveUser) {
+    NetworkResultHandler(state = leaveUser, mainViewModel = mainViewModel) {
         navHostController.navigate(NavigationItem.LogInNav.route)
     }
 

@@ -31,14 +31,20 @@ import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.colorToHexString
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 
 private const val TAG = "ClothAnalysisScreen"
+
 @Composable
-fun ClothAnalysisScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
+fun ClothAnalysisScreen(
+    navHostController: NavHostController,
+    mainViewModel: MainViewModel,
+    closetViewModel: ClosetViewModel
+) {
     val clothCareCourseState by closetViewModel.clothCareCourseState.collectAsState()
-    NetworkResultHandler(state = clothCareCourseState) {
+    NetworkResultHandler(state = clothCareCourseState, mainViewModel = mainViewModel) {
         closetViewModel.clothesInfo.laundry = it.laundry
         closetViewModel.clothesInfo.dryer = it.dryer
         closetViewModel.clothesInfo.airDressor = it.airDresser

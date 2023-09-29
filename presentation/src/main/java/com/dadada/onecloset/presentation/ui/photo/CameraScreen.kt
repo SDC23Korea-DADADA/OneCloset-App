@@ -38,6 +38,7 @@ import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
@@ -56,6 +57,7 @@ private val fileDataSource = FileDataSource()
 @Composable
 fun CameraScreen(
     navHostController: NavHostController,
+    mainViewModel: MainViewModel,
     photoViewModel: PhotoViewModel = hiltViewModel(),
     closetViewModel: ClosetViewModel,
     fittingViewModel: FittingViewModel,
@@ -68,7 +70,7 @@ fun CameraScreen(
 
     val validationState by closetViewModel.clothesValidationState.collectAsState()
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
-    NetworkResultHandler(state = closetAnalysisState) {
+    NetworkResultHandler(state = closetAnalysisState, mainViewModel = mainViewModel) {
         closetViewModel.clothesInfo.image = it.image
         closetViewModel.clothesInfo.material = it.material
         closetViewModel.clothesInfo.colorCode = it.colorCode
@@ -90,7 +92,7 @@ fun CameraScreen(
         )
     }
 
-    NetworkResultHandler(state = validationState) {
+    NetworkResultHandler(state = validationState, mainViewModel = mainViewModel) {
         if (it) {
             closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
         } else {
