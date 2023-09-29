@@ -18,17 +18,32 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
+val DarkColorScheme = darkColorScheme(
+    primary = PrimaryBlack,
+    secondary = TextGray,
+    tertiary = PrimaryBlue,
+    background = BackGround,
+    surface = BackGround,
+    onPrimary = PrimaryBlack,
+    onSecondary = PrimaryBlack,
+    onTertiary = PrimaryBlack,
+    onBackground = PrimaryBlack,
+    onSurface = PrimaryBlack,
 )
 
 val LightColorScheme = lightColorScheme(
     primary = PrimaryBlack,
-    secondary = PrimaryBlack,
-    tertiary = PrimaryBlack,
-    background = BackGround
+    secondary = TextGray,
+    tertiary = PrimaryBlue,
+    background = BackGround,
+    surface = BackGround,
+    onPrimary = PrimaryBlack,
+    onSecondary = PrimaryBlack,
+    onTertiary = PrimaryBlack,
+    onBackground = PrimaryBlack,
+    onSurface = PrimaryBlack,
+)
+
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -39,7 +54,7 @@ val LightColorScheme = lightColorScheme(
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
     */
-)
+
 
 @Composable
 fun OneClosetTheme(
@@ -54,15 +69,15 @@ fun OneClosetTheme(
             dynamicLightColorScheme(context)
         }
 
-        darkTheme -> LightColorScheme
+        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = BackGround.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = true
         }
     }
 

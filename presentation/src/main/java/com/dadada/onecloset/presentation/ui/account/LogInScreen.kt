@@ -185,7 +185,7 @@ private fun handleGoogleSignInResult(
 //                        )
 //                    )
                 } else {
-                    accountViewModel.signOutGoogle()
+                    accountViewModel.signOut()
                     firebaseAuth.signOut()
                 }
             }

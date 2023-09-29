@@ -11,7 +11,7 @@ interface AccountRepository {
     suspend fun getAccountInfoFromRemote(): NetworkResult<AccountInfo>
     suspend fun signIn(accountInfo: AccountInfo)
 
-    suspend fun signOutGoogle()
+    suspend fun signOut()
 
     suspend fun logInKakao(token: String): NetworkResult<Token>
 }

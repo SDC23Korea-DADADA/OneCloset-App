@@ -22,7 +22,6 @@ import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.component.AccountMultiLineSection
 import com.dadada.onecloset.presentation.ui.account.component.AccountSingleLineSection
 import com.dadada.onecloset.presentation.ui.account.component.AccountText
-import com.dadada.onecloset.presentation.ui.account.component.FittingModelListBottomSheet
 import com.dadada.onecloset.presentation.ui.common.CircleImageView
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
@@ -31,7 +30,6 @@ import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
-import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 @Composable
 fun MyPageScreen(
@@ -61,8 +59,12 @@ fun MyPageScreen(
     val onClickModel = listOf(onClickModelRegister)
 
     val onClickPermission = {}
-    val onClickLogout = {}
-    val onClickWithdrawal = {}
+    val onClickLogout = {
+        accountViewModel.signOut()
+        navHostController.navigate(NavigationItem.LogInNav.route)
+        Unit
+    }
+    val onClickWithdrawal = { }
     val onClickPersonal = listOf(onClickPermission, onClickLogout, onClickWithdrawal)
 
     val onClickVersion = {}
