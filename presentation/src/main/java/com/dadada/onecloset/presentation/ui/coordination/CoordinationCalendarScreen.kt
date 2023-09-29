@@ -18,7 +18,6 @@ fun CoordinationCalendarScreen(
     navHostController: NavHostController,
     codiViewModel: CodiViewModel,
     photoViewModel: PhotoViewModel,
-    codiViewModel1: CodiViewModel
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()

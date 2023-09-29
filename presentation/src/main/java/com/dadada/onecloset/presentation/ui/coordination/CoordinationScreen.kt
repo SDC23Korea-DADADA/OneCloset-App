@@ -105,7 +105,6 @@ fun CoordinationScreen(
                     navHostController = navHostController,
                     codiViewModel,
                     photoViewModel = photoViewModel,
-                    codiViewModel
                 )
 
                 1 -> CoordinationCodiListScreen(

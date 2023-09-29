@@ -10,14 +10,16 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -64,23 +66,25 @@ private const val TAG = "MainScreen"
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen(startDestination: String) {
-    val scaffoldState = rememberScrollState()
+    val scaffoldState = rememberScaffoldState()
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
         topBar = {
             MainHeader(
                 navController = navController,
                 currentRoute = currentRoute,
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) {
         MainNavigationScreen(
             innerPaddings = it,
             navController = navController,
-            startDestination = startDestination
+            startDestination = startDestination,
+            snackbarHostState = snackbarHostState
         )
     }
 }
@@ -121,7 +125,8 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
 fun MainNavigationScreen(
     innerPaddings: PaddingValues,
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
+    snackbarHostState: SnackbarHostState
 ) {
     val closetViewModel: ClosetViewModel = hiltViewModel()
     val mainViewModel: MainViewModel = hiltViewModel()

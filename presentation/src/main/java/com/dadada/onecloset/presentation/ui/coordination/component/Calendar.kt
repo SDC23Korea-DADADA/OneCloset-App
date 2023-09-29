@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +20,11 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,6 +32,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +51,7 @@ import com.dadada.onecloset.presentation.model.HorizontalCalendarConfig
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.BackGroundGray
+import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.Mode
@@ -52,6 +59,7 @@ import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.dateFormat
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
+import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -99,11 +107,26 @@ fun HorizontalCalendar(
         onSelectedDate(currentSelectedDate)
     }
 
+    val scope = rememberCoroutineScope()
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         val headerText = currentMonth.dateFormat("yyyy년 M월")
         CalendarHeader(
-            modifier = Modifier.padding(20.dp), text = headerText
+            modifier = Modifier.padding(20.dp),
+            text = headerText,
+            onClickLeft = {
+                scope.launch {
+                    val targetPage = maxOf(pagerState.currentPage - 1, 0)
+                    pagerState.animateScrollToPage(targetPage)
+                }
+            },
+            onClickRight = {
+                scope.launch {
+                    val targetPage = minOf(pagerState.currentPage + 1, pagerState.pageCount - 1)
+                    pagerState.animateScrollToPage(targetPage)
+                }
+            }
         )
+
         HorizontalPager(
             state = pagerState
         ) { page ->
@@ -134,11 +157,17 @@ fun HorizontalCalendar(
 fun CalendarHeader(
     modifier: Modifier = Modifier,
     text: String,
+    onClickLeft: () -> Unit,
+    onClickRight: () -> Unit
 ) {
-    Box(modifier = modifier) {
+    Row(modifier = modifier) {
+        Icon(modifier = Modifier.clickable { onClickLeft() }, imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "")
+        Spacer(modifier = Modifier.size(Paddings.extra))
         Text(
             text = text, style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold)
         )
+        Spacer(modifier = Modifier.size(Paddings.extra))
+        Icon(modifier = Modifier.clickable { onClickRight() }, imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "")
     }
 }
 
@@ -175,8 +204,12 @@ fun CalendarMonthItem(
                 }
             }
             items(days) { day ->
-                val curFittingItem = codiList.fittingList.find { it.wearingAtDay == "$currentMonth-$day" }
-                val curDailyItem = codiList.codiList.find { it.wearingAtDay == "$currentMonth-$day" }
+                var curDay = day.toString()
+                if(curDay.length < 2) {
+                    curDay = "0$curDay"
+                }
+                val curFittingItem = codiList.fittingList.find { it.wearingAtDay == "$currentMonth-$curDay" }
+                val curDailyItem = codiList.codiList.find { it.wearingAtDay == "$currentMonth-$curDay" }
 
                 var imageUrl = curFittingItem?.fittingThumbnailImg
                 if (curDailyItem != null) {
@@ -225,7 +258,11 @@ fun CalendarDay(
     val modifierClickable = if (imageUrl == null && date <= current) modifier.clickable {
         onSelectedDate(date)
         photoViewModel.curMode = Mode.codi
-        codiViewModel.codiRegisterInfo.date = date.toString()
+        var curDate = date.toString()
+        if(curDate.length < 2) {
+            curDate = "0$curDate"
+        }
+        codiViewModel.codiRegisterInfo.date = curDate
         navController.navigate(NavigationItem.GalleryNav.route)
     } else if (imageUrl == null && date > current) {
         modifier
