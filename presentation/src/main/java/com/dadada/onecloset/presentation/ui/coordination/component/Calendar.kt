@@ -73,13 +73,12 @@ fun HorizontalCalendar(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     currentDate: LocalDate = LocalDate.now(),
+    codiList: CodiList,
     config: HorizontalCalendarConfig = HorizontalCalendarConfig(),
     codiViewModel: CodiViewModel,
     photoViewModel: PhotoViewModel,
     onSelectedDate: (LocalDate) -> Unit,
 ) {
-    val codiListState by codiViewModel.codiListByMonth.collectAsState()
-    var codiList by remember { mutableStateOf(CodiList(listOf(), listOf())) }
     val initialPage: Int =
         (currentDate.year - config.yearRange.first) * 12 + currentDate.monthValue - 1
     var currentSelectedDate by remember { mutableStateOf(currentDate) }
@@ -92,9 +91,6 @@ fun HorizontalCalendar(
         (config.yearRange.last - config.yearRange.first) * 12
     }
 
-    NetworkResultHandler(state = codiListState) {
-        codiList = it
-    }
 
     LaunchedEffect(pagerState.currentPage) {
         val addMonth = (pagerState.currentPage - currentPage).toLong()
