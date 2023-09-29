@@ -30,6 +30,7 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
@@ -37,7 +38,11 @@ private const val TAG = "ClothCourseScreen"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: ClosetViewModel) {
+fun ClothCourseScreen(
+    navHostController: NavHostController,
+    mainViewModel: MainViewModel,
+    closetViewModel: ClosetViewModel
+) {
     val list = listOf("세탁", "건조", "에어드레서")
     val contentList = listOf(
         closetViewModel.clothesInfo.laundry,
@@ -49,7 +54,7 @@ fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: Clo
     val scope = rememberCoroutineScope()
 
     val clothRegisterIdState by closetViewModel.clothRegisterIdState.collectAsState()
-    NetworkResultHandler(state = clothRegisterIdState) {
+    NetworkResultHandler(state = clothRegisterIdState, mainViewModel = mainViewModel) {
         closetViewModel.resetNetworkStates()
         navHostController.navigate("${NavigationItem.ClothNav.route}/${it}") {
             popUpTo(NavigationItem.GalleryNav.route) { inclusive = true }
@@ -59,6 +64,7 @@ fun ClothCourseScreen(navHostController: NavHostController, closetViewModel: Clo
     if (sheetState.isVisible) {
         SelectClosetBottomSheet(
             sheetState = sheetState,
+            mainViewModel = mainViewModel,
             onDismissRequest = { scope.launch { sheetState.hide() } },
             onClick = {
                 closetViewModel.clothesInfo.closetId = it.toString()

@@ -22,12 +22,13 @@ import com.dadada.onecloset.presentation.ui.home.component.HomeMainFeatureCard
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 private const val TAG = "HomeScreen"
 
 @Composable
-fun HomeScreen(navHostController: NavHostController, fittingViewModel: FittingViewModel) {
+fun HomeScreen(navHostController: NavHostController, mainViewModel: MainViewModel, fittingViewModel: FittingViewModel) {
     var clickCourse by remember { mutableStateOf(false) }
     if (clickCourse) {
         PermissionRequester(
@@ -39,9 +40,11 @@ fun HomeScreen(navHostController: NavHostController, fittingViewModel: FittingVi
     }
 
     var showBottomSheet by remember { mutableStateOf(false) }
+
     if (showBottomSheet) {
         FittingModelListBottomSheet(
             navHostController,
+            mainViewModel = mainViewModel,
             fittingViewModel = fittingViewModel,
             onDismissRequest = { showBottomSheet = !showBottomSheet })
     }

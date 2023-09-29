@@ -21,16 +21,12 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
-import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.component.FittingModelListBottomSheet
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.CustomTabRow
 import com.dadada.onecloset.presentation.ui.common.screenModifier
-import com.dadada.onecloset.presentation.ui.coordination.component.RecordCodiBottomSheet
-import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
-import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
-import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
@@ -39,6 +35,7 @@ import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 @Composable
 fun CoordinationScreen(
     navHostController: NavHostController,
+    mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
     photoViewModel: PhotoViewModel,
     fittingViewModel: FittingViewModel
@@ -46,7 +43,7 @@ fun CoordinationScreen(
     val codiListState by codiViewModel.codiListByMonth.collectAsState()
     var codiList by remember { mutableStateOf(CodiList(listOf(), listOf())) }
     var showBottomSheet by remember { mutableStateOf(false) }
-    NetworkResultHandler(state = codiListState) {
+    NetworkResultHandler(state = codiListState, mainViewModel = mainViewModel) {
         codiList = it
     }
 
@@ -76,6 +73,7 @@ fun CoordinationScreen(
     if (showFittingBottomSheet) {
         FittingModelListBottomSheet(
             navHostController,
+            mainViewModel = mainViewModel,
             fittingViewModel = fittingViewModel,
             onDismissRequest = { showFittingBottomSheet = !showFittingBottomSheet })
     }
@@ -105,7 +103,7 @@ fun CoordinationScreen(
                     navHostController = navHostController,
                     codiViewModel,
                     photoViewModel = photoViewModel,
-                    codiViewModel
+                    codiList,
                 )
 
                 1 -> CoordinationCodiListScreen(

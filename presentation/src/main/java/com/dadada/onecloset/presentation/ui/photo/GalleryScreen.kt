@@ -41,11 +41,13 @@ import com.dadada.onecloset.presentation.ui.common.PhotoItem
 import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
+import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
@@ -56,6 +58,7 @@ private const val TAG = "GalleryScreen"
 @Composable
 fun GalleryScreen(
     navController: NavHostController,
+    mainViewModel: MainViewModel,
     photoViewModel: PhotoViewModel = hiltViewModel(),
     closetViewModel: ClosetViewModel,
     fittingViewModel: FittingViewModel,
@@ -63,7 +66,7 @@ fun GalleryScreen(
 ) {
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     val validationState by closetViewModel.clothesValidationState.collectAsState()
-    NetworkResultHandler(state = closetAnalysisState) {
+    NetworkResultHandler(state = closetAnalysisState, loadingType = LoadingType.ANALYSIS,mainViewModel = mainViewModel) {
         closetViewModel.clothesInfo.image = it.image
         closetViewModel.clothesInfo.material = it.material
         closetViewModel.clothesInfo.colorCode = it.colorCode
@@ -104,7 +107,7 @@ fun GalleryScreen(
         )
     }
 
-    NetworkResultHandler(state = validationState) {
+    NetworkResultHandler(state = validationState, loadingType = LoadingType.VALIDATION,mainViewModel = mainViewModel) {
         if (it) {
             registerImage(
                 navController,
@@ -134,7 +137,7 @@ fun GalleryScreen(
         photoViewModel.getPagingPhotos()
     }
     val codiPutState by codiViewModel.codiPutState.collectAsState()
-    NetworkResultHandler(state = codiPutState) {
+    NetworkResultHandler(state = codiPutState, mainViewModel = mainViewModel) {
         codiViewModel.resetNetworkStates()
         navController.popBackStack()
     }

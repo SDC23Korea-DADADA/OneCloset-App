@@ -57,6 +57,7 @@ import com.dadada.onecloset.presentation.ui.utils.IconEnum
 import com.dadada.onecloset.presentation.ui.utils.Material
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.ui.utils.Type
 import com.dadada.onecloset.presentation.ui.utils.colorToHexString
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
@@ -76,6 +77,13 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
     val selectedColor = remember { mutableStateOf(Blue) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    var showToast by remember {
+        mutableStateOf(false)
+    }
+    if(showToast) {
+        ShowToast(text = "이름을 등록해주세요!")
+        showToast = !showToast
+    }
     if (showDialog) {
         SelectClosetIconDialog(
             selectedIconIdx = selectedIconIdx,
@@ -136,13 +144,17 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
         Spacer(modifier = Modifier.size(16.dp))
 
         Button(modifier = Modifier.fillMaxWidth(), onClick = {
-            closetViewModel.putCloset(
-                Closet(
-                    colorCode = colorToHexString(selectedColor.value),
-                    icon = iconResIds[selectedIconIdx.value],
-                    name = textValue
+            if(textValue == "") {
+                showToast = !showToast
+            } else {
+                closetViewModel.putCloset(
+                    Closet(
+                        colorCode = colorToHexString(selectedColor.value),
+                        icon = iconResIds[selectedIconIdx.value],
+                        name = textValue
+                    )
                 )
-            )
+            }
         }) {
             Text(text = "등록")
         }

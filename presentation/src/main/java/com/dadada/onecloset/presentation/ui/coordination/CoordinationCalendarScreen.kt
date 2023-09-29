@@ -6,6 +6,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavHostController
+import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.coordination.component.HorizontalCalendar
 import com.dadada.onecloset.presentation.ui.theme.Paddings
@@ -18,7 +19,7 @@ fun CoordinationCalendarScreen(
     navHostController: NavHostController,
     codiViewModel: CodiViewModel,
     photoViewModel: PhotoViewModel,
-    codiViewModel1: CodiViewModel
+    codiList: CodiList,
 ) {
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -31,6 +32,7 @@ fun CoordinationCalendarScreen(
         navController = navHostController,
         codiViewModel = codiViewModel,
         photoViewModel = photoViewModel,
+        codiList = codiList
     ) {
 
 

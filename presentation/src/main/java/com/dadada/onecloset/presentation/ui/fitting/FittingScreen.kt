@@ -27,7 +27,9 @@ import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
 import com.dadada.onecloset.presentation.ui.fitting.component.FittingSelectedClothListView
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.FittingEmptyItem
+import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
@@ -36,6 +38,7 @@ private const val TAG = "FittingScreen"
 @Composable
 fun FittingScreen(
     navHostController: NavHostController,
+    mainViewModel: MainViewModel,
     fittingViewModel: FittingViewModel,
     closetViewModel: ClosetViewModel = hiltViewModel()
 ) {
@@ -92,7 +95,7 @@ fun FittingScreen(
         closetViewModel.getBasicClothList()
     }
 
-    NetworkResultHandler(state = clothListState) {
+    NetworkResultHandler(state = clothListState, mainViewModel = mainViewModel) {
         allClothList = it
         clothList = allClothList.filter {
             it.upperType == tabsList[modeIdx][0]
@@ -100,7 +103,7 @@ fun FittingScreen(
         clickedState = List(clothList.size) { false }
     }
 
-    NetworkResultHandler(state = fittingResultState) {
+    NetworkResultHandler(state = fittingResultState, loadingType = LoadingType.FITTING, mainViewModel = mainViewModel) {
         fittingViewModel.fittingResult = it
         fittingViewModel.resetNetworkStates()
         navHostController.navigate(NavigationItem.FittingResultNav.route)

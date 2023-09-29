@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Typography
@@ -64,7 +65,7 @@ fun TwoButtonDialog(
     dialogText: String,
 ) {
     AlertDialog(
-        title = { Text(text = dialogTitle) },
+        title = { Text(text = dialogTitle, style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold)) },
         text = { Text(text = dialogText) },
         onDismissRequest = { onDismissRequest() },
         confirmButton = {

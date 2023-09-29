@@ -119,6 +119,31 @@ sealed class NavigationItem(override val route: String, override val title: Stri
                 else -> null
             }
         }
+
+        fun getNavigationTitleByRoute(targetRoute: String?): String? {
+            return when (targetRoute) {
+                LogInNav.route -> LogInNav.title
+                MainTabNav.route -> MainTabNav.title
+                HomeNav.route -> HomeNav.title
+                ClosetNav.route -> ClosetNav.title
+                CameraNav.route -> CameraNav.title
+                ClosetDetailNav.route -> ClosetDetailNav.title
+                ClothAnalysisNav.route -> ClothAnalysisNav.title
+                ClothCourseNav.route -> ClothCourseNav.title
+                ClothNav.route -> ClothNav.title
+                FittingNav.route -> FittingNav.title
+                CoordinationNav.route -> CoordinationNav.title
+                CoordinationRegisterNav.route -> CoordinationRegisterNav.title
+                CoordinationResultNav.route -> CoordinationResultNav.title
+                CoordinationDetailNav.route -> CoordinationDetailNav.title
+                CoordinationFittingDetailNav.route -> CoordinationFittingDetailNav.title
+                GalleryNav.route -> GalleryNav.title
+                AccountNav.route -> AccountNav.title
+                PhotoNav.route -> PhotoNav.title
+                FittingResultNav.route -> FittingResultNav.title
+                else -> null
+            }
+        }
     }
 
 }

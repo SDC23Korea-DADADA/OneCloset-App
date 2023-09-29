@@ -34,11 +34,14 @@ class AccountViewModel @Inject constructor(
     private val _accountInfoState = MutableStateFlow<NetworkResult<AccountInfo>>(NetworkResult.Idle)
     val accountInfoState = _accountInfoState.asStateFlow()
 
+    private val _leaveUserState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
+    val leaveUserState = _leaveUserState.asStateFlow()
+
     fun signIn(accountInfo: AccountInfo) = viewModelScope.launch {
         accountUseCase.signIn(accountInfo)
     }
 
-    fun signOutGoogle() = viewModelScope.launch {
+    fun signOut() = viewModelScope.launch {
         accountUseCase.signOut()
     }
 
@@ -53,5 +56,10 @@ class AccountViewModel @Inject constructor(
     fun logInKakao(token: String) = viewModelScope.launch {
         Log.d(TAG, "logInKakao: $token")
         _accountTokenState.emit(logInKaKaoUseCase.invoke(token))
+    }
+
+    fun leaveUser() = viewModelScope.launch {
+        _leaveUserState.value = NetworkResult.Loading
+        _leaveUserState.emit(accountUseCase.leaveUser())
     }
 }

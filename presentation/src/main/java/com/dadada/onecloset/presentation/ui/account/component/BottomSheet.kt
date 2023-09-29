@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 import kotlinx.coroutines.launch
 
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun FittingModelListBottomSheet(
     navHostController: NavHostController,
+    mainViewModel: MainViewModel,
     fittingViewModel: FittingViewModel,
     onDismissRequest: () -> Unit
 ) {
@@ -38,10 +40,17 @@ fun FittingModelListBottomSheet(
         fittingViewModel.getModelList()
     }
 
-    NetworkResultHandler(state = modelListState, action = { modelList = it })
+    NetworkResultHandler(state = modelListState, mainViewModel = mainViewModel) {
+        modelList = it
+    }
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
+        scope.launch {
+            sheetState.show()
+        }
+    }
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = {

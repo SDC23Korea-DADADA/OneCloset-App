@@ -1,50 +1,83 @@
 package com.dadada.onecloset.presentation.ui.common
 
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.dadada.onecloset.presentation.R
+import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.TextGray
+import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @Composable
 fun LoadingView(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    animation: Int,
+    text: String
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(Color.Gray.copy(alpha = 0.7f)) // 회색 틴트 처리
             .zIndex(1f) // Z-index 설정, 1f 이상의 값이면 다른 오브젝트 위에 올라가게 됩니다.
+            .pointerInput(Unit) { detectTapGestures {} }
+        ,
+        contentAlignment = Alignment.Center
     ) {
-        LottieLoader(
-            modifier = modifier.align(Alignment.Center).size(100.dp),
-            source = R.raw.animation_laundry
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .clip(RoundedCornerShape(26.dp))
+                .background(Color.White)
+                .padding(Paddings.xlarge)
+                .aspectRatio(1.5f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            LottieLoader(
+                modifier = modifier
+                    .fillMaxWidth(0.8f)
+                    .weight(1f)
+                    .padding(Paddings.xlarge),
+                source = animation
+            )
+            Spacer(modifier = Modifier.height(Paddings.large))
+            Text(
+                text = text,
+                style = Typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = TextGray)
+            )
+        }
     }
 }
 
@@ -74,7 +107,8 @@ fun GalaxyLoadingView(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .zIndex(1f) // Z-index 설정, 1f 이상의 값이면 다른 오브젝트 위에 올라가게 됩니다.
+            .zIndex(1f)
+            .pointerInput(Unit) { detectTapGestures {} } // Z-index 설정, 1f 이상의 값이면 다른 오브젝트 위에 올라가게 됩니다.
     ) {
         Box(
             modifier = Modifier
@@ -83,22 +117,26 @@ fun GalaxyLoadingView(modifier: Modifier = Modifier) {
                 .size(48.dp)
         ) {
             Ball(
-                modifier = Modifier.align(Alignment.TopCenter)
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
                     .offset(y = (12.dp * bounce.value)),
                 color = Color(0xFF00d593)
             )
             Ball(
-                modifier = Modifier.align(Alignment.BottomCenter)
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
                     .offset(y = (-12.dp * bounce.value)),
                 color = Color(0xFF0481ff)
             )
             Ball(
-                modifier = Modifier.align(Alignment.CenterStart)
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
                     .offset(x = (12.dp * bounce.value)),
                 color = Color(0xFF0481ff)
             )
             Ball(
-                modifier = Modifier.align(Alignment.CenterEnd)
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
                     .offset(x = (-12.dp * bounce.value)),
                 color = Color(0xFF0481ff)
             )

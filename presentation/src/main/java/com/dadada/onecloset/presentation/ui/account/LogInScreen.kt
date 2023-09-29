@@ -24,6 +24,7 @@ import com.dadada.onecloset.presentation.ui.account.component.SignInButtonView
 import com.dadada.onecloset.presentation.ui.account.model.SignInButton
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -35,12 +36,14 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
+import kotlin.math.min
 
 private const val TAG = "Account"
 
 @Composable
 fun LogInScreen(
     navHostController: NavHostController,
+    mainViewModel: MainViewModel,
     accountViewModel: AccountViewModel = hiltViewModel(),
 ) {
     val accountInfo by accountViewModel.accountInfo.collectAsState()
@@ -50,7 +53,7 @@ fun LogInScreen(
     val firebaseAuth by lazy { FirebaseAuth.getInstance() }
     val context = LocalContext.current
 
-    NetworkResultHandler(state = accountTokenState) { token ->
+    NetworkResultHandler(state = accountTokenState, mainViewModel = mainViewModel) { token ->
         accountViewModel.signIn(
             AccountInfo(
                 accessToken = token.accessToken,
@@ -64,7 +67,7 @@ fun LogInScreen(
         accountViewModel.getAccountInfo()
     }
 
-    NetworkResultHandler(state = accountInfoState) {
+    NetworkResultHandler(state = accountInfoState, mainViewModel = mainViewModel) {
         accountViewModel.signIn(
             AccountInfo(
                 accountInfo!!.accessToken,
@@ -185,7 +188,7 @@ private fun handleGoogleSignInResult(
 //                        )
 //                    )
                 } else {
-                    accountViewModel.signOutGoogle()
+                    accountViewModel.signOut()
                     firebaseAuth.signOut()
                 }
             }

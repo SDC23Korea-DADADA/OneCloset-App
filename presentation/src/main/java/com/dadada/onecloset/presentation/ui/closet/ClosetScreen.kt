@@ -42,6 +42,7 @@ import com.dadada.onecloset.presentation.ui.common.BottomSheetAddCloset
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.InfoView
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
@@ -51,6 +52,7 @@ private const val TAG = "ClosetScreen"
 @Composable
 fun ClosetScreen(
     navHostController: NavHostController,
+    mainViewModel: MainViewModel,
     closetViewModel: ClosetViewModel = hiltViewModel()
 ) {
 
@@ -65,11 +67,11 @@ fun ClosetScreen(
         closetViewModel.getClosetList()
     }
 
-    NetworkResultHandler(state = closetListState) {
+    NetworkResultHandler(state = closetListState, mainViewModel = mainViewModel) {
         closetList = it
     }
 
-    NetworkResultHandler(state = networkResultState) {
+    NetworkResultHandler(state = networkResultState, mainViewModel = mainViewModel) {
         closetViewModel.getClosetList()
         scope.launch { sheetState.hide() }
     }
