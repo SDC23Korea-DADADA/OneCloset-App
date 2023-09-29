@@ -37,9 +37,12 @@ class AccountRepositoryImpl @Inject constructor(
         accountInfoFlow.emit(null)
     }
 
-    private val TAG = "AccountRepositoryImpl"
     override suspend fun logInKakao(token: String): NetworkResult<Token> {
-        Log.d(TAG, "logInKakao: $token")
         return handleApi { accountService.logInKakao(token = token).toDomain() }
+    }
+
+    override suspend fun leaveUser(): NetworkResult<Unit> {
+        signOut()
+        return handleApi { accountService.leaveUser() }
     }
 }

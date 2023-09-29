@@ -23,11 +23,14 @@ import com.dadada.onecloset.presentation.ui.account.component.AccountMultiLineSe
 import com.dadada.onecloset.presentation.ui.account.component.AccountSingleLineSection
 import com.dadada.onecloset.presentation.ui.account.component.AccountText
 import com.dadada.onecloset.presentation.ui.common.CircleImageView
+import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.Mode
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
 
@@ -41,6 +44,11 @@ fun MyPageScreen(
     val appInfoContents = AccountText.appInfoContents
     val appModelContents = AccountText.appModelContents
     val accountInfo by accountViewModel.accountInfo.collectAsState()
+    val leaveUser by accountViewModel.leaveUserState.collectAsState()
+
+    NetworkResultHandler(state = leaveUser) {
+        navHostController.navigate(NavigationItem.LogInNav.route)
+    }
 
     var clickCourse by remember { mutableStateOf(false) }
     if (clickCourse) {
@@ -50,6 +58,16 @@ fun MyPageScreen(
             onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) }) {
             clickCourse = !clickCourse
         }
+    }
+
+    var showDialog by remember { mutableStateOf(false) }
+    if(showDialog) {
+        TwoButtonDialog(
+            onDismissRequest = { showDialog = !showDialog },
+            onConfirmation = { accountViewModel.leaveUser() },
+            dialogTitle = "One Closet 탈퇴",
+            dialogText = "One Closet을 탈퇴하면 데이터는 즉시 삭제되며 되돌릴 수 없습니다. 정말 떠나시겠어요?"
+        )
     }
 
     val onClickModelRegister = {
@@ -62,9 +80,11 @@ fun MyPageScreen(
     val onClickLogout = {
         accountViewModel.signOut()
         navHostController.navigate(NavigationItem.LogInNav.route)
+    }
+    val onClickWithdrawal = {
+        showDialog = !showDialog
         Unit
     }
-    val onClickWithdrawal = { }
     val onClickPersonal = listOf(onClickPermission, onClickLogout, onClickWithdrawal)
 
     val onClickVersion = {}

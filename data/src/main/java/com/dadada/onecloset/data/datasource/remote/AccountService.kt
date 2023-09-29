@@ -1,5 +1,6 @@
 package com.dadada.onecloset.data.datasource.remote
 
+import com.dadada.onecloset.data.model.ServerResponse
 import com.dadada.onecloset.data.model.account.response.AccountResponse
 import com.dadada.onecloset.data.model.account.response.LogInResponse
 import retrofit2.http.GET
@@ -12,4 +13,8 @@ interface AccountService {
 
     @GET("api/user")
     suspend fun getAccountInfoFromRemote(): AccountResponse
+
+    @POST("api/user/leave")
+    suspend fun leaveUser() : ServerResponse
+
 }

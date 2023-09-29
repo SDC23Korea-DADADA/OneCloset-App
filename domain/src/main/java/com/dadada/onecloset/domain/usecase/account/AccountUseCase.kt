@@ -27,4 +27,8 @@ class AccountUseCase @Inject constructor(
     suspend fun  signOut() {
         accountRepository.signOut()
     }
+
+    suspend fun leaveUser() : NetworkResult<Unit> {
+        return accountRepository.leaveUser()
+    }
 }
