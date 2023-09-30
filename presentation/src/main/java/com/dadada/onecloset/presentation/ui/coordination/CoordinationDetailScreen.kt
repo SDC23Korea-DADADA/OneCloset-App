@@ -34,6 +34,7 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.coordination.component.CodiResultView
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
@@ -41,7 +42,13 @@ import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 @Composable
 fun CoordinationDetailScreen(mainViewModel: MainViewModel, codiViewModel: CodiViewModel, navController: NavHostController) {
     val deleteState by codiViewModel.codiDeleteState.collectAsState()
+    var showToast by remember { mutableStateOf(false) }
+    if(showToast) {
+        ShowToast(text = "코디가 삭제됐어요.")
+    }
     NetworkResultHandler(state = deleteState, mainViewModel = mainViewModel) {
+        codiViewModel.resetNetworkStates()
+        showToast = true
         navController.popBackStack()
     }
     Scaffold(
@@ -74,7 +81,13 @@ fun CoordinationFittingDetailScreen(
     fittingViewModel: FittingViewModel = hiltViewModel()
 ) {
     val deleteState by fittingViewModel.fittingDeleteState.collectAsState()
+    var showToast by remember { mutableStateOf(false) }
+    if(showToast) {
+        ShowToast(text = "피팅이 삭제됐어요.")
+    }
     NetworkResultHandler(state = deleteState, mainViewModel = mainViewModel) {
+        fittingViewModel.resetNetworkStates()
+        showToast = true
         navController.popBackStack()
     }
     var selectedTabIndex by remember { mutableStateOf(0) }

@@ -32,6 +32,7 @@ import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
@@ -57,8 +58,13 @@ fun ClothScreen(navHostController: NavHostController, mainViewModel: MainViewMod
     NetworkResultHandler(state = clothState, mainViewModel = mainViewModel) {
         cloth = it
     }
+    var showToast by remember { mutableStateOf(false) }
+    if(showToast) {
+        ShowToast(text = "의류가 삭제됐어요.")
+    }
 
     NetworkResultHandler(state = clothDeleteState, mainViewModel = mainViewModel) {
+        showToast = true
         navHostController.popBackStack()
     }
 

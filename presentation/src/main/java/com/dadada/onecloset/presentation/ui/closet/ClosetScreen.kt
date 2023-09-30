@@ -42,6 +42,7 @@ import com.dadada.onecloset.presentation.ui.common.BottomSheetAddCloset
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.InfoView
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
@@ -71,8 +72,15 @@ fun ClosetScreen(
         closetList = it
     }
 
+    var showToast by remember {
+        mutableStateOf(false)
+    }
+    if(showToast) {
+        ShowToast(text = "옷장이 등록됐어요.")
+    }
     NetworkResultHandler(state = networkResultState, mainViewModel = mainViewModel) {
         closetViewModel.getClosetList()
+        showToast = true
         scope.launch { sheetState.hide() }
     }
 

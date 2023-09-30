@@ -67,7 +67,7 @@ fun ClothListScreen(
         mutableStateOf(false)
     }
     if(showToast) {
-        ShowToast(text = "옷장이 삭제되었습니다.")
+        ShowToast(text = "옷장이 삭제됐어요.")
     }
     val closetDeleteState by closetViewModel.closetDeleteState.collectAsState()
     NetworkResultHandler(state = closetDeleteState, mainViewModel = mainViewModel) {

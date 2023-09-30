@@ -27,6 +27,7 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.fitting.component.MyDatePickerDialog
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
@@ -59,10 +60,14 @@ fun FittingResultScreen(
     var showDatePicker by remember {
         mutableStateOf(false)
     }
-
+    var showToast by remember { mutableStateOf(false) }
+    if(showToast) {
+        ShowToast(text = "피팅 결과가 저장됐어요!")
+    }
     val putResultState by fittingViewModel.fittingPutState.collectAsState()
     NetworkResultHandler(state = putResultState, mainViewModel = mainViewModel) {
         fittingViewModel.resetNetworkStates()
+        showToast = true
         navHostController.navigate(NavigationItem.CoordinationNav.route) {
             popUpTo(NavigationItem.FittingNav.route) { inclusive = true }
         }
