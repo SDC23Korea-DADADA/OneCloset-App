@@ -124,6 +124,7 @@ fun ClosetScreen(
 
             ClosetListView(
                 closetList = closetList,
+                closetViewModel
             ) {
                 closetViewModel.setSelectedId(it.toString())
                 navHostController.navigate(NavigationItem.ClosetDetailNav.route)

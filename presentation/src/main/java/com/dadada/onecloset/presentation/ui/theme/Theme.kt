@@ -33,10 +33,10 @@ val DarkColorScheme = darkColorScheme(
 
 val LightColorScheme = lightColorScheme(
     primary = PrimaryBlack,
-    secondary = TextGray,
-    tertiary = PrimaryBlue,
+    secondary = PrimaryBlack,
+    tertiary = Color.White,
     background = BackGround,
-    surface = BackGround,
+    surface = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = PrimaryBlack,

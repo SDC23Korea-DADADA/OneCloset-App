@@ -69,6 +69,7 @@ import com.dadada.onecloset.presentation.ui.theme.TextGray
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.ui.utils.iconHandler
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 
 @Composable
@@ -157,7 +158,8 @@ fun ClothGridView(
 @Composable
 fun ClosetListView(
     closetList: List<Closet>,
-    onClick: (Int) -> Unit
+    closetViewModel: ClosetViewModel,
+    onClick: (Int) -> Unit,
 ) {
     Box(
         modifier = roundedSquareLargeModifier
@@ -173,7 +175,10 @@ fun ClosetListView(
                     title = closetList[it].name,
                     icon = iconHandler(closetList[it].icon),
                     backGroundTint = hexStringToColor(closetList[it].colorCode),
-                    onClick = { onClick(closetList[it].closetId) }
+                    onClick = {
+                        closetViewModel.isBasicCloset = it == 0
+                        onClick(closetList[it].closetId)
+                    }
                 )
             }
         }
@@ -383,41 +388,15 @@ fun ClothHeader(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeleteHeader(
+fun BasicHeader(
     navController: NavHostController,
-    isEdit: Boolean = true,
-    onClickEdit: () -> Unit,
-    onClickDelete: () -> Unit
 ) {
-    var expandDropDown by remember {
-        mutableStateOf(false)
-    }
-
     TopAppBar(
         modifier = Modifier.padding(vertical = 8.dp),
         title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(Icons.Filled.ArrowBack, contentDescription = "back")
-            }
-        },
-        actions = {
-            Box {
-                IconButton(onClick = {
-                    expandDropDown = !expandDropDown
-                }) {
-                    Icon(Icons.Filled.MoreVert, contentDescription = "more options")
-                }
-                if (expandDropDown) {
-                    DropDownMenu(
-                        modifier = roundedSquareMediumModifier,
-                        expanded = expandDropDown,
-                        onClickEdit = onClickEdit,
-                        onClickDelete = onClickDelete
-                    ) {
-                        expandDropDown = !expandDropDown
-                    }
-                }
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)

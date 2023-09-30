@@ -60,6 +60,10 @@ class ClosetViewModel @Inject constructor(
     private val _clothDeleteState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val clothDeleteState = _clothDeleteState.asStateFlow()
 
+    private val _closetDeleteState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
+    val closetDeleteState = _closetDeleteState.asStateFlow()
+
+
     private val _clothesUpdateState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val clothesUpdatState = _clothesUpdateState.asStateFlow()
 
@@ -75,6 +79,7 @@ class ClosetViewModel @Inject constructor(
     val clothesValidationState = _clothesValidationState.asStateFlow()
 
     private lateinit var selectedClosetId: String
+    var isBasicCloset = false
     var clothesInfo = ClothesInfo()
 
     fun getClosetList() = viewModelScope.launch {
@@ -91,8 +96,9 @@ class ClosetViewModel @Inject constructor(
         _networkResultState.emit(updateClosetUseCase.invoke(closet))
     }
 
-    fun deleteCloset(id: String) = viewModelScope.launch {
-        _networkResultState.emit(deleteClosetUseCase.invoke(id))
+    fun deleteCloset() = viewModelScope.launch {
+        _closetDeleteState.value = NetworkResult.Loading
+        _closetDeleteState.emit(deleteClosetUseCase.invoke(selectedClosetId))
     }
 
     fun getBasicClothList() = viewModelScope.launch {
@@ -155,6 +161,7 @@ class ClosetViewModel @Inject constructor(
         _clothCareCourseState.value = NetworkResult.Idle
         _clothesUpdateState.value = NetworkResult.Idle
         _clothesValidationState.value = NetworkResult.Idle
+        _closetDeleteState.value = NetworkResult.Idle
     }
 
 }

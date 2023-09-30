@@ -105,7 +105,7 @@ sealed class NavigationItem(override val route: String, override val title: Stri
     companion object {
         fun isNoToolbar(route: String?): Boolean {
             return when (route) {
-                "${PhotoNav.route}/{imagePath}", CoordinationFittingDetailNav.route, CoordinationDetailNav.route, CameraNav.route, GalleryNav.route, LogInNav.route, "${ClothNav.route}/{clothId}" -> true
+                ClosetDetailNav.route,"${PhotoNav.route}/{imagePath}", CoordinationFittingDetailNav.route, CoordinationDetailNav.route, CameraNav.route, GalleryNav.route, LogInNav.route, "${ClothNav.route}/{clothId}" -> true
 
                 else -> false
             }
