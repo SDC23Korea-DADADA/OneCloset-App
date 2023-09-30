@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,12 +42,12 @@ fun FittingSelectedClothListView(
     modifier: Modifier = Modifier,
     clothList: List<ClothesInfo>,
     modeIdx: Int,
-    emptyItemList: List<FittingEmptyItem>,
-    selectedItemList: List<ClothesInfo>,
+    emptyItemList: MutableState<List<FittingEmptyItem>>,
+    selectedItemList: List<Int>,
     onClickDropDown: (Int) -> Unit,
 ) {
     var modeClick by remember { mutableStateOf(false) }
-    val modeTitleList = listOf<String>("상의", "하의", "한벌옷")
+    val modeTitleList = listOf<String>("상의", "하의", "한벌옷", "상하의")
 
     Column(
         modifier = roundedSquareLargeModifier,
@@ -78,14 +79,17 @@ fun FittingSelectedClothListView(
                 .padding(Paddings.large),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            selectedItemList.forEachIndexed { index, cloth ->
-                if (cloth.clothesId == -1) {
+            selectedItemList.forEachIndexed { index, id ->
+                if (id == -1) {
                     EmptyClothItem(
-                        icon = emptyItemList[index].icon,
-                        content = emptyItemList[index].content
+                        icon = emptyItemList.value[index].icon,
+                        content = emptyItemList.value[index].content
                     )
                 } else {
-                    SelectClothItem(imageUri = cloth.thumnailUrl.toUri(), onClick = {})
+                    val cloth = clothList.find { it.clothesId == id }
+                    if (cloth != null) {
+                        SelectClothItem(imageUri = cloth.thumnailUrl.toUri(), onClick = {})
+                    }
                 }
             }
         }

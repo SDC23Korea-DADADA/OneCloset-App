@@ -1,5 +1,6 @@
 package com.dadada.onecloset.presentation.ui.common
 
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 
+private const val TAG = "TabRow"
 @Composable
 fun CustomTabRow(
     modifier: Modifier,
