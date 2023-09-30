@@ -110,7 +110,7 @@ fun ClothListScreen(
                 navHostController = navHostController,
                 clothItems = clothList,
                 onClick = {
-                    navHostController.navigate("${NavigationItem.ClothNav.route}/${clothList[it].clothesId}")
+                    navHostController.navigate("${NavigationItem.ClothNav.route}/${it}")
                 },
                 onClickTab = { upperType ->
                     clothList = if (upperType == "전체") {

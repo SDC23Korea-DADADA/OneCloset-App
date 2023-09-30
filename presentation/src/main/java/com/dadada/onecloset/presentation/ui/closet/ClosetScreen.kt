@@ -41,6 +41,7 @@ import com.dadada.onecloset.presentation.ui.closet.component.ClosetListView
 import com.dadada.onecloset.presentation.ui.common.BottomSheetAddCloset
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.InfoView
+import com.dadada.onecloset.presentation.ui.theme.Green
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
@@ -122,9 +123,10 @@ fun ClosetScreen(
                 content = stringResource(R.string.daliy_codi_guide),
                 onClick = { navHostController.navigate(NavigationItem.CoordinationNav.route) }) {
                 Icon(
-                    modifier = Modifier.size(36.dp),
-                    painter = painterResource(id = R.drawable.ic_date),
-                    contentDescription = ""
+                    modifier = Modifier.size(44.dp),
+                    painter = painterResource(id = R.drawable.ic_daily),
+                    contentDescription = "",
+                    tint = Green
                 )
             }
 

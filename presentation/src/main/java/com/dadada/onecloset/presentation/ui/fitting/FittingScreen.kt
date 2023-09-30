@@ -137,6 +137,7 @@ fun FittingScreen(
                     .padding(bottom = 56.dp),
                 navHostController = navHostController,
                 clothItems = clothList,
+                isSearch = false,
                 icon = R.drawable.ic_checked,
                 itemClickedStateList = clickedState,
                 onClick = handleItemClick,
