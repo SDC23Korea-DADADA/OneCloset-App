@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="daily_codi">데일리코디</string>
+    <string name="daliy_codi_guide">매일 코디를 계획하고 일상을 기록해보세요.</string>
+    <!-- account -->
+    <string name="account_title_account">계정</string>
+
+    <string name="account_title_personal">개인정보</string>
+    <string name="account_permission">이 앱이 사용하는 권한</string>
+    <string name="account_log_out">One Cloest 로그아웃</string>
+    <string name="account_withdrawal">One Closet 탈퇴</string>
+
+
+    <string name="account_title_virtual_model">가상모델</string>
+    <string name="account_gender">성별</string>
+
+    <string name="account_title_app">앱 정보</string>
+    <string name="account_version">버전 정보</string>
+    <string name="account_license">라이선스</string>
+    <string name="care">Care</string>
+    <string name="home_care_guide">의류 이미지로 세탁기, 건조기, 에어 드레서\n코스를 추천 받으세요!</string>
+    <string name="fitting">Fitting</string>
+    <string name="home_fitting_guide">옷장 속 의류 사진으로 나만의 가상 코디를\n만들어보세요!</string>
+    <string name="model_register">등록하기</string>
+    <string name="model_list">목록보기</string>
+
+</resources>
