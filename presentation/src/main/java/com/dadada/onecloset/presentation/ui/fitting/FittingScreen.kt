@@ -169,7 +169,7 @@ fun FittingScreen(
                     }
                     else -> {
                         fittingViewModel.setFittingInfoTopId(selectedItemOne.toString())
-                        fittingViewModel.setFittingInfoBottomId(selectedItemOne.toString())
+                        fittingViewModel.setFittingInfoBottomId(selectedItemTwo.toString())
                     }
                 }
                 fittingViewModel.fittingResultForSave.clothesIdList = curSelectItem
