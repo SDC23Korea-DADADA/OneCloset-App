@@ -1,6 +1,5 @@
 package com.dadada.onecloset.presentation.ui.closet.component
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,14 +21,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.ChipColors
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -62,6 +62,7 @@ import com.dadada.onecloset.presentation.ui.common.RoundedSquareIconWithTitleIte
 import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.common.roundedSquareMediumModifier
+import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.BackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
@@ -69,8 +70,10 @@ import com.dadada.onecloset.presentation.ui.theme.TextGray
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.ui.utils.iconHandler
+import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClothTabGridView(
     paddingValues: PaddingValues = PaddingValues(0.dp),
@@ -78,6 +81,7 @@ fun ClothTabGridView(
     navHostController: NavHostController,
     clothItems: List<ClothesInfo> = listOf(),
     icon: Int? = null,
+    isSearch:Boolean = true,
     itemClickedStateList: List<Boolean> = mutableStateListOf(),
     onClick: (Int) -> Unit = {},
     onClickTab: (String) -> Unit = {},
@@ -96,7 +100,25 @@ fun ClothTabGridView(
         selectedTabIndex = newIndex
         onClickTab(tabs[selectedTabIndex])
     }
+    var searchQuery by remember { mutableStateOf("") }
 
+    val filteredClothItems = if (searchQuery.isBlank()) {
+        clothItems
+    } else {
+        clothItems.filter {
+            it.airDressor.contains(searchQuery, ignoreCase = true) ||
+                    it.color.contains(searchQuery, ignoreCase = true) ||
+                    it.description.contains(searchQuery, ignoreCase = true) ||
+                    it.dryer.contains(searchQuery, ignoreCase = true) ||
+                    it.laundry.contains(searchQuery, ignoreCase = true) ||
+                    it.material.contains(searchQuery, ignoreCase = true) ||
+                    it.type.contains(searchQuery, ignoreCase = true) ||
+                    it.upperType.contains(searchQuery, ignoreCase = true) ||
+                    it.hashtagList.any { hashtag -> hashtag.contains(searchQuery, ignoreCase = true) } ||
+                    it.tpoList.any { tpo -> tpo.contains(searchQuery, ignoreCase = true) } ||
+                    it.weatherList.any { weather -> weather.contains(searchQuery, ignoreCase = true) }
+        }
+    }
 
     Column(
         modifier = modifier
@@ -112,9 +134,31 @@ fun ClothTabGridView(
             tabWidths = tabWidths,
             tabClick = handleTabClick
         )
+        if(isSearch) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(imageVector = Icons.Default.Search, contentDescription = "", tint = BackGroundGray)
+                Spacer(modifier = Modifier.size(Paddings.medium))
+                BasicTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    if (searchQuery.isEmpty()) {
+                        Text(
+                            text = "검색어를 입력하세요.",
+                            style = Typography.bodyMedium.copy(color = TextGray),
+                        )
+                    }
+                    it()
+                }
+            }
+        }
         ClothGridView(
             navHostController = navHostController,
-            clothItems = clothItems,
+            clothItems = filteredClothItems,
             icon = icon,
             itemClickedStateList = itemClickedStateList,
             onClick = onClick
@@ -147,7 +191,7 @@ fun ClothGridView(
                 modifier = roundedSquareMediumModifier,
                 imageUri = clothItems[it].thumnailUrl.toUri(),
                 icon = icon,
-                onClick = { onClick(it) },
+                onClick = { onClick(clothItems[it].clothesId) },
             )
         }
     }
@@ -157,7 +201,8 @@ fun ClothGridView(
 @Composable
 fun ClosetListView(
     closetList: List<Closet>,
-    onClick: (Int) -> Unit
+    closetViewModel: ClosetViewModel,
+    onClick: (Int) -> Unit,
 ) {
     Box(
         modifier = roundedSquareLargeModifier
@@ -173,7 +218,10 @@ fun ClosetListView(
                     title = closetList[it].name,
                     icon = iconHandler(closetList[it].icon),
                     backGroundTint = hexStringToColor(closetList[it].colorCode),
-                    onClick = { onClick(closetList[it].closetId) }
+                    onClick = {
+                        closetViewModel.isBasicCloset = it == 0
+                        onClick(closetList[it].closetId)
+                    }
                 )
             }
         }
@@ -206,7 +254,11 @@ fun ClothInformView(cloth: ClothesInfo, onClick: () -> Unit = {}) {
         ) {
             ClothInformRow("종류", cloth.type)
             ClothInformRow(title = "재질", content = cloth.material)
-            ColorInformRow(title = "색상", content = hexStringToColor(cloth.colorCode), colorName = cloth.color)
+            ColorInformRow(
+                title = "색상",
+                content = hexStringToColor(cloth.colorCode),
+                colorName = cloth.color
+            )
         }
         Spacer(modifier = Modifier.size(Paddings.large))
         if (cloth.isEmptyAdditionalInfo()) {
@@ -265,7 +317,7 @@ fun ClothNeedInputAdditionalInformView(onClick: () -> Unit) {
 fun ClothAdditionalInformView(clothesInfo: ClothesInfo) {
     Column(modifier = roundedSquareLargeModifier.padding(Paddings.large)) {
         Column(modifier = Modifier.padding(Paddings.large)) {
-            ClothesAdditionalInfoRow(title = "설명", )
+            ClothesAdditionalInfoRow(title = "설명")
             Text(text = clothesInfo.description)
             ClothesAdditionalInfoRow(title = "해쉬태그", clothesInfo.hashtagList)
             ClothesAdditionalInfoRow(title = "날씨", clothesInfo.weatherList)
@@ -284,26 +336,26 @@ fun ClothesAdditionalInfoRow(title: String, contentList: List<String> = listOf()
             Text(text = title, fontWeight = FontWeight.ExtraBold)
         }
 
-        if(contentList.isNotEmpty() && contentList[0] != "") {
+        if (contentList.isNotEmpty() && contentList[0] != "") {
             LazyVerticalGrid(modifier = Modifier.height(44.dp), columns = GridCells.Fixed(4)) {
                 items(contentList.size) {
-                    if(contentList[it] == "") {
+                    if (contentList[it] == "") {
                         return@items
                     }
                     SuggestionChip(
                         modifier = Modifier.padding(Paddings.small),
                         onClick = { /*TODO*/ },
                         label = { Text(text = contentList[it], color = Color.White) },
-                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = PrimaryBlack))
+                        colors = SuggestionChipDefaults.suggestionChipColors(containerColor = PrimaryBlack)
+                    )
                 }
             }
-        } else if(title != "설명") {
+        } else if (title != "설명") {
             Spacer(modifier = Modifier.size(Paddings.small))
             Text(text = "정보를 등록해주세요.", style = Typography.bodySmall.copy(color = TextGray))
         }
     }
 }
-
 
 
 @Composable
@@ -383,16 +435,9 @@ fun ClothHeader(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DeleteHeader(
+fun BasicHeader(
     navController: NavHostController,
-    isEdit: Boolean = true,
-    onClickEdit: () -> Unit,
-    onClickDelete: () -> Unit
 ) {
-    var expandDropDown by remember {
-        mutableStateOf(false)
-    }
-
     TopAppBar(
         modifier = Modifier.padding(vertical = 8.dp),
         title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
@@ -401,30 +446,9 @@ fun DeleteHeader(
                 Icon(Icons.Filled.ArrowBack, contentDescription = "back")
             }
         },
-        actions = {
-            Box {
-                IconButton(onClick = {
-                    expandDropDown = !expandDropDown
-                }) {
-                    Icon(Icons.Filled.MoreVert, contentDescription = "more options")
-                }
-                if (expandDropDown) {
-                    DropDownMenu(
-                        modifier = roundedSquareMediumModifier,
-                        expanded = expandDropDown,
-                        onClickEdit = onClickEdit,
-                        onClickDelete = onClickDelete
-                    ) {
-                        expandDropDown = !expandDropDown
-                    }
-                }
-            }
-        },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
     )
 }
-
-
 
 
 @Composable

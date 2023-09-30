@@ -14,7 +14,10 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,6 +33,7 @@ import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
@@ -52,10 +56,15 @@ fun ClothCourseScreen(
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    var showToast by remember { mutableStateOf(false) }
+    if(showToast) {
+        ShowToast(text = "의류가 저장됐어요!")
+    }
 
     val clothRegisterIdState by closetViewModel.clothRegisterIdState.collectAsState()
     NetworkResultHandler(state = clothRegisterIdState, mainViewModel = mainViewModel) {
         closetViewModel.resetNetworkStates()
+        showToast = true
         navHostController.navigate("${NavigationItem.ClothNav.route}/${it}") {
             popUpTo(NavigationItem.GalleryNav.route) { inclusive = true }
         }

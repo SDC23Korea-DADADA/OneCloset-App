@@ -68,6 +68,7 @@ class CodiViewModel @Inject constructor(
     }
 
     fun resetNetworkStates() {
+        _codiDeleteState.value = NetworkResult.Idle
         _codiPutState.value = NetworkResult.Idle
     }
 }

@@ -120,6 +120,7 @@ class FittingViewModel @Inject constructor(
         _modelListState.value = NetworkResult.Idle
         _fittingResultState.value = NetworkResult.Idle
         _fittingPutState.value = NetworkResult.Idle
+        _fittingDeleteState.value = NetworkResult.Idle
     }
 
 

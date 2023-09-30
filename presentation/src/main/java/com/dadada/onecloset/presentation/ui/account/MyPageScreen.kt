@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,6 +32,7 @@ import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
+import com.dadada.onecloset.presentation.ui.utils.moveToSetting
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
@@ -77,8 +79,8 @@ fun MyPageScreen(
         clickCourse = !clickCourse
     }
     val onClickModel = listOf(onClickModelRegister)
-
-    val onClickPermission = {}
+    val context = LocalContext.current
+    val onClickPermission = { moveToSetting(context = context) }
     val onClickLogout = {
         accountViewModel.signOut()
         navHostController.navigate(NavigationItem.LogInNav.route)

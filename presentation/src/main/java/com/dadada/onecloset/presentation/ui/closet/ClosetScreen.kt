@@ -41,7 +41,9 @@ import com.dadada.onecloset.presentation.ui.closet.component.ClosetListView
 import com.dadada.onecloset.presentation.ui.common.BottomSheetAddCloset
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.InfoView
+import com.dadada.onecloset.presentation.ui.theme.Green
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
@@ -71,8 +73,15 @@ fun ClosetScreen(
         closetList = it
     }
 
+    var showToast by remember {
+        mutableStateOf(false)
+    }
+    if(showToast) {
+        ShowToast(text = "옷장이 등록됐어요.")
+    }
     NetworkResultHandler(state = networkResultState, mainViewModel = mainViewModel) {
         closetViewModel.getClosetList()
+        showToast = true
         scope.launch { sheetState.hide() }
     }
 
@@ -114,9 +123,10 @@ fun ClosetScreen(
                 content = stringResource(R.string.daliy_codi_guide),
                 onClick = { navHostController.navigate(NavigationItem.CoordinationNav.route) }) {
                 Icon(
-                    modifier = Modifier.size(36.dp),
-                    painter = painterResource(id = R.drawable.ic_date),
-                    contentDescription = ""
+                    modifier = Modifier.size(44.dp),
+                    painter = painterResource(id = R.drawable.ic_daily),
+                    contentDescription = "",
+                    tint = Green
                 )
             }
 
@@ -124,6 +134,7 @@ fun ClosetScreen(
 
             ClosetListView(
                 closetList = closetList,
+                closetViewModel
             ) {
                 closetViewModel.setSelectedId(it.toString())
                 navHostController.navigate(NavigationItem.ClosetDetailNav.route)

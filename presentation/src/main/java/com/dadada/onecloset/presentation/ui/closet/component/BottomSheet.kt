@@ -73,7 +73,7 @@ fun SelectClosetBottomSheet(
 
             Spacer(modifier = Modifier.size(Paddings.large))
 
-            ClosetListView(closetList = closetList, onClick = onClick)
+            ClosetListView(closetList = closetList, closetViewModel, onClick = onClick)
             Spacer(modifier = Modifier.size(56.dp))
         }
     }

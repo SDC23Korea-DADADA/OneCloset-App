@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,6 +65,9 @@ fun CameraScreen(
     fittingViewModel: FittingViewModel,
     codiViewModel: CodiViewModel
 ) {
+    DisposableEffect(Unit) {
+        onDispose { closetViewModel.resetNetworkStates() }
+    }
     val cameraState = rememberCameraState()
     val cameraSelector by remember { mutableStateOf(CamSelector.Back) }
     val context = LocalContext.current

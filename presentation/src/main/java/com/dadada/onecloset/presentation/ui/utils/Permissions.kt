@@ -100,7 +100,7 @@ fun CheckPermissionDialog(onDismissRequest: () -> Unit, onConfirmation: () -> Un
 }
 
 // 시스템 설정 페이지로 이동
-private fun moveToSetting(context: Context) {
+fun moveToSetting(context: Context) {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
         data = Uri.fromParts("package", context.packageName, null)
     }

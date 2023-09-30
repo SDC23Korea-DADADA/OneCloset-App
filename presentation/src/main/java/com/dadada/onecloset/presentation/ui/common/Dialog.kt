@@ -70,12 +70,12 @@ fun TwoButtonDialog(
         onDismissRequest = { onDismissRequest() },
         confirmButton = {
             TextButton(onClick = { onConfirmation() }) {
-                Text("확인")
+                Text("확인", fontWeight = FontWeight.ExtraBold)
             }
         },
         dismissButton = {
             TextButton(onClick = { onDismissRequest() }) {
-                Text("닫기")
+                Text("닫기", fontWeight = FontWeight.ExtraBold)
             }
         },
         containerColor = Color.White

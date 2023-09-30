@@ -1,6 +1,6 @@
 package com.dadada.onecloset.presentation.ui.closet
 
-import android.util.Log
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -18,12 +18,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
+import com.dadada.onecloset.presentation.ui.closet.component.BasicHeader
+import com.dadada.onecloset.presentation.ui.closet.component.ClothHeader
 import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
 import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.common.SelectPhotoBottomSheet
+import com.dadada.onecloset.presentation.ui.common.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
@@ -58,7 +62,18 @@ fun ClothListScreen(
     NetworkResultHandler(state = clothListState, mainViewModel = mainViewModel) {
         clothList = it
         allClothList = it
-        Log.d(TAG, "ClothListScreen: $allClothList")
+    }
+    var showToast by remember {
+        mutableStateOf(false)
+    }
+    if(showToast) {
+        ShowToast(text = "옷장이 삭제됐어요.")
+    }
+    val closetDeleteState by closetViewModel.closetDeleteState.collectAsState()
+    NetworkResultHandler(state = closetDeleteState, mainViewModel = mainViewModel) {
+        showToast = true
+        closetViewModel.resetNetworkStates()
+        navHostController.popBackStack()
     }
 
     var showSelectPhotoBottomSheet by remember { mutableStateOf(false) }
@@ -74,29 +89,37 @@ fun ClothListScreen(
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-            .padding(top = 24.dp),
+            .fillMaxSize(),
         floatingActionButton = {
             CustomFloatingActionButton(title = "의류", icon = Icons.Default.Add) {
                 clickCourse = !clickCourse
             }
         },
-    ) {
-        ClothTabGridView(
-            paddingValues = it,
-            navHostController = navHostController,
-            clothItems = clothList,
-            onClick = {
-                navHostController.navigate("${NavigationItem.ClothNav.route}/${clothList[it].clothesId}")
-            },
-            onClickTab = { upperType ->
-                clothList = if (upperType == "전체") {
-                    allClothList
-                } else {
-                    allClothList.filter { it.upperType == upperType }
+        topBar = {
+            if(!closetViewModel.isBasicCloset) {
+                ClothHeader(navController = navHostController, isEdit = false, onClickEdit = { /*TODO*/ }) {
+                    closetViewModel.deleteCloset()
                 }
+            } else {
+                BasicHeader(navController = navHostController)
             }
-        )
+        }
+    ) {
+        Column(modifier = screenModifier.padding(it)) {
+            ClothTabGridView(
+                navHostController = navHostController,
+                clothItems = clothList,
+                onClick = {
+                    navHostController.navigate("${NavigationItem.ClothNav.route}/${it}")
+                },
+                onClickTab = { upperType ->
+                    clothList = if (upperType == "전체") {
+                        allClothList
+                    } else {
+                        allClothList.filter { it.upperType == upperType }
+                    }
+                }
+            )
+        }
     }
 }

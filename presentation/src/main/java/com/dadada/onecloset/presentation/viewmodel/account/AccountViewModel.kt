@@ -7,7 +7,9 @@ import com.dadada.onecloset.domain.model.AccountInfo
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.model.Token
 import com.dadada.onecloset.domain.usecase.account.AccountUseCase
+import com.dadada.onecloset.domain.usecase.account.LogInGoogleUseCase
 import com.dadada.onecloset.domain.usecase.account.LogInKaKaoUseCase
+import com.dadada.onecloset.domain.usecase.account.LogInNaverUseCase
 import com.dadada.onecloset.presentation.viewmodel.launchNetworkTask
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +23,9 @@ private const val TAG = "Account"
 @HiltViewModel
 class AccountViewModel @Inject constructor(
     private val accountUseCase: AccountUseCase,
-    private val logInKaKaoUseCase: LogInKaKaoUseCase
+    private val logInKaKaoUseCase: LogInKaKaoUseCase,
+    private val logInGoogleUseCase: LogInGoogleUseCase,
+    private val logInNaverUseCase: LogInNaverUseCase
 ) : ViewModel() {
     @Inject
     lateinit var googleSignInClient: GoogleSignInClient
@@ -54,8 +58,16 @@ class AccountViewModel @Inject constructor(
     }
 
     fun logInKakao(token: String) = viewModelScope.launch {
-        Log.d(TAG, "logInKakao: $token")
         _accountTokenState.emit(logInKaKaoUseCase.invoke(token))
+    }
+
+    fun logInGoogle(token: String) = viewModelScope.launch {
+        _accountTokenState.emit(logInGoogleUseCase.invoke(token))
+    }
+
+
+    fun logInNaver(token: String) = viewModelScope.launch {
+        _accountTokenState.emit(logInNaverUseCase.invoke(token))
     }
 
     fun leaveUser() = viewModelScope.launch {
