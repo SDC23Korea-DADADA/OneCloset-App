@@ -10,6 +10,11 @@ import retrofit2.http.Path
 interface AccountService {
     @POST("api/login/kakao/access/{access}")
     suspend fun logInKakao(@Path(value = "access") token: String): LogInResponse
+    @POST("api/login/google/access/{access}")
+    suspend fun logInGoogle(@Path(value = "access") token: String) : LogInResponse
+
+    @POST("api/login/naver/access/{access}")
+    suspend fun logInNaver(@Path(value = "access") token: String) : LogInResponse
 
     @GET("api/user")
     suspend fun getAccountInfoFromRemote(): AccountResponse

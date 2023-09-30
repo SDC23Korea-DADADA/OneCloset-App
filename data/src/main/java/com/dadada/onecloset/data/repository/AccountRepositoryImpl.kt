@@ -41,6 +41,14 @@ class AccountRepositoryImpl @Inject constructor(
         return handleApi { accountService.logInKakao(token = token).toDomain() }
     }
 
+    override suspend fun logInGoogle(token: String): NetworkResult<Token> {
+        return handleApi { accountService.logInGoogle(token).toDomain() }
+    }
+
+    override suspend fun logInNaver(token: String): NetworkResult<Token> {
+        return handleApi { accountService.logInNaver(token).toDomain() }
+    }
+
     override suspend fun leaveUser(): NetworkResult<Unit> {
         signOut()
         return handleApi { accountService.leaveUser() }

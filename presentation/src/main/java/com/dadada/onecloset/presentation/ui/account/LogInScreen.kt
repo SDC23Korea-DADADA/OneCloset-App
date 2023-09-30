@@ -9,20 +9,29 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.dadada.onecloset.domain.model.AccountInfo
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.component.SignInButtonView
 import com.dadada.onecloset.presentation.ui.account.model.SignInButton
 import com.dadada.onecloset.presentation.ui.common.screenModifier
+import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
@@ -36,7 +45,6 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
-import kotlin.math.min
 
 private const val TAG = "Account"
 
@@ -82,13 +90,12 @@ fun LogInScreen(
         navHostController.navigate(NavigationItem.MainTabNav.route)
     }
 
-
-    Log.d(TAG, "LogInScreen: $accountInfo")
-
     val startForResultGoogle =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            Log.d(TAG, "LogInScreen: $result")
             if (result.resultCode == RESULT_OK) {
                 val indent = result.data
+                Log.d(TAG, "LogInScreen: $indent")
                 if (indent != null) {
                     val task: Task<GoogleSignInAccount> =
                         GoogleSignIn.getSignedInAccountFromIntent(indent)
@@ -102,7 +109,7 @@ fun LogInScreen(
             when (result.resultCode) {
                 RESULT_OK -> {
                     Log.d(TAG, "SignInScreen: ${NaverIdLoginSDK.getAccessToken()}")
-
+                    NaverIdLoginSDK.getAccessToken()?.let { accountViewModel.logInNaver(it) }
                 }
             }
         }
@@ -137,6 +144,15 @@ fun LogInScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Column(
+            modifier = Modifier.fillMaxWidth(0.5f),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AsyncImage(model = R.drawable.app_logo, contentDescription = "")
+            Spacer(modifier = Modifier.size(Paddings.large))
+        }
+        Spacer(modifier = Modifier.size(Paddings.extra))
         SignInButtonView(signInButtons = signInButtons)
     }
 }
@@ -179,15 +195,10 @@ private fun handleGoogleSignInResult(
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(context as Activity) { task ->
                 if (task.isSuccessful) {
-//                    accountViewModel.signInGoogle(
-//                        AccountInfo(
-//                            account.idToken.orEmpty(),
-//                            account.displayName.orEmpty(),
-//                            AccountInfo.Type.GOOGLE,
-//                            //account.photoUrl.toString()
-//                        )
-//                    )
+                    Log.d(TAG, "handleGoogleSignInResult: $account")
+                    account.idToken?.let { accountViewModel.logInGoogle(it) }
                 } else {
+                    Log.d(TAG, "handleGoogleSignInResult: fail")
                     accountViewModel.signOut()
                     firebaseAuth.signOut()
                 }

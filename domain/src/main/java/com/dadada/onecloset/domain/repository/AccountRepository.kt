@@ -14,5 +14,7 @@ interface AccountRepository {
     suspend fun signOut()
 
     suspend fun logInKakao(token: String): NetworkResult<Token>
+    suspend fun logInGoogle(token: String) : NetworkResult<Token>
+    suspend fun logInNaver(token: String) : NetworkResult<Token>
     suspend fun leaveUser() : NetworkResult<Unit>
 }
