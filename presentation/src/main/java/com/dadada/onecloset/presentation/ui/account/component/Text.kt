@@ -22,7 +22,7 @@ sealed class AccountText(val id: Int) {
     object MODEL_GET: AccountText(R.string.model_list)
     companion object {
         val personalInfoContents = listOf(PERMISSION.id, LOGOUT.id, WITHDRAWAL.id)
-        val appInfoContents = listOf(VERSION.id, LICENSE.id)
+        val appInfoContents = listOf(VERSION.id)
         val appModelContents = listOf(MODEL_REGISTER.id)
     }
 
