@@ -9,5 +9,5 @@ object Size {
     val medium = 8.dp
     val large = 12.dp
     val xlarge = 16.dp
-    val extra = 26.dp
+    val extra = 24.dp
 }

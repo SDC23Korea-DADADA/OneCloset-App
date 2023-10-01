@@ -36,10 +36,10 @@ import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem.*
 import com.dadada.onecloset.presentation.ui.account.LogInScreen
 import com.dadada.onecloset.presentation.ui.account.MyPageScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothAnalysisScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothCourseScreen
+import com.dadada.onecloset.presentation.ui.clothes.ClothesAnalysisScreen
+import com.dadada.onecloset.presentation.ui.clothes.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothScreen
+import com.dadada.onecloset.presentation.ui.clothes.ClothScreen
 import com.dadada.onecloset.presentation.ui.components.GalaxyLoadingView
 import com.dadada.onecloset.presentation.ui.components.LoadingView
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationDetailScreen
@@ -213,7 +213,7 @@ fun MainNavigationScreen(
         }
 
         composable(route = ClothAnalysisNav.route) {
-            ClothAnalysisScreen(
+            ClothesAnalysisScreen(
                 navController,
                 mainViewModel = mainViewModel,
                 closetViewModel = closetViewModel,

@@ -21,7 +21,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
-import com.dadada.onecloset.presentation.ui.components.RowWithTwoButtons
+import com.dadada.onecloset.presentation.ui.components.TwoButtonRow
 import com.dadada.onecloset.presentation.ui.components.SelectPhotoBottomSheet
 import com.dadada.onecloset.presentation.ui.fitting.component.FittingSelectedClothListView
 import com.dadada.onecloset.presentation.ui.theme.BackGround
@@ -140,7 +140,7 @@ fun FittingScreen(
             )
         }
 
-        RowWithTwoButtons(
+        TwoButtonRow(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .background(BackGround),

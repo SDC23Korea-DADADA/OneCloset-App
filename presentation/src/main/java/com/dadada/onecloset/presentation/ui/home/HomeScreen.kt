@@ -18,8 +18,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.sheet.FittingModelListBottomSheet
 import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.sheet.FittingModelListBottomSheet
 import com.dadada.onecloset.presentation.ui.home.component.card.HomeCustomCard
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Size
@@ -36,25 +36,25 @@ fun HomeScreen(
     mainViewModel: MainViewModel,
     fittingViewModel: FittingViewModel,
 ) {
-    var clickCourse by remember { mutableStateOf(false) }
-    if (clickCourse) {
+    var onClickCourse by remember { mutableStateOf(false) }
+    if (onClickCourse) {
         PermissionRequester(
             permission = Permissions.readExternalStoragePermission,
-            onDismissRequest = { clickCourse = !clickCourse },
+            onDismissRequest = { onClickCourse = !onClickCourse },
             onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) },
-            onPermissionDenied = { clickCourse = !clickCourse },
+            onPermissionDenied = { onClickCourse = !onClickCourse },
         )
     }
 
-    val sheetState = rememberModalBottomSheetState()
+    val fittingSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-    if (sheetState.isVisible) {
+    if (fittingSheetState.isVisible) {
         FittingModelListBottomSheet(
             navHostController,
             mainViewModel = mainViewModel,
             fittingViewModel = fittingViewModel,
-            sheetState = sheetState,
-            onDismissRequest = { scope.launch { sheetState.hide() } },
+            sheetState = fittingSheetState,
+            onDismissRequest = { scope.launch { fittingSheetState.hide() } },
         )
     }
 
@@ -68,7 +68,7 @@ fun HomeScreen(
             title = stringResource(R.string.care),
             content = stringResource(R.string.home_care_guide),
             animation = R.raw.animation_course,
-            onClick = { clickCourse = !clickCourse },
+            onClick = { onClickCourse = !onClickCourse },
         )
 
         Spacer(modifier = Modifier.size(Size.extra))
@@ -78,7 +78,7 @@ fun HomeScreen(
             title = stringResource(R.string.fitting),
             content = stringResource(R.string.home_fitting_guide),
             animation = R.raw.animation_fitting,
-            onClick = { scope.launch { sheetState.show() } },
+            onClick = { scope.launch { fittingSheetState.show() } },
         )
     }
 }

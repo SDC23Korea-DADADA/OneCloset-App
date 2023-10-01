@@ -23,5 +23,8 @@
     <string name="home_fitting_guide">옷장 속 의류 사진으로 나만의 가상 코디를\n만들어보세요!</string>
     <string name="model_register">등록하기</string>
     <string name="model_list">목록보기</string>
+    <string name="upper_type">종류</string>
+    <string name="material">재질</string>
+    <string name="color">색상</string>
 
 </resources>

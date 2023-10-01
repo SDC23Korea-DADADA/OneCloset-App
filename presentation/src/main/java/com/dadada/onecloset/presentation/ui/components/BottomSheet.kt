@@ -22,6 +22,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Text
@@ -80,7 +81,7 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
     var showToast by remember {
         mutableStateOf(false)
     }
-    if(showToast) {
+    if (showToast) {
         ShowToast(text = "이름을 등록해주세요!")
         showToast = !showToast
     }
@@ -99,7 +100,7 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
             modifier = Modifier.fillMaxWidth(),
             text = "옷장 등록",
             style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -107,15 +108,14 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(text = "대표 아이콘", style = Typography.titleSmall.copy(fontWeight = FontWeight.Bold))
             DropDownRow(component = {
                 RoundedSquareIconItem(
                     icon = iconResIds[selectedIconIdx.value],
-                    backGroundTint = selectedColor.value
+                    backGroundTint = selectedColor.value,
                 )
-
             }, reverse = showDialog, onClick = { showDialog = !showDialog })
         }
 
@@ -124,7 +124,7 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
         Row(
             Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(text = "이름", style = Typography.titleSmall.copy(fontWeight = FontWeight.Bold))
             OutlinedTextField(
@@ -137,22 +137,22 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
                             keyboardController?.show()
                             Log.d(TAG, "BottomSheetAddCloset: ")
                         }
-                    }
+                    },
             )
         }
 
         Spacer(modifier = Modifier.size(16.dp))
 
         Button(modifier = Modifier.fillMaxWidth(), onClick = {
-            if(textValue == "") {
+            if (textValue == "") {
                 showToast = !showToast
             } else {
                 closetViewModel.putCloset(
                     Closet(
                         colorCode = colorToHexString(selectedColor.value),
                         icon = iconResIds[selectedIconIdx.value],
-                        name = textValue
-                    )
+                        name = textValue,
+                    ),
                 )
             }
         }) {
@@ -163,8 +163,12 @@ fun BottomSheetAddCloset(closetViewModel: ClosetViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick: (String) -> Unit) {
-    val sheetState = rememberModalBottomSheetState()
+fun SelectTypeBottomSheet(
+    modifier: Modifier = Modifier,
+    sheetState: SheetState,
+    onDismissRequest: () -> Unit,
+    onClick: (String) -> Unit,
+) {
     val scope = rememberCoroutineScope()
     var chipIdx by remember { mutableStateOf(0) }
     val category = listOf("상의", "하의", "아우터", "한벌옷")
@@ -173,19 +177,16 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick:
         list = Type.getTypesByCategory(category[chipIdx])
     }
     ModalBottomSheet(
-        sheetState = sheetState, onDismissRequest = {
-            scope.launch {
-                sheetState.hide()
-                show.value = !show.value
-            }
-        }, containerColor = BackGround
+        sheetState = sheetState,
+        onDismissRequest = { onDismissRequest() },
+        containerColor = BackGround,
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "종류 선택",
                 style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
             LazyRow(Modifier.padding(vertical = 16.dp)) {
                 items(category.size) {
@@ -195,7 +196,7 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick:
                         label = {
                             Text(
                                 text = category[it],
-                                color = if (chipIdx == it) Color.White else Color.LightGray
+                                color = if (chipIdx == it) Color.White else Color.LightGray,
                             )
                         },
                         colors = SuggestionChipDefaults.suggestionChipColors(containerColor = if (chipIdx == it) PrimaryBlack else Color.White),
@@ -206,15 +207,15 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick:
             LazyColumn(
                 modifier = Modifier
                     .clip(RoundedCornerShape(26.dp))
-                    .background(Color.White)
+                    .background(Color.White),
             ) {
                 items(list.size) {
                     CustomListItem(
                         content = list[it].name,
                         onClick = {
                             onClick(list[it].name)
-                            show.value = !show.value
-                        }
+                            onDismissRequest()
+                        },
                     )
                 }
             }
@@ -226,42 +227,38 @@ fun SelectTypeBottomSheet(show: MutableState<Boolean>, curType: String, onClick:
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectMaterialBottomSheet(
-    show: MutableState<Boolean>,
-    curMaterial: String,
-    onClick: (String) -> Unit
+    modifier: Modifier = Modifier,
+    sheetState: SheetState,
+    onDismissRequest: () -> Unit,
+    onClick: (String) -> Unit,
 ) {
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
     val list = Material.getAllMaterial()
     ModalBottomSheet(
-        sheetState = sheetState, onDismissRequest = {
-            scope.launch {
-                sheetState.hide()
-                show.value = !show.value
-            }
-        }, containerColor = BackGround
+        sheetState = sheetState,
+        onDismissRequest = { onDismissRequest() },
+        containerColor = BackGround,
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "재질 선택",
                 style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.size(12.dp))
             LazyColumn(
                 modifier = Modifier
                     .clip(RoundedCornerShape(26.dp))
-                    .background(Color.White)
+                    .background(Color.White),
             ) {
                 items(list.size) {
                     CustomListItem(
                         content = list[it].name,
                         onClick = {
                             onClick(list[it].name)
-                            show.value = !show.value
-                        }
+                            onDismissRequest()
+                        },
                     )
                 }
             }
@@ -273,27 +270,23 @@ fun SelectMaterialBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectColorBottomSheet(
-    show: MutableState<Boolean>,
-    curColor: String,
-    onClick: (ClothColor) -> Unit
+    modifier: Modifier = Modifier,
+    sheetState: SheetState,
+    onDismissRequest: () -> Unit,
+    onClick: (ClothColor) -> Unit,
 ) {
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
     val list = ClothColor.getAllColor()
     ModalBottomSheet(
-        sheetState = sheetState, onDismissRequest = {
-            scope.launch {
-                sheetState.hide()
-                show.value = !show.value
-            }
-        }, containerColor = BackGround
+        sheetState = sheetState,
+        onDismissRequest = { onDismissRequest() },
+        containerColor = BackGround,
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "색상 선택",
                 style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
 
             Spacer(modifier = Modifier.size(12.dp))
@@ -301,20 +294,26 @@ fun SelectColorBottomSheet(
                 columns = GridCells.Adaptive(56.dp),
                 modifier = Modifier
                     .clip(RoundedCornerShape(26.dp))
-                    .background(Color.White)
+                    .background(Color.White),
             ) {
                 items(list.size) {
                     // 다채색을 나타내는 아이템인 경우
                     if (it == list.size - 1) {
-                        OtherColorItem(Modifier.clickable {
-                            onClick(list[it])
-                            show.value = !show.value
-                        })
+                        OtherColorItem(
+                            Modifier.clickable {
+                                onClick(list[it])
+                                onDismissRequest()
+                            },
+                        )
                     } else {
-                        ColorItem(modifier = Modifier.clickable {
-                            onClick(list[it])
-                            show.value = !show.value
-                        }, color = list[it].color, name = list[it].name)
+                        ColorItem(
+                            modifier = Modifier.clickable {
+                                onClick(list[it])
+                                onDismissRequest()
+                            },
+                            color = list[it].color,
+                            name = list[it].name,
+                        )
                     }
                 }
             }
@@ -330,14 +329,14 @@ fun OtherColorItem(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(Paddings.small),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
             modifier = Modifier
                 .clip(CircleShape)
                 .size(32.dp)
                 .background(brush = Brush.linearGradient(colors = gradientColors))
-                .border(1.dp, Color.Black, CircleShape)
+                .border(1.dp, Color.Black, CircleShape),
         )
         Text(text = "다채색", style = Typography.bodySmall, color = Color.Black)
     }
@@ -348,14 +347,14 @@ fun ColorItem(modifier: Modifier = Modifier, color: Color, name: String) {
     Column(
         modifier = modifier.padding(Paddings.small),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
             modifier = Modifier
                 .clip(CircleShape)
                 .size(32.dp)
                 .background(color = color)
-                .border(1.dp, Color.Black, CircleShape)
+                .border(1.dp, Color.Black, CircleShape),
         )
         Text(text = name, style = Typography.bodySmall.copy(color = Color.Black))
     }
@@ -366,7 +365,7 @@ fun ColorItem(modifier: Modifier = Modifier, color: Color, name: String) {
 fun SelectPhotoBottomSheet(
     onClickCamera: () -> Unit,
     onClickGallery: () -> Unit,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState()
 
@@ -381,7 +380,7 @@ fun SelectPhotoBottomSheet(
         PermissionRequester(
             permission = Permissions.readExternalStoragePermission,
             onDismissRequest = galleryClick,
-            onPermissionGranted = onClickGallery
+            onPermissionGranted = onClickGallery,
         ) {
         }
     }
@@ -389,7 +388,7 @@ fun SelectPhotoBottomSheet(
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = { onClick() },
-        containerColor = BackGround
+        containerColor = BackGround,
     ) {
         SelectPhotoView(onClickCamera = cameraClick, onClickGallery = onClickGallery)
         Spacer(modifier = Modifier.size(56.dp))

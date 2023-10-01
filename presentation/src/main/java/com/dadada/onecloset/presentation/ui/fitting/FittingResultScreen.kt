@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.components.CustomTabRow
-import com.dadada.onecloset.presentation.ui.components.RowWithTwoButtons
+import com.dadada.onecloset.presentation.ui.components.TwoButtonRow
 import com.dadada.onecloset.presentation.ui.components.screenModifier
 import com.dadada.onecloset.presentation.ui.fitting.component.MyDatePickerDialog
 import com.dadada.onecloset.presentation.ui.theme.Paddings
@@ -123,7 +123,7 @@ fun FittingResultScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        RowWithTwoButtons(left = "취소", right = "저장", onClickLeft = {
+        TwoButtonRow(left = "취소", right = "저장", onClickLeft = {
             navHostController.navigate(NavigationItem.MainTabNav.route) {
                 popUpTo(NavigationItem.MainTabNav.route) { inclusive = true }
             }

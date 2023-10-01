@@ -49,15 +49,13 @@ private const val TAG = "ClosetScreen"
 fun ClosetScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
-    closetViewModel: ClosetViewModel = hiltViewModel()
+    closetViewModel: ClosetViewModel = hiltViewModel(),
 ) {
-
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     val closetListState by closetViewModel.closetListState.collectAsState()
     val networkResultState by closetViewModel.networkResultState.collectAsState()
     var closetList by remember { mutableStateOf(listOf<Closet>()) }
-
 
     LaunchedEffect(closetListState) {
         closetViewModel.getClosetList()
@@ -70,7 +68,7 @@ fun ClosetScreen(
     var showToast by remember {
         mutableStateOf(false)
     }
-    if(showToast) {
+    if (showToast) {
         ShowToast(text = "옷장이 등록됐어요.")
     }
     NetworkResultHandler(state = networkResultState, mainViewModel = mainViewModel) {
@@ -84,17 +82,11 @@ fun ClosetScreen(
         ModalBottomSheet(
             sheetState = sheetState,
             onDismissRequest = { scope.launch { sheetState.hide() } },
-            containerColor = Color.White
+            containerColor = Color.White,
         ) {
             BottomSheetAddCloset(closetViewModel)
             Spacer(modifier = Modifier.size(56.dp))
         }
-        
-//        AlertDialog(onDismissRequest = { /*TODO*/ }, confirmButton = { /*TODO*/ }, text = {
-//            BottomSheetAddCloset(
-//                closetViewModel = closetViewModel
-//            )
-//        })
     }
 
     Scaffold(
@@ -102,7 +94,7 @@ fun ClosetScreen(
             CustomFloatingActionButton(
                 modifier = Modifier.padding(bottom = 80.dp),
                 title = "옷장",
-                icon = Icons.Default.Add
+                icon = Icons.Default.Add,
             ) { scope.launch { sheetState.show() } }
         },
     ) {
@@ -110,17 +102,18 @@ fun ClosetScreen(
             modifier = Modifier
                 .padding(it)
                 .padding(top = 24.dp)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             InfoView(
                 title = stringResource(R.string.daily_codi),
                 content = stringResource(R.string.daliy_codi_guide),
-                onClick = { navHostController.navigate(NavigationItem.CoordinationNav.route) }) {
+                onClick = { navHostController.navigate(NavigationItem.CoordinationNav.route) },
+            ) {
                 Icon(
                     modifier = Modifier.size(44.dp),
                     painter = painterResource(id = R.drawable.ic_daily),
                     contentDescription = "",
-                    tint = Green
+                    tint = Green,
                 )
             }
 
@@ -128,7 +121,7 @@ fun ClosetScreen(
 
             ClosetListView(
                 closetList = closetList,
-                closetViewModel
+                closetViewModel,
             ) {
                 closetViewModel.setSelectedId(it.toString())
                 navHostController.navigate(NavigationItem.ClosetDetailNav.route)

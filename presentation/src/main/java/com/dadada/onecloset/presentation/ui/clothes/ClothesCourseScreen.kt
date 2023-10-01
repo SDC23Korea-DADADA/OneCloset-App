@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.closet
+package com.dadada.onecloset.presentation.ui.clothes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.closet.component.SelectClosetBottomSheet
 import com.dadada.onecloset.presentation.ui.components.RoundedSquare
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.RowWithTwoButtons
+import com.dadada.onecloset.presentation.ui.components.TwoButtonRow
 import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.components.sheet.ClosetListBottomSheet
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
@@ -45,19 +45,17 @@ private const val TAG = "ClothCourseScreen"
 fun ClothCourseScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
-    closetViewModel: ClosetViewModel
+    closetViewModel: ClosetViewModel,
 ) {
     val list = listOf("세탁", "건조", "에어드레서")
     val contentList = listOf(
         closetViewModel.clothesInfo.laundry,
         closetViewModel.clothesInfo.dryer,
-        closetViewModel.clothesInfo.airDressor
+        closetViewModel.clothesInfo.airDressor,
     )
 
-    val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
     var showToast by remember { mutableStateOf(false) }
-    if(showToast) {
+    if (showToast) {
         ShowToast(text = "의류가 저장됐어요!")
     }
 
@@ -65,23 +63,24 @@ fun ClothCourseScreen(
     NetworkResultHandler(state = clothRegisterIdState, mainViewModel = mainViewModel) {
         closetViewModel.resetNetworkStates()
         showToast = true
-        navHostController.navigate("${NavigationItem.ClothNav.route}/${it}") {
+        navHostController.navigate("${NavigationItem.ClothNav.route}/$it") {
             popUpTo(NavigationItem.GalleryNav.route) { inclusive = true }
         }
     }
 
-    if (sheetState.isVisible) {
-        SelectClosetBottomSheet(
-            sheetState = sheetState,
+    val closetSheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    if (closetSheetState.isVisible) {
+        ClosetListBottomSheet(
+            sheetState = closetSheetState,
             mainViewModel = mainViewModel,
-            onDismissRequest = { scope.launch { sheetState.hide() } },
+            onDismissRequest = { scope.launch { closetSheetState.hide() } },
             onClick = {
                 closetViewModel.clothesInfo.closetId = it.toString()
                 closetViewModel.putCloth()
-            }
+            },
         )
     }
-
 
     Box(
         modifier = screenModifier,
@@ -90,14 +89,13 @@ fun ClothCourseScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(bottom = 56.dp)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
         ) {
             RoundedSquareImageItem(
                 modifier = roundedSquareLargeModifier,
                 imageUri = closetViewModel.clothesInfo.image.toUri(),
                 icon = null,
             ) {
-
             }
             Spacer(modifier = Modifier.size(Paddings.xlarge))
             Spacer(modifier = Modifier.weight(1f))
@@ -109,7 +107,7 @@ fun ClothCourseScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
         }
-        RowWithTwoButtons(
+        TwoButtonRow(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .background(BackGround),
@@ -120,8 +118,9 @@ fun ClothCourseScreen(
                 navHostController.navigate(NavigationItem.MainTabNav.route) {
                     popUpTo(NavigationItem.MainTabNav.route) { inclusive = true }
                 }
-            }) {
-            scope.launch { sheetState.show() }
+            },
+        ) {
+            scope.launch { closetSheetState.show() }
         }
     }
 }
