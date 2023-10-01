@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.ClosetScreen
-import com.dadada.onecloset.presentation.ui.common.CustomTabRow
+import com.dadada.onecloset.presentation.ui.components.CustomTabRow
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
@@ -40,7 +40,7 @@ fun MainTabScreen(navHostController: NavHostController, mainViewModel: MainViewM
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
     ) {
         when (selectedTabIndex) {
             0 -> HomeScreen(navHostController, mainViewModel, fittingViewModel)
@@ -51,9 +51,7 @@ fun MainTabScreen(navHostController: NavHostController, mainViewModel: MainViewM
             tabs = tabs,
             selectedTabIndex = selectedTabIndex,
             tabWidths = tabWidths,
-            tabClick = handleTabClick
+            tabClick = handleTabClick,
         )
     }
 }
-
-

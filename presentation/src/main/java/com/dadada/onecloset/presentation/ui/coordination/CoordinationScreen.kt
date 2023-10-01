@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,10 +24,10 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
-import com.dadada.onecloset.presentation.ui.account.component.FittingModelListBottomSheet
-import com.dadada.onecloset.presentation.ui.common.CustomFloatingActionButton
-import com.dadada.onecloset.presentation.ui.common.CustomTabRow
-import com.dadada.onecloset.presentation.ui.common.screenModifier
+import com.dadada.onecloset.presentation.ui.components.CustomFloatingActionButton
+import com.dadada.onecloset.presentation.ui.components.CustomTabRow
+import com.dadada.onecloset.presentation.ui.components.bottom_sheet.FittingModelListBottomSheet
+import com.dadada.onecloset.presentation.ui.components.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
@@ -41,15 +42,13 @@ fun CoordinationScreen(
     mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
     photoViewModel: PhotoViewModel,
-    fittingViewModel: FittingViewModel
+    fittingViewModel: FittingViewModel,
 ) {
     val codiListState by codiViewModel.codiListByMonth.collectAsState()
     var codiList by remember { mutableStateOf(CodiList(listOf(), listOf())) }
-    var showBottomSheet by remember { mutableStateOf(false) }
     NetworkResultHandler(state = codiListState, mainViewModel = mainViewModel) {
         codiList = it
     }
-
 
     LaunchedEffect(Unit) {
         codiViewModel.curFittingItem = Fitting()
@@ -57,7 +56,7 @@ fun CoordinationScreen(
         codiViewModel.getCodiList()
     }
 
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val handleTabClick = { newIndex: Int ->
         selectedTabIndex = newIndex
     }
@@ -73,17 +72,15 @@ fun CoordinationScreen(
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-
     if (sheetState.isVisible) {
         FittingModelListBottomSheet(
             navHostController,
             mainViewModel = mainViewModel,
             fittingViewModel = fittingViewModel,
             sheetState = sheetState,
-            onDismissRequest = { scope.launch { sheetState.hide() } })
+            onDismissRequest = { scope.launch { sheetState.hide() } },
+        )
     }
-
-
 
     Scaffold(
         modifier = screenModifier,
@@ -91,7 +88,7 @@ fun CoordinationScreen(
             CustomFloatingActionButton(title = "계획", icon = Icons.Default.Add) {
                 scope.launch { sheetState.show() }
             }
-        }
+        },
     ) {
         Column {
             CustomTabRow(
@@ -99,9 +96,8 @@ fun CoordinationScreen(
                 tabs = tabs,
                 selectedTabIndex = selectedTabIndex,
                 tabWidths = tabWidths,
-                tabClick = handleTabClick
+                tabClick = handleTabClick,
             )
-
 
             when (selectedTabIndex) {
                 0 -> CoordinationCalendarScreen(
@@ -114,13 +110,13 @@ fun CoordinationScreen(
                 1 -> CoordinationCodiListScreen(
                     navHostController = navHostController,
                     codiList.codiList,
-                    codiViewModel
+                    codiViewModel,
                 )
 
                 else -> CoordinationFittingListScreen(
                     navHostController = navHostController,
                     codiList.fittingList,
-                    codiViewModel
+                    codiViewModel,
                 )
             }
         }

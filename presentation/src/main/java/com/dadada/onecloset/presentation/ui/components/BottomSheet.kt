@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.common
+package com.dadada.onecloset.presentation.ui.components
 
 import android.util.Log
 import androidx.compose.foundation.background

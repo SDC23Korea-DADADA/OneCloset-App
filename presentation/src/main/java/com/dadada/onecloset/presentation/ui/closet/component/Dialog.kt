@@ -17,9 +17,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.common.RowWithSmallTwoButtons
-import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
-import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.RowWithSmallTwoButtons
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Paddings

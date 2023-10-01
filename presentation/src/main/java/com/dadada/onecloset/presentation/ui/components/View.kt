@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.common
+package com.dadada.onecloset.presentation.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

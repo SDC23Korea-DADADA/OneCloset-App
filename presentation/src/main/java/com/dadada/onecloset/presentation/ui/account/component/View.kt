@@ -34,8 +34,8 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.model.SignInButton
-import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography

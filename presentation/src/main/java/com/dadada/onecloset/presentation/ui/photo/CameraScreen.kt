@@ -33,8 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
-import com.dadada.onecloset.presentation.ui.common.circleShapeModifier
+import com.dadada.onecloset.presentation.ui.components.TwoButtonDialog
+import com.dadada.onecloset.presentation.ui.components.circleShapeModifier
 import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
 import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.Mode
@@ -47,8 +47,6 @@ import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 import com.ujizin.camposer.CameraPreview
 import com.ujizin.camposer.state.CamSelector
-import com.ujizin.camposer.state.CameraState
-import com.ujizin.camposer.state.ImageCaptureResult
 import com.ujizin.camposer.state.rememberCameraState
 import kotlin.math.min
 

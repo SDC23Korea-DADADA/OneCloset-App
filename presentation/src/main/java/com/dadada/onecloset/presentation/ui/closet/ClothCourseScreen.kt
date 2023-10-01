@@ -25,11 +25,11 @@ import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.SelectClosetBottomSheet
-import com.dadada.onecloset.presentation.ui.common.RoundedSquare
-import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
-import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.common.screenModifier
+import com.dadada.onecloset.presentation.ui.components.RoundedSquare
+import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.components.RowWithTwoButtons
+import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler

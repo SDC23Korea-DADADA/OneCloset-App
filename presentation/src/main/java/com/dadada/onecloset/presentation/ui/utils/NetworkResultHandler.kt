@@ -7,9 +7,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.dadada.onecloset.domain.model.NetworkResult
-import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.common.GalaxyLoadingView
-import com.dadada.onecloset.presentation.ui.common.LoadingView
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 
 private const val TAG = "NetworkResultHandler"

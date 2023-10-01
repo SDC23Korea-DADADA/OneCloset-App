@@ -23,15 +23,14 @@ import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.component.AccountMultiLineSection
 import com.dadada.onecloset.presentation.ui.account.component.AccountSingleLineSection
 import com.dadada.onecloset.presentation.ui.account.component.AccountText
-import com.dadada.onecloset.presentation.ui.common.CircleImageView
-import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
-import com.dadada.onecloset.presentation.ui.common.screenModifier
+import com.dadada.onecloset.presentation.ui.components.CircleImageView
+import com.dadada.onecloset.presentation.ui.components.TwoButtonDialog
+import com.dadada.onecloset.presentation.ui.components.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
-import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.ui.utils.moveToSetting
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
@@ -59,18 +58,19 @@ fun MyPageScreen(
         PermissionRequester(
             permission = Permissions.readExternalStoragePermission,
             onDismissRequest = { clickCourse = !clickCourse },
-            onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) }) {
+            onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) },
+        ) {
             clickCourse = !clickCourse
         }
     }
 
     var showDialog by remember { mutableStateOf(false) }
-    if(showDialog) {
+    if (showDialog) {
         TwoButtonDialog(
             onDismissRequest = { showDialog = !showDialog },
             onConfirmation = { accountViewModel.leaveUser() },
             dialogTitle = "One Closet 탈퇴",
-            dialogText = "One Closet을 탈퇴하면 데이터는 즉시 삭제되며 되돌릴 수 없습니다. 정말 떠나시겠어요?"
+            dialogText = "One Closet을 탈퇴하면 데이터는 즉시 삭제되며 되돌릴 수 없습니다. 정말 떠나시겠어요?",
         )
     }
 
@@ -104,7 +104,7 @@ fun MyPageScreen(
         accountInfo?.let {
             CircleImageView(
                 modifier = Modifier.size(120.dp),
-                url = it.profileImg
+                url = it.profileImg,
             )
         }
 
@@ -113,30 +113,29 @@ fun MyPageScreen(
                 modifier = Modifier.padding(vertical = Paddings.small),
                 title = stringResource(id = AccountText.ACCOUNT.id),
                 subTitle = it.social,
-                content = it.email
+                content = it.email,
             )
         }
-
 
         AccountMultiLineSection(
             modifier = Modifier.padding(vertical = Paddings.small),
             title = stringResource(id = AccountText.MODEL.id),
             subTitleList = appModelContents,
-            onClickList = onClickModel
+            onClickList = onClickModel,
         )
 
         AccountMultiLineSection(
             modifier = Modifier.padding(vertical = Paddings.small),
             title = stringResource(id = AccountText.PERSONAL.id),
             subTitleList = personalInfoContents,
-            onClickList = onClickPersonal
+            onClickList = onClickPersonal,
         )
 
         AccountMultiLineSection(
             modifier = Modifier.padding(vertical = Paddings.small),
             title = stringResource(id = AccountText.APP.id),
             subTitleList = appInfoContents,
-            onClickList = onClickAppInfo
+            onClickList = onClickAppInfo,
         )
     }
 }

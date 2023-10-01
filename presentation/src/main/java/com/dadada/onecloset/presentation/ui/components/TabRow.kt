@@ -1,6 +1,5 @@
-package com.dadada.onecloset.presentation.ui.common
+package com.dadada.onecloset.presentation.ui.components
 
-import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween

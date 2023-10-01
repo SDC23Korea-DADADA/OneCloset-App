@@ -19,9 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.account.component.FittingModelListBottomSheet
-import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.home.component.HomeMainFeatureCard
+import com.dadada.onecloset.presentation.ui.components.bottom_sheet.FittingModelListBottomSheet
+import com.dadada.onecloset.presentation.ui.home.component.card.HomeCustomCard
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
@@ -29,59 +28,54 @@ import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 import kotlinx.coroutines.launch
 
-private const val TAG = "HomeScreen"
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
-    fittingViewModel: FittingViewModel
+    fittingViewModel: FittingViewModel,
 ) {
     var clickCourse by remember { mutableStateOf(false) }
     if (clickCourse) {
         PermissionRequester(
             permission = Permissions.readExternalStoragePermission,
             onDismissRequest = { clickCourse = !clickCourse },
-            onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) }) {
-            clickCourse = !clickCourse
-        }
+            onPermissionGranted = { navHostController.navigate(NavigationItem.GalleryNav.route) },
+            onPermissionDenied = { clickCourse = !clickCourse },
+        )
     }
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-
     if (sheetState.isVisible) {
         FittingModelListBottomSheet(
             navHostController,
             mainViewModel = mainViewModel,
             fittingViewModel = fittingViewModel,
             sheetState = sheetState,
-            onDismissRequest = { scope.launch { sheetState.hide() } })
+            onDismissRequest = { scope.launch { sheetState.hide() } },
+        )
     }
-
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 24.dp)
+            .padding(top = 24.dp),
     ) {
-        HomeMainFeatureCard(
-            modifier = roundedSquareLargeModifier.padding(Paddings.xlarge),
+        HomeCustomCard(
             title = stringResource(R.string.care),
             content = stringResource(R.string.home_care_guide),
             animation = R.raw.animation_course,
-            onClick = { clickCourse = !clickCourse }
+            onClick = { clickCourse = !clickCourse },
         )
 
         Spacer(modifier = Modifier.size(Paddings.extra))
 
-        HomeMainFeatureCard(
-            modifier = roundedSquareLargeModifier.padding(Paddings.xlarge),
+        HomeCustomCard(
             title = stringResource(R.string.fitting),
             content = stringResource(R.string.home_fitting_guide),
             animation = R.raw.animation_fitting,
-            onClick = { scope.launch { sheetState.show() } }
+            onClick = { scope.launch { sheetState.show() } },
         )
     }
 }

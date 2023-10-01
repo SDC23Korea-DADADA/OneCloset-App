@@ -34,12 +34,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.common.GalleryPhotoItem
-import com.dadada.onecloset.presentation.ui.common.PhotoItem
-import com.dadada.onecloset.presentation.ui.common.TwoButtonDialog
+import com.dadada.onecloset.presentation.ui.components.GalleryPhotoItem
+import com.dadada.onecloset.presentation.ui.components.PhotoItem
+import com.dadada.onecloset.presentation.ui.components.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.utils.LoadingType

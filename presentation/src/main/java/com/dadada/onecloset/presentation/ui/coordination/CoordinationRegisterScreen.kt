@@ -23,10 +23,9 @@ import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
-import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.common.RowWithTwoButtons
-import com.dadada.onecloset.presentation.ui.common.screenModifier
-import com.dadada.onecloset.presentation.ui.fitting.component.MyDatePickerDialog
+import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.components.RowWithTwoButtons
+import com.dadada.onecloset.presentation.ui.components.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel

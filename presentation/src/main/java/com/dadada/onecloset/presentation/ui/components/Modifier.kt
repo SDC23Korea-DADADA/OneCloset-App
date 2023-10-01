@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.common
+package com.dadada.onecloset.presentation.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize

@@ -19,7 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import com.dadada.onecloset.presentation.ui.MainActivity
-import com.dadada.onecloset.presentation.ui.common.AlertDialogWithTwoButton
+import com.dadada.onecloset.presentation.ui.components.AlertDialogWithTwoButton
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState

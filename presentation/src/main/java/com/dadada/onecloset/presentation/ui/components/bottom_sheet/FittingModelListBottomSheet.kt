@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.account.component
+package com.dadada.onecloset.presentation.ui.components.bottom_sheet
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
@@ -16,11 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
+import com.dadada.onecloset.presentation.ui.account.component.ModelListView
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,7 +29,7 @@ fun FittingModelListBottomSheet(
     mainViewModel: MainViewModel,
     fittingViewModel: FittingViewModel,
     sheetState: SheetState,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     val modelListState by fittingViewModel.modelListState.collectAsState()
     var modelList by remember {
@@ -44,13 +44,12 @@ fun FittingModelListBottomSheet(
         modelList = it
     }
 
-
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = {
             onDismissRequest()
         },
-        containerColor = BackGround
+        containerColor = BackGround,
     ) {
         ModelListView(navHostController, modelList, sheetState, fittingViewModel)
         Spacer(modifier = Modifier.size(56.dp))

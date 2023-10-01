@@ -27,10 +27,10 @@ import com.dadada.onecloset.presentation.ui.closet.component.ClothCourseView
 import com.dadada.onecloset.presentation.ui.closet.component.ClothHeader
 import com.dadada.onecloset.presentation.ui.closet.component.ClothInformView
 import com.dadada.onecloset.presentation.ui.closet.component.PutClothAdditionalInfoBottomSheet
-import com.dadada.onecloset.presentation.ui.common.CustomTabRow
-import com.dadada.onecloset.presentation.ui.common.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.common.screenModifier
+import com.dadada.onecloset.presentation.ui.components.CustomTabRow
+import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel

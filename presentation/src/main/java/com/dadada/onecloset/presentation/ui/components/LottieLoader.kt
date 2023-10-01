@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.common
+package com.dadada.onecloset.presentation.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

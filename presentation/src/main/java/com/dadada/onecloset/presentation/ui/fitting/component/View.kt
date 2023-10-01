@@ -26,9 +26,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.net.toUri
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
-import com.dadada.onecloset.presentation.ui.common.DropDownRow
-import com.dadada.onecloset.presentation.ui.common.FittingDropDownMenu
-import com.dadada.onecloset.presentation.ui.common.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.DropDownRow
+import com.dadada.onecloset.presentation.ui.components.FittingDropDownMenu
+import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.FittingEmptyItem
