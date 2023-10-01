@@ -29,7 +29,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -55,6 +54,7 @@ import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 import com.dadada.onecloset.presentation.ui.photo.PhotoScreen
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
@@ -79,17 +79,26 @@ fun MainScreen(startDestination: String) {
     val mainViewModel: MainViewModel = hiltViewModel()
 
     val loadingState by mainViewModel.loadingState.collectAsState()
-    if(loadingState) {
-        when(mainViewModel.loadingType) {
+    if (loadingState) {
+        when (mainViewModel.loadingType) {
             LoadingType.FITTING -> {
-                LoadingView(animation = R.raw.animation_loading_fitting, text = "가상 피팅 결과에 최대 1분이 소요돼요!")
+                LoadingView(
+                    animation = R.raw.animation_loading_fitting,
+                    text = "가상 피팅 결과에 최대 1분이 소요돼요!",
+                )
             }
+
             LoadingType.VALIDATION -> {
-                LoadingView(animation = R.raw.animation_loading_validation, text = "의류 이미지가 맞나요? 확인 중이에요..")
+                LoadingView(
+                    animation = R.raw.animation_loading_validation,
+                    text = "의류 이미지가 맞나요? 확인 중이에요..",
+                )
             }
+
             LoadingType.ANALYSIS -> {
                 LoadingView(animation = R.raw.animation_loading_analysis, text = "의류를 분석 중이에요!")
             }
+
             else -> {
                 GalaxyLoadingView()
             }
@@ -103,13 +112,13 @@ fun MainScreen(startDestination: String) {
                 currentRoute = currentRoute,
             )
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     ) {
         MainNavigationScreen(
             innerPaddings = it,
             navController = navController,
             startDestination = startDestination,
-            mainViewModel = mainViewModel
+            mainViewModel = mainViewModel,
         )
     }
 }
@@ -122,7 +131,7 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
     }
     TopAppBar(
         modifier = Modifier.padding(top = Paddings.large),
-        title = { Text("One Closet", fontWeight = FontWeight.ExtraBold) },
+        title = { Text("One Closet", style = Typography.displayMedium) },
         navigationIcon = {
             if (currentRoute != MainTabNav.route) {
                 IconButton(onClick = { navController.popBackStack() }) {
@@ -138,9 +147,8 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
                     Icon(Icons.Filled.AccountCircle, contentDescription = "")
                 }
             }
-
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
     )
 }
 
@@ -151,7 +159,7 @@ fun MainNavigationScreen(
     innerPaddings: PaddingValues,
     navController: NavHostController,
     startDestination: String,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
 ) {
     val closetViewModel: ClosetViewModel = hiltViewModel()
     val photoViewModel: PhotoViewModel = hiltViewModel()
@@ -164,7 +172,7 @@ fun MainNavigationScreen(
         enterTransition = { fadeIn(animationSpec = tween(700)) },
         exitTransition = { fadeOut(animationSpec = tween(700)) },
         popEnterTransition = { EnterTransition.None },
-        popExitTransition = { ExitTransition.None }
+        popExitTransition = { ExitTransition.None },
     ) {
         composable(route = NavigationItem.LogInNav.route) {
             LogInScreen(navHostController = navController, mainViewModel = mainViewModel)
@@ -181,7 +189,7 @@ fun MainNavigationScreen(
                 closetViewModel = closetViewModel,
                 photoViewModel = photoViewModel,
                 fittingViewModel = fittingViewModel,
-                codiViewModel = codiViewModel
+                codiViewModel = codiViewModel,
             )
         }
         composable(route = ClosetDetailNav.route) {
@@ -191,7 +199,7 @@ fun MainNavigationScreen(
             ClothListScreen(
                 navHostController = navController,
                 mainViewModel = mainViewModel,
-                closetViewModel = hiltViewModel(parentEntry)
+                closetViewModel = hiltViewModel(parentEntry),
             )
         }
         composable(route = GalleryNav.route) {
@@ -201,27 +209,47 @@ fun MainNavigationScreen(
                 closetViewModel = closetViewModel,
                 photoViewModel = photoViewModel,
                 fittingViewModel = fittingViewModel,
-                codiViewModel = codiViewModel
+                codiViewModel = codiViewModel,
             )
         }
 
         composable(route = ClothAnalysisNav.route) {
-            ClothAnalysisScreen(navController, mainViewModel = mainViewModel,closetViewModel = closetViewModel)
+            ClothAnalysisScreen(
+                navController,
+                mainViewModel = mainViewModel,
+                closetViewModel = closetViewModel,
+            )
         }
         composable(route = ClothCourseNav.route) {
-            ClothCourseScreen(navController, mainViewModel = mainViewModel,closetViewModel = closetViewModel)
+            ClothCourseScreen(
+                navController,
+                mainViewModel = mainViewModel,
+                closetViewModel = closetViewModel,
+            )
         }
         composable(route = "${ClothNav.route}/{clothId}") {
             val clothId = it.arguments?.getString("clothId")
             if (clothId != null) {
-                ClothScreen(navHostController = navController, mainViewModel = mainViewModel, clothId = clothId)
+                ClothScreen(
+                    navHostController = navController,
+                    mainViewModel = mainViewModel,
+                    clothId = clothId,
+                )
             }
         }
         composable(route = AccountNav.route) {
-            MyPageScreen(navHostController = navController, mainViewModel = mainViewModel, photoViewModel = photoViewModel)
+            MyPageScreen(
+                navHostController = navController,
+                mainViewModel = mainViewModel,
+                photoViewModel = photoViewModel,
+            )
         }
         composable(route = FittingNav.route) {
-            FittingScreen(navHostController = navController, mainViewModel = mainViewModel, fittingViewModel = fittingViewModel)
+            FittingScreen(
+                navHostController = navController,
+                mainViewModel = mainViewModel,
+                fittingViewModel = fittingViewModel,
+            )
         }
         composable(route = CoordinationNav.route) {
             CoordinationScreen(
@@ -229,7 +257,7 @@ fun MainNavigationScreen(
                 mainViewModel = mainViewModel,
                 photoViewModel = photoViewModel,
                 codiViewModel = codiViewModel,
-                fittingViewModel = fittingViewModel
+                fittingViewModel = fittingViewModel,
             )
         }
         composable(route = FittingResultNav.route) {
@@ -245,13 +273,25 @@ fun MainNavigationScreen(
             CoordinationResultScreen(codiViewModel, navController)
         }
         composable(route = CoordinationRegisterNav.route) {
-            CoordinationRegisterScreen(navHostController = navController, mainViewModel = mainViewModel, codiViewModel = codiViewModel)
+            CoordinationRegisterScreen(
+                navHostController = navController,
+                mainViewModel = mainViewModel,
+                codiViewModel = codiViewModel,
+            )
         }
         composable(route = CoordinationDetailNav.route) {
-            CoordinationDetailScreen(codiViewModel = codiViewModel, mainViewModel = mainViewModel, navController = navController)
+            CoordinationDetailScreen(
+                codiViewModel = codiViewModel,
+                mainViewModel = mainViewModel,
+                navController = navController,
+            )
         }
         composable(route = CoordinationFittingDetailNav.route) {
-            CoordinationFittingDetailScreen(codiViewModel = codiViewModel, mainViewModel = mainViewModel, navController = navController)
+            CoordinationFittingDetailScreen(
+                codiViewModel = codiViewModel,
+                mainViewModel = mainViewModel,
+                navController = navController,
+            )
         }
     }
 }
