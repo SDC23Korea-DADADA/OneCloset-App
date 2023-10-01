@@ -87,14 +87,15 @@ fun ClothTabGridView(
     onClickTab: (String) -> Unit = {},
     tabs: List<String> = listOf("전체", "상의", "하의", "외투", "한벌옷")
 ) {
-    var selectedTabIndex by remember { mutableStateOf(0) }
-    val tabWidths = remember {
+    var selectedTabIndex by remember(tabs) { mutableStateOf(0) }
+    val tabWidths = remember(tabs) {  // tabs를 remember의 key로 사용
         val tabWidthStateList = mutableStateListOf<Dp>()
         repeat(tabs.size) {
             tabWidthStateList.add(0.dp)
         }
         tabWidthStateList
     }
+
 
     val handleTabClick = { newIndex: Int ->
         selectedTabIndex = newIndex
@@ -166,7 +167,7 @@ fun ClothTabGridView(
     }
 }
 
-private const val TAG = "View"
+
 
 @Composable
 fun ClothGridView(

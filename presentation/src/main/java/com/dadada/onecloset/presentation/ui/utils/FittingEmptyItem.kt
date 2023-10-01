@@ -13,7 +13,8 @@ sealed class FittingEmptyItem(val icon: Int, val content: String, val upperType:
             val emptyTop = listOf(EmptyTop)
             val emptyBottom = listOf(EmptyBottom)
             val emptyOne = listOf(EmptyOne)
-            return listOf(emptyTop, emptyBottom, emptyOne)
+            val emptyTopBottom = listOf(EmptyTop, EmptyBottom)
+            return listOf(emptyTop, emptyBottom, emptyOne, emptyTopBottom)
         }
     }
 }
