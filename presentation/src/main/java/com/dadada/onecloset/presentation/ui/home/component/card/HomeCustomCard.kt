@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,11 +33,10 @@ fun HomeCustomCard(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = roundedSquareLargeModifier
-            .padding(Paddings.xlarge)
+        modifier = modifier
             .clickable(onClick = onClick),
     ) {
-        Column(modifier = Modifier.padding(Paddings.small)) {
+        Column(modifier = Modifier.padding(Paddings.medium)) {
             Text(text = title, style = Typography.titleMedium)
             Text(
                 modifier = Modifier.padding(vertical = Paddings.small),
@@ -46,14 +47,15 @@ fun HomeCustomCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
+                .aspectRatio(2f)
                 .clip(RoundedCornerShape(Corner.large))
                 .background(LottieBackGroundGray),
         ) {
             LottieLoader(
                 source = animation,
                 modifier = Modifier
-                    .size(150.dp)
+                    .fillMaxHeight()
+                    .aspectRatio(1f)
                     .align(Alignment.CenterEnd),
             )
         }

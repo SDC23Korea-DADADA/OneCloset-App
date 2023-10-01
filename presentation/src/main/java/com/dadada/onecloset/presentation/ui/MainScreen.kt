@@ -49,7 +49,6 @@ import com.dadada.onecloset.presentation.ui.coordination.CoordinationResultScree
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationScreen
 import com.dadada.onecloset.presentation.ui.fitting.FittingResultScreen
 import com.dadada.onecloset.presentation.ui.fitting.FittingScreen
-import com.dadada.onecloset.presentation.ui.home.MainTabScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
 import com.dadada.onecloset.presentation.ui.photo.GalleryScreen
 import com.dadada.onecloset.presentation.ui.photo.PhotoScreen

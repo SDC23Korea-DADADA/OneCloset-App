@@ -1,8 +1,6 @@
-package com.dadada.onecloset.presentation.ui.home
+package com.dadada.onecloset.presentation.ui
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -18,6 +16,8 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.ClosetScreen
 import com.dadada.onecloset.presentation.ui.components.CustomTabRow
+import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.home.HomeScreen
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
@@ -38,9 +38,7 @@ fun MainTabScreen(navHostController: NavHostController, mainViewModel: MainViewM
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
+        modifier = screenModifier,
     ) {
         when (selectedTabIndex) {
             0 -> HomeScreen(navHostController, mainViewModel, fittingViewModel)

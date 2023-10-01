@@ -15,13 +15,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.bottom_sheet.FittingModelListBottomSheet
+import com.dadada.onecloset.presentation.ui.components.sheet.FittingModelListBottomSheet
+import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.home.component.card.HomeCustomCard
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.Size
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
@@ -60,18 +61,20 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 24.dp),
+            .padding(top = Paddings.xlarge),
     ) {
         HomeCustomCard(
+            modifier = roundedSquareLargeModifier.padding(Paddings.xlarge),
             title = stringResource(R.string.care),
             content = stringResource(R.string.home_care_guide),
             animation = R.raw.animation_course,
             onClick = { clickCourse = !clickCourse },
         )
 
-        Spacer(modifier = Modifier.size(Paddings.extra))
+        Spacer(modifier = Modifier.size(Size.extra))
 
         HomeCustomCard(
+            modifier = roundedSquareLargeModifier.padding(Paddings.xlarge),
             title = stringResource(R.string.fitting),
             content = stringResource(R.string.home_fitting_guide),
             animation = R.raw.animation_fitting,

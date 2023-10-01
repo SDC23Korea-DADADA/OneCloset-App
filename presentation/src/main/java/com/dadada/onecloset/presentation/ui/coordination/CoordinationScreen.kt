@@ -26,7 +26,7 @@ import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.ui.components.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.components.CustomTabRow
-import com.dadada.onecloset.presentation.ui.components.bottom_sheet.FittingModelListBottomSheet
+import com.dadada.onecloset.presentation.ui.components.sheet.FittingModelListBottomSheet
 import com.dadada.onecloset.presentation.ui.components.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
