@@ -8,8 +8,6 @@ import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,14 +17,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import com.dadada.onecloset.presentation.ui.MainActivity
-import com.dadada.onecloset.presentation.ui.components.AlertDialogWithTwoButton
+import com.dadada.onecloset.presentation.ui.components.dialog.TwoButtonDialog
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 
-
-object Permissions {    // 사용할 권한 정의
+object Permissions { // 사용할 권한 정의
     val readExternalStoragePermission = if (Build.VERSION.SDK_INT < 33) {
         Manifest.permission.READ_EXTERNAL_STORAGE
     } else {
@@ -42,7 +39,7 @@ fun PermissionRequester(
     permission: String,
     onDismissRequest: () -> Unit,
     onPermissionGranted: () -> Unit,
-    onPermissionDenied: () -> Unit
+    onPermissionDenied: () -> Unit,
 ) {
     val context = LocalContext.current as MainActivity
     val permissionState = rememberPermissionState(permission)
@@ -62,7 +59,7 @@ fun PermissionRequester(
 
     // 권한 요청 결과 반환
     val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
+        contract = ActivityResultContracts.RequestPermission(),
     ) { isGranted: Boolean ->
         if (isGranted) {
             onPermissionGranted()
@@ -79,7 +76,7 @@ fun PermissionRequester(
     LaunchedEffect(Unit) {
         if (permissionState.status.isGranted) {
             onPermissionGranted()
-        } else if (permissionState.status.shouldShowRationale) {   // 사용자가 거부한 이력이 있으면 다이얼로그
+        } else if (permissionState.status.shouldShowRationale) { // 사용자가 거부한 이력이 있으면 다이얼로그
             showDialog = !showDialog
         } else {
             permissionLauncher.launch(permission)
@@ -87,15 +84,13 @@ fun PermissionRequester(
     }
 }
 
-
 @Composable
 fun CheckPermissionDialog(onDismissRequest: () -> Unit, onConfirmation: () -> Unit) {
-    AlertDialogWithTwoButton(
+    TwoButtonDialog(
         onDismissRequest = { onDismissRequest() },
         onConfirmation = { onConfirmation() },
         dialogTitle = "서비스 이용 알림",
         dialogText = "해당 기능에 대한 권한 사용을 거부하였습니다. 기능 사용을 원하실 경우 휴대폰 설정 > 애플리케이션 관리자에서 해당 앱의 권한을 허용해주세요.",
-        icon = Icons.Default.Info
     )
 }
 

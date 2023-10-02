@@ -23,8 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.domain.model.Closet
+import com.dadada.onecloset.presentation.ui.closet.component.dialog.SelectClosetIconDialog
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareIconItem
-import com.dadada.onecloset.presentation.ui.components.SelectClosetIconDialog
 import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
 import com.dadada.onecloset.presentation.ui.theme.Blue
 import com.dadada.onecloset.presentation.ui.theme.Typography
@@ -34,7 +34,6 @@ import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.ui.utils.colorToHexString
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ClosetAddBottomSheet(closetViewModel: ClosetViewModel) {
     val iconResIds = IconEnum.values().map { it.resId }

@@ -38,7 +38,7 @@ import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.components.GalleryPhotoItem
 import com.dadada.onecloset.presentation.ui.components.PhotoItem
-import com.dadada.onecloset.presentation.ui.components.TwoButtonDialog
+import com.dadada.onecloset.presentation.ui.components.dialog.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.utils.LoadingType
