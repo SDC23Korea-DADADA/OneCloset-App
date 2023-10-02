@@ -1,7 +1,6 @@
-package com.dadada.onecloset.presentation.ui.coordination.component
+package com.dadada.onecloset.presentation.ui.coordi.component.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -23,13 +22,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,13 +47,11 @@ import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.model.HorizontalCalendarConfig
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.BackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.Mode
-import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.dateFormat
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
@@ -65,11 +61,9 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.util.Locale
 
-private const val TAG = "Calendar"
-
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HorizontalCalendar(
+fun CoordiCalendarView(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     currentDate: LocalDate = LocalDate.now(),
@@ -83,20 +77,18 @@ fun HorizontalCalendar(
         (currentDate.year - config.yearRange.first) * 12 + currentDate.monthValue - 1
     var currentSelectedDate by remember { mutableStateOf(currentDate) }
     var currentMonth: YearMonth by remember { mutableStateOf(YearMonth.now()) }
-    var currentPage by remember { mutableStateOf(initialPage) }
+    var currentPage by remember { mutableIntStateOf(initialPage) }
     val pagerState = rememberPagerState(
         initialPage = initialPage,
-        initialPageOffsetFraction = 0f
+        initialPageOffsetFraction = 0f,
     ) {
         (config.yearRange.last - config.yearRange.first) * 12
     }
-
 
     LaunchedEffect(pagerState.currentPage) {
         val addMonth = (pagerState.currentPage - currentPage).toLong()
         currentMonth = currentMonth.plusMonths(addMonth)
         currentPage = pagerState.currentPage
-        codiViewModel.getCodiListByMonth(currentMonth.toString())
     }
 
     LaunchedEffect(currentSelectedDate) {
@@ -120,14 +112,16 @@ fun HorizontalCalendar(
                     val targetPage = minOf(pagerState.currentPage + 1, pagerState.pageCount - 1)
                     pagerState.animateScrollToPage(targetPage)
                 }
-            }
+            },
         )
 
         HorizontalPager(
-            state = pagerState
+            state = pagerState,
         ) { page ->
             val date = LocalDate.of(
-                config.yearRange.first + page / 12, page % 12 + 1, 1
+                config.yearRange.first + page / 12,
+                page % 12 + 1,
+                1,
             )
             if (page in pagerState.currentPage - 1..pagerState.currentPage + 1) { // 페이징 성능 개선을 위한 조건문
                 CalendarMonthItem(
@@ -142,7 +136,7 @@ fun HorizontalCalendar(
                     navController = navController,
                     codiList = codiList,
                     photoViewModel = photoViewModel,
-                    codiViewModel = codiViewModel
+                    codiViewModel = codiViewModel,
                 )
             }
         }
@@ -154,16 +148,25 @@ fun CalendarHeader(
     modifier: Modifier = Modifier,
     text: String,
     onClickLeft: () -> Unit,
-    onClickRight: () -> Unit
+    onClickRight: () -> Unit,
 ) {
     Row(modifier = modifier) {
-        Icon(modifier = Modifier.clickable { onClickLeft() }, imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "")
-        Spacer(modifier = Modifier.size(Paddings.extra))
-        Text(
-            text = text, style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold)
+        Icon(
+            modifier = Modifier.clickable { onClickLeft() },
+            imageVector = Icons.Default.KeyboardArrowLeft,
+            contentDescription = "",
         )
         Spacer(modifier = Modifier.size(Paddings.extra))
-        Icon(modifier = Modifier.clickable { onClickRight() }, imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "")
+        Text(
+            text = text,
+            style = Typography.titleLarge.copy(fontWeight = FontWeight.ExtraBold),
+        )
+        Spacer(modifier = Modifier.size(Paddings.extra))
+        Icon(
+            modifier = Modifier.clickable { onClickRight() },
+            imageVector = Icons.Default.KeyboardArrowRight,
+            contentDescription = "",
+        )
     }
 }
 
@@ -177,16 +180,17 @@ fun CalendarMonthItem(
     navController: NavHostController,
     codiList: CodiList,
     photoViewModel: PhotoViewModel,
-    codiViewModel: CodiViewModel
+    codiViewModel: CodiViewModel,
 ) {
-    val lastDay by remember { mutableStateOf(currentDate.lengthOfMonth()) }
-    val firstDayOfWeek by remember { mutableStateOf(currentDate.dayOfWeek.value) }
+    val lastDay by remember { mutableIntStateOf(currentDate.lengthOfMonth()) }
+    val firstDayOfWeek by remember { mutableIntStateOf(currentDate.dayOfWeek.value) }
     val days by remember { mutableStateOf(IntRange(1, lastDay).toList()) }
 
     Column(modifier = modifier) {
         DayOfWeek()
         LazyVerticalGrid(
-            modifier = Modifier.fillMaxHeight(), columns = GridCells.Fixed(7)
+            modifier = Modifier.fillMaxHeight(),
+            columns = GridCells.Fixed(7),
         ) {
             if (firstDayOfWeek < 7) {
                 for (i in 1 until firstDayOfWeek + 1) { // 처음 날짜가 시작하는 요일 전까지 빈 박스 생성
@@ -194,18 +198,20 @@ fun CalendarMonthItem(
                         Box(
                             modifier = Modifier
                                 .size(30.dp)
-                                .padding(top = 10.dp)
+                                .padding(top = 10.dp),
                         )
                     }
                 }
             }
             items(days) { day ->
                 var curDay = day.toString()
-                if(curDay.length < 2) {
+                if (curDay.length < 2) {
                     curDay = "0$curDay"
                 }
-                val curFittingItem = codiList.fittingList.find { it.wearingAtDay == "$currentMonth-$curDay" }
-                val curDailyItem = codiList.codiList.find { it.wearingAtDay == "$currentMonth-$curDay" }
+                val curFittingItem =
+                    codiList.fittingList.find { it.wearingAtDay == "$currentMonth-$curDay" }
+                val curDailyItem =
+                    codiList.codiList.find { it.wearingAtDay == "$currentMonth-$curDay" }
 
                 var imageUrl = curFittingItem?.fittingThumbnailImg
                 if (curDailyItem != null) {
@@ -227,13 +233,12 @@ fun CalendarMonthItem(
                     codiViewModel = codiViewModel,
                     photoViewModel = photoViewModel,
                     curFittingItem = curFittingItem,
-                    curDailyItem = curDailyItem
+                    curDailyItem = curDailyItem,
                 )
             }
         }
     }
 }
-
 
 @Composable
 fun CalendarDay(
@@ -247,19 +252,20 @@ fun CalendarDay(
     photoViewModel: PhotoViewModel,
     imageUrl: String?,
     curFittingItem: Fitting?,
-    curDailyItem: Codi?
+    curDailyItem: Codi?,
 ) {
     val current = LocalDate.now()
-    val hasEvent = false
-    val modifierClickable = if (imageUrl == null && date <= current) modifier.clickable {
-        onSelectedDate(date)
-        photoViewModel.curMode = Mode.codi
-        var curDate = date.toString()
-        if(curDate.length < 2) {
-            curDate = "0$curDate"
+    val modifierClickable = if (imageUrl == null && date <= current) {
+        modifier.clickable {
+            onSelectedDate(date)
+            photoViewModel.curMode = Mode.codi
+            var curDate = date.toString()
+            if (curDate.length < 2) {
+                curDate = "0$curDate"
+            }
+            codiViewModel.codiRegisterInfo.date = curDate
+            navController.navigate(NavigationItem.GalleryNav.route)
         }
-        codiViewModel.codiRegisterInfo.date = curDate
-        navController.navigate(NavigationItem.GalleryNav.route)
     } else if (imageUrl == null && date > current) {
         modifier
     } else {
@@ -279,9 +285,9 @@ fun CalendarDay(
             .fillMaxWidth()
             .aspectRatio(0.7f)
             .clip(shape = RoundedCornerShape(10.dp)),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
-        if(imageUrl != null) {
+        if (imageUrl != null) {
             Box(
                 modifier = Modifier
                     .padding(4.dp)
@@ -289,24 +295,27 @@ fun CalendarDay(
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .border(1.dp, BackGroundGray, CircleShape),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
-                AsyncImage(model = imageUrl, contentDescription = "", contentScale = ContentScale.Crop)
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                )
             }
         }
         Text(
             textAlign = TextAlign.Center,
             text = date.dayOfMonth.toString(),
             fontWeight = FontWeight.Bold,
-            color = if (imageUrl == null) Color.Black else Color.White
+            color = if (imageUrl == null) Color.Black else Color.White,
         )
-
     }
 }
 
 @Composable
 fun DayOfWeek(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier) {
         val reorderedDays =
@@ -321,7 +330,7 @@ fun DayOfWeek(
                 text = dayOfWeek.getDisplayName(java.time.format.TextStyle.NARROW, Locale.KOREAN),
                 style = Typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                 textAlign = TextAlign.Center,
-                color = color
+                color = color,
             )
         }
     }

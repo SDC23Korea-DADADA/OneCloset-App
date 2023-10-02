@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.coordination
+package com.dadada.onecloset.presentation.ui.coordi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,6 +13,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,7 +30,6 @@ import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.components.header.CustomHeader
 import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
-import com.dadada.onecloset.presentation.ui.coordination.component.CodiResultView
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
@@ -40,44 +40,7 @@ import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 @Composable
-fun CoordinationDetailScreen(
-    mainViewModel: MainViewModel,
-    codiViewModel: CodiViewModel,
-    navController: NavHostController,
-) {
-    val deleteState by codiViewModel.codiDeleteState.collectAsState()
-    var showToast by remember { mutableStateOf(false) }
-    if (showToast) {
-        ShowToast(text = "코디가 삭제됐어요.")
-    }
-    NetworkResultHandler(state = deleteState, mainViewModel = mainViewModel) {
-        codiViewModel.resetNetworkStates()
-        showToast = true
-        navController.popBackStack()
-    }
-    Scaffold(
-        topBar = {
-            CustomHeader(
-                navController = navController,
-                isEdit = false,
-                onClickEdit = { },
-                onClickDelete = { codiViewModel.deleteCodi() },
-            )
-        },
-    ) {
-        Column(modifier = screenModifier.padding(it)) {
-            CodiResultView(
-                imagePath = codiViewModel.curDailyCodiItem.originImg,
-                clothesList = codiViewModel.curDailyCodiItem.clothesList,
-                navController = navController,
-                codiViewModel = codiViewModel,
-            )
-        }
-    }
-}
-
-@Composable
-fun CoordinationFittingDetailScreen(
+fun CoordiDetailFittingScreen(
     mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
     navController: NavHostController,
@@ -93,7 +56,7 @@ fun CoordinationFittingDetailScreen(
         showToast = true
         navController.popBackStack()
     }
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val handleTabClick = { newIndex: Int ->
         selectedTabIndex = newIndex
     }

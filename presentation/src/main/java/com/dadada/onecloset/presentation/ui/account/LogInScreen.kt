@@ -27,8 +27,8 @@ import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.component.SignInButtonView
 import com.dadada.onecloset.presentation.ui.account.model.SignInButton
-import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.account.AccountViewModel
@@ -62,8 +62,8 @@ fun LogInScreen(
         accountViewModel.signIn(
             AccountInfo(
                 accessToken = token.accessToken,
-                refreshToken = token.refreshToken
-            )
+                refreshToken = token.refreshToken,
+            ),
         )
     }
 
@@ -81,8 +81,8 @@ fun LogInScreen(
                 it.gender,
                 it.nickName,
                 it.email,
-                it.social
-            )
+                it.social,
+            ),
         )
         navHostController.navigate(NavigationItem.MainTabNav.route)
     }
@@ -139,12 +139,12 @@ fun LogInScreen(
     Column(
         modifier = screenModifier,
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(0.5f),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AsyncImage(model = R.drawable.app_logo, contentDescription = "")
             Spacer(modifier = Modifier.size(Paddings.large))
@@ -157,7 +157,7 @@ fun LogInScreen(
 private fun signInKakao(
     context: Context,
     accountViewModel: AccountViewModel,
-    callback: (OAuthToken?, Throwable?) -> Unit
+    callback: (OAuthToken?, Throwable?) -> Unit,
 ) {
     if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
         UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
@@ -184,7 +184,7 @@ private fun handleGoogleSignInResult(
     context: Context,
     accountTask: Task<GoogleSignInAccount>,
     accountViewModel: AccountViewModel,
-    firebaseAuth: FirebaseAuth
+    firebaseAuth: FirebaseAuth,
 ) {
     try {
         val account = accountTask.result ?: return

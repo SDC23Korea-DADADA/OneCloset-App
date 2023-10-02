@@ -41,11 +41,11 @@ import com.dadada.onecloset.presentation.ui.clothes.ClothScreen
 import com.dadada.onecloset.presentation.ui.clothes.ClothesAnalysisScreen
 import com.dadada.onecloset.presentation.ui.components.loading.LoadingAnimationView
 import com.dadada.onecloset.presentation.ui.components.loading.LoadingView
-import com.dadada.onecloset.presentation.ui.coordination.CoordinationDetailScreen
-import com.dadada.onecloset.presentation.ui.coordination.CoordinationFittingDetailScreen
-import com.dadada.onecloset.presentation.ui.coordination.CoordinationRegisterScreen
-import com.dadada.onecloset.presentation.ui.coordination.CoordinationResultScreen
-import com.dadada.onecloset.presentation.ui.coordination.CoordinationScreen
+import com.dadada.onecloset.presentation.ui.coordi.CoordiDetailCalendarScreen
+import com.dadada.onecloset.presentation.ui.coordi.CoordiDetailDailyScreen
+import com.dadada.onecloset.presentation.ui.coordi.CoordiDetailFittingScreen
+import com.dadada.onecloset.presentation.ui.coordi.CoordiRegisterScreen
+import com.dadada.onecloset.presentation.ui.coordi.CoordiScreen
 import com.dadada.onecloset.presentation.ui.fitting.FittingResultScreen
 import com.dadada.onecloset.presentation.ui.fitting.FittingScreen
 import com.dadada.onecloset.presentation.ui.photo.CameraScreen
@@ -250,7 +250,7 @@ fun MainNavigationScreen(
             )
         }
         composable(route = CoordinationNav.route) {
-            CoordinationScreen(
+            CoordiScreen(
                 navHostController = navController,
                 mainViewModel = mainViewModel,
                 photoViewModel = photoViewModel,
@@ -268,24 +268,24 @@ fun MainNavigationScreen(
             }
         }
         composable(route = CoordinationResultNav.route) {
-            CoordinationResultScreen(codiViewModel, navController)
+            CoordiDetailCalendarScreen(codiViewModel, navController)
         }
         composable(route = CoordinationRegisterNav.route) {
-            CoordinationRegisterScreen(
+            CoordiRegisterScreen(
                 navHostController = navController,
                 mainViewModel = mainViewModel,
                 codiViewModel = codiViewModel,
             )
         }
         composable(route = CoordinationDetailNav.route) {
-            CoordinationDetailScreen(
+            CoordiDetailDailyScreen(
                 codiViewModel = codiViewModel,
                 mainViewModel = mainViewModel,
                 navController = navController,
             )
         }
         composable(route = CoordinationFittingDetailNav.route) {
-            CoordinationFittingDetailScreen(
+            CoordiDetailFittingScreen(
                 codiViewModel = codiViewModel,
                 mainViewModel = mainViewModel,
                 navController = navController,

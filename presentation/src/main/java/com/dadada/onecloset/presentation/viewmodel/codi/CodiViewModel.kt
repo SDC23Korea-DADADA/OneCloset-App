@@ -2,7 +2,6 @@ package com.dadada.onecloset.presentation.viewmodel.codi
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.CodiList
@@ -37,7 +36,8 @@ class CodiViewModel @Inject constructor(
     private val _codiListState = MutableStateFlow<NetworkResult<CodiList>>(NetworkResult.Idle)
     val codiListState = _codiListState.asStateFlow()
 
-    private val _codiListByMonthState =  MutableStateFlow<NetworkResult<CodiList>>(NetworkResult.Idle)
+    private val _codiListByMonthState =
+        MutableStateFlow<NetworkResult<CodiList>>(NetworkResult.Idle)
     val codiListByMonth = _codiListByMonthState.asStateFlow()
 
     private val _codiPutState = MutableStateFlow<NetworkResult<Long>>(NetworkResult.Idle)
@@ -45,7 +45,6 @@ class CodiViewModel @Inject constructor(
 
     private val _codiDeleteState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val codiDeleteState = _codiDeleteState.asStateFlow()
-
 
     fun getCodiList() = viewModelScope.launch {
         _codiListState.value = NetworkResult.Loading

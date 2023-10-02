@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.coordination
+package com.dadada.onecloset.presentation.ui.coordi
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -27,6 +27,11 @@ import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.ui.components.button.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.components.sheet.FittingModelListBottomSheet
+import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiCalendarView
+import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiCodiListView
+import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiFittingListView
+import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
@@ -37,14 +42,14 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoordinationScreen(
+fun CoordiScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
     photoViewModel: PhotoViewModel,
     fittingViewModel: FittingViewModel,
 ) {
-    val codiListState by codiViewModel.codiListByMonth.collectAsState()
+    val codiListState by codiViewModel.codiListState.collectAsState()
     var codiList by remember { mutableStateOf(CodiList(listOf(), listOf())) }
     NetworkResultHandler(state = codiListState, mainViewModel = mainViewModel) {
         codiList = it
@@ -100,20 +105,22 @@ fun CoordinationScreen(
             )
 
             when (selectedTabIndex) {
-                0 -> CoordinationCalendarScreen(
-                    navHostController = navHostController,
-                    codiViewModel,
+                0 -> CoordiCalendarView(
+                    modifier = roundedSquareLargeModifier.padding(Paddings.medium),
+                    navController = navHostController,
+                    codiViewModel = codiViewModel,
                     photoViewModel = photoViewModel,
-                    codiList,
-                )
+                    codiList = codiList,
+                ) {
+                }
 
-                1 -> CoordinationCodiListScreen(
+                1 -> CoordiCodiListView(
                     navHostController = navHostController,
                     codiList.codiList,
                     codiViewModel,
                 )
 
-                else -> CoordinationFittingListScreen(
+                else -> CoordiFittingListView(
                     navHostController = navHostController,
                     codiList.fittingList,
                     codiViewModel,

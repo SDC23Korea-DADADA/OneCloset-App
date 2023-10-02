@@ -28,7 +28,7 @@ import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
 @Composable
 fun CustomHeader(
     navController: NavHostController,
-    isMore: Boolean = false,
+    isMore: Boolean = true,
     isEdit: Boolean = true,
     onClickEdit: () -> Unit,
     onClickDelete: () -> Unit,

@@ -1,30 +1,26 @@
-package com.dadada.onecloset.presentation.ui.coordination
+package com.dadada.onecloset.presentation.ui.coordi
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
+import com.dadada.onecloset.presentation.ui.components.card.TipCard
 import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
-import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiResultView
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
-import com.dadada.onecloset.presentation.ui.coordination.component.CodiResultView
-import com.dadada.onecloset.presentation.ui.coordination.component.EmptyView
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 
 @Composable
-fun CoordinationResultScreen(codiViewModel: CodiViewModel, navController: NavHostController) {
-    var selectedTabIndex by remember { mutableStateOf(0) }
+fun CoordiDetailCalendarScreen(codiViewModel: CodiViewModel, navController: NavHostController) {
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val handleTabClick = { newIndex: Int ->
         selectedTabIndex = newIndex
     }
@@ -38,59 +34,53 @@ fun CoordinationResultScreen(codiViewModel: CodiViewModel, navController: NavHos
         tabWidthStateList
     }
 
-
     Column(
-        modifier = screenModifier
+        modifier = screenModifier,
     ) {
         CustomTabRow(
             modifier = Modifier,
             tabs = tabs,
             selectedTabIndex = selectedTabIndex,
             tabWidths = tabWidths,
-            tabClick = handleTabClick
+            tabClick = handleTabClick,
         )
 
-
         when (selectedTabIndex) {
-
             0 -> {
                 if (codiViewModel.curDailyCodiItem.originImg == "") {
-                    EmptyView(title = "등록된 데일리 코디가 없어요.\n오늘의 코디를 기록해보는 건 어떨까요?")
+                    Spacer(modifier = Modifier.weight(1f))
+                    TipCard(
+                        content = "등록된 데일리 코디가 없어요.\n오늘의 코디를 기록해보는 건 어떨까요?",
+                        isClickable = false,
+                    ) {
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
                 } else {
-                    CodiResultView(
+                    CoordiResultView(
                         imagePath = codiViewModel.curDailyCodiItem.originImg,
                         clothesList = codiViewModel.curDailyCodiItem.clothesList,
                         navController = navController,
-                        codiViewModel = codiViewModel
                     )
                 }
             }
 
             else -> codiViewModel.curFittingItem.fittingImg.let {
-                if(codiViewModel.curFittingItem.originImg == "") {
-                    EmptyView(title = "등록된 코디 계획이 없어요.\n이 날의 코디를 계획해보는 건 어떨까요?")
+                if (codiViewModel.curFittingItem.originImg == "") {
+                    Spacer(modifier = Modifier.weight(1f))
+                    TipCard(
+                        content = "등록된 코디 계획이 없어요.\n이 날의 코디를 계획해보는 건 어떨까요?",
+                        isClickable = false,
+                    ) {
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
                 } else {
-                    CodiResultView(
+                    CoordiResultView(
                         imagePath = it,
                         clothesList = codiViewModel.curFittingItem.clothesList,
                         navController = navController,
-                        codiViewModel = codiViewModel
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun ImageView(url: String) {
-    Box(modifier = roundedSquareLargeModifier) {
-        AsyncImage(
-            modifier = Modifier
-                .fillMaxSize(),
-            model = url,
-            contentDescription = "",
-            contentScale = ContentScale.Crop
-        )
     }
 }

@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.coordination
+package com.dadada.onecloset.presentation.ui.coordi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,15 +25,15 @@ import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesListTabGridView
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
 import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
-import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGround
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 
 @Composable
-fun CoordinationRegisterScreen(
+fun CoordiRegisterScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
@@ -97,8 +97,8 @@ fun CoordinationRegisterScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .background(BackGround),
-            left = "취소하기",
-            right = "등록하기",
+            left = "취소",
+            right = "등록",
             onClickLeft = { navHostController.popBackStack() },
             onClickRight = {
                 codiViewModel.codiRegisterInfo.clothesList =

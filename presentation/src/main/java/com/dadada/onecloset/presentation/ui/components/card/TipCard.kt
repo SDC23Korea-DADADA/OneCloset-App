@@ -18,17 +18,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Size
 import com.dadada.onecloset.presentation.ui.theme.TextGray
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 
 @Composable
-fun TipCard(content: String, isClickable: Boolean = true, onClick: () -> Unit) {
+fun TipCard(modifier: Modifier = roundedSquareLargeModifier, content: String, isClickable: Boolean = true, onClick: () -> Unit) {
     Row(
-        modifier = roundedSquareLargeModifier
+        modifier = modifier
             .background(BackGroundGray)
             .then(if (isClickable) Modifier.clickable { onClick() } else Modifier)
             .padding(Paddings.large),
