@@ -23,7 +23,7 @@ sealed class Type(val id: Int, val category: String, val name: String) {
     object Vest : Type(37, "아우터", "베스트")
 
     object Dress : Type(41, "한벌옷", "원피스")
-    object JumpSuit : Type(42, "한벌옷", "점프슈트")
+    object JumpSuit : Type(42, "한벌옷", "점프수트")
 
     companion object {
         fun getAllTypes(): List<Type> {

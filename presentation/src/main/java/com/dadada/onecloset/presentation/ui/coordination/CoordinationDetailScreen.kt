@@ -26,13 +26,13 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.closet.component.ClothHeader
-import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
-import com.dadada.onecloset.presentation.ui.theme.screenModifier
+import com.dadada.onecloset.presentation.ui.components.header.CustomHeader
+import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.coordination.component.CodiResultView
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
@@ -40,10 +40,14 @@ import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
 @Composable
-fun CoordinationDetailScreen(mainViewModel: MainViewModel, codiViewModel: CodiViewModel, navController: NavHostController) {
+fun CoordinationDetailScreen(
+    mainViewModel: MainViewModel,
+    codiViewModel: CodiViewModel,
+    navController: NavHostController,
+) {
     val deleteState by codiViewModel.codiDeleteState.collectAsState()
     var showToast by remember { mutableStateOf(false) }
-    if(showToast) {
+    if (showToast) {
         ShowToast(text = "코디가 삭제됐어요.")
     }
     NetworkResultHandler(state = deleteState, mainViewModel = mainViewModel) {
@@ -53,21 +57,20 @@ fun CoordinationDetailScreen(mainViewModel: MainViewModel, codiViewModel: CodiVi
     }
     Scaffold(
         topBar = {
-            ClothHeader(
+            CustomHeader(
                 navController = navController,
                 isEdit = false,
-                onClickEdit = {  },
-                onClickDelete = { codiViewModel.deleteCodi() }
+                onClickEdit = { },
+                onClickDelete = { codiViewModel.deleteCodi() },
             )
-        }
+        },
     ) {
-
         Column(modifier = screenModifier.padding(it)) {
             CodiResultView(
                 imagePath = codiViewModel.curDailyCodiItem.originImg,
                 clothesList = codiViewModel.curDailyCodiItem.clothesList,
                 navController = navController,
-                codiViewModel = codiViewModel
+                codiViewModel = codiViewModel,
             )
         }
     }
@@ -78,11 +81,11 @@ fun CoordinationFittingDetailScreen(
     mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
     navController: NavHostController,
-    fittingViewModel: FittingViewModel = hiltViewModel()
+    fittingViewModel: FittingViewModel = hiltViewModel(),
 ) {
     val deleteState by fittingViewModel.fittingDeleteState.collectAsState()
     var showToast by remember { mutableStateOf(false) }
-    if(showToast) {
+    if (showToast) {
         ShowToast(text = "피팅이 삭제됐어요.")
     }
     NetworkResultHandler(state = deleteState, mainViewModel = mainViewModel) {
@@ -104,20 +107,19 @@ fun CoordinationFittingDetailScreen(
         tabWidthStateList
     }
 
-
     Scaffold(
         topBar = {
-            ClothHeader(
+            CustomHeader(
                 navController = navController,
                 isEdit = false,
-                onClickEdit = {  },
-                onClickDelete = { fittingViewModel.deleteFitting(codiViewModel.curFittingItem.id.toString()) }
+                onClickEdit = { },
+                onClickDelete = { fittingViewModel.deleteFitting(codiViewModel.curFittingItem.id.toString()) },
             )
-        }
+        },
     ) {
         it
         Column(
-            modifier = screenModifier.padding(it)
+            modifier = screenModifier.padding(it),
         ) {
             Column {
                 CustomTabRow(
@@ -125,19 +127,18 @@ fun CoordinationFittingDetailScreen(
                     tabs = tabs,
                     selectedTabIndex = selectedTabIndex,
                     tabWidths = tabWidths,
-                    tabClick = handleTabClick
+                    tabClick = handleTabClick,
                 )
 
                 when (selectedTabIndex) {
                     0 -> RoundedSquareImageItem(
                         imageUri = codiViewModel.curFittingItem.originImg.toUri(),
-                        icon = null
+                        icon = null,
                     ) {}
-
 
                     else -> RoundedSquareImageItem(
                         imageUri = codiViewModel.curFittingItem.fittingImg.toUri(),
-                        icon = null
+                        icon = null,
                     ) {}
                 }
             }
@@ -148,17 +149,17 @@ fun CoordinationFittingDetailScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(26.dp))
                     .background(Color.White)
-                    .padding(Paddings.large)
+                    .padding(Paddings.large),
             ) {
                 LazyVerticalGrid(
                     modifier = Modifier.padding(horizontal = 4.dp),
-                    columns = GridCells.Fixed(3)
+                    columns = GridCells.Fixed(3),
                 ) {
                     items(codiViewModel.curFittingItem.clothesList.size) {
                         RoundedSquareImageItem(
                             modifier = roundedSquareMediumModifier,
                             imageUri = codiViewModel.curFittingItem.clothesList[it].thumbnailImg.toUri(),
-                            icon = null
+                            icon = null,
                         ) {
                             navController.navigate("${NavigationItem.ClothNav.route}/${codiViewModel.curFittingItem.clothesList[it].clothesId}")
                         }

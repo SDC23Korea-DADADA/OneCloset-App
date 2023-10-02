@@ -18,8 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
-import com.dadada.onecloset.presentation.ui.closet.component.PutClothAdditionalInfoView
-import com.dadada.onecloset.presentation.ui.closet.component.PutClothAdditionalTextView
+import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesPutAdditionalInfoChipListView
+import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesPutAdditionalInfoTextFieldView
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
@@ -53,23 +53,23 @@ fun ClothesPutAdditionalInfoBottomSheet(
                 .fillMaxWidth()
                 .padding(Paddings.xlarge),
         ) {
-            PutClothAdditionalTextView(
+            ClothesPutAdditionalInfoTextFieldView(
                 title = "설명",
                 hint = "옷에 대한 설명을 적어주세요.",
                 inputState = descriptionState,
             )
-            PutClothAdditionalTextView(
+            ClothesPutAdditionalInfoTextFieldView(
                 title = "해쉬태그",
                 hint = "쉼표로 해쉬태그를 구분할 수 있어요.",
                 inputState = hashtagState,
             )
 
-            PutClothAdditionalInfoView(
+            ClothesPutAdditionalInfoChipListView(
                 title = "날씨",
                 contentList = weatherContentList,
                 chipState = weatherChipState,
             )
-            PutClothAdditionalInfoView(
+            ClothesPutAdditionalInfoChipListView(
                 title = "TPO",
                 contentList = tpoContentList,
                 chipState = tpoContentChipState,

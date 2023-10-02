@@ -18,7 +18,7 @@ fun DropDownMenu(
     isEdit: Boolean = true,
     onClickEdit: () -> Unit,
     onClickDelete: () -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     MaterialTheme(shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(20.dp))) {
         DropdownMenu(
@@ -26,7 +26,7 @@ fun DropDownMenu(
             expanded = expanded,
             onDismissRequest = { onDismissRequest() },
         ) {
-            if(isEdit) {
+            if (isEdit) {
                 DropdownMenuItem(onClick = {
                     onClickEdit()
                     onDismissRequest()
@@ -46,7 +46,7 @@ fun FittingDropDownMenu(
     expanded: Boolean,
     modeTitleList: List<String>,
     onClick: (Int) -> Unit,
-    onDismissRequest: () -> Unit
+    onDismissRequest: () -> Unit,
 ) {
     MaterialTheme(shapes = MaterialTheme.shapes.copy(extraSmall = RoundedCornerShape(20.dp))) {
         DropdownMenu(

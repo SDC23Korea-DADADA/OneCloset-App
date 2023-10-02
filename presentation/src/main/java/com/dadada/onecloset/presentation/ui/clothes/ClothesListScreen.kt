@@ -17,10 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.closet.component.BasicHeader
-import com.dadada.onecloset.presentation.ui.closet.component.ClothHeader
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesListTabGridView
 import com.dadada.onecloset.presentation.ui.components.button.CustomFloatingActionButton
+import com.dadada.onecloset.presentation.ui.components.header.CustomHeader
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
@@ -82,16 +81,13 @@ fun ClothListScreen(
             }
         },
         topBar = {
-            if (!closetViewModel.isBasicCloset) {
-                ClothHeader(
-                    navController = navHostController,
-                    isEdit = false,
-                    onClickEdit = { /*TODO*/ },
-                ) {
-                    closetViewModel.deleteCloset()
-                }
-            } else {
-                BasicHeader(navController = navHostController)
+            CustomHeader(
+                navController = navHostController,
+                isMore = !closetViewModel.isBasicCloset,
+                isEdit = false,
+                onClickEdit = { /*TODO*/ },
+            ) {
+                closetViewModel.deleteCloset()
             }
         },
     ) { paddingValues ->

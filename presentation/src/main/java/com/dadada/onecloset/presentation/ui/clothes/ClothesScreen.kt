@@ -27,12 +27,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.closet.component.ClothHeader
 import com.dadada.onecloset.presentation.ui.clothes.component.sheet.ClothesPutAdditionalInfoBottomSheet
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesCourseView
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesInformView
-import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.components.header.CustomHeader
+import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
@@ -106,7 +106,7 @@ fun ClothScreen(
 
     Scaffold(
         topBar = {
-            ClothHeader(
+            CustomHeader(
                 navController = navHostController,
                 onClickEdit = { scope.launch { sheetState.show() } },
                 onClickDelete = { closetViewModel.deleteCloth(clothId) },

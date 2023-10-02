@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem.*
 import com.dadada.onecloset.presentation.ui.account.LogInScreen
@@ -54,6 +55,7 @@ import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.Mode
+import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
@@ -156,6 +158,10 @@ fun MainNavigationScreen(
     val photoViewModel: PhotoViewModel = hiltViewModel()
     val fittingViewModel: FittingViewModel = hiltViewModel()
     val codiViewModel: CodiViewModel = hiltViewModel()
+    val putFittingModelState by fittingViewModel.modelPutState.collectAsState()
+    if (putFittingModelState is NetworkResult.Success) {
+
+    }
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),
         navController = navController,
