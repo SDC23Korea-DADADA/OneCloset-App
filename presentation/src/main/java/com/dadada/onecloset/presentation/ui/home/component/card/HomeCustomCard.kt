@@ -33,8 +33,7 @@ fun HomeCustomCard(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .clickable(onClick = onClick),
+        modifier = modifier.clickable { onClick() }.padding(Paddings.xlarge),
     ) {
         Column(modifier = Modifier.padding(Paddings.medium)) {
             Text(text = title, style = Typography.titleMedium)

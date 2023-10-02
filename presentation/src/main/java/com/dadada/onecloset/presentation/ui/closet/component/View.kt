@@ -241,8 +241,8 @@ fun TipCard(content: String, isClickable: Boolean = true, onClick: () -> Unit) {
     Row(
         modifier = roundedSquareLargeModifier
             .background(BackGroundGray)
-            .padding(Paddings.large)
-            .clickable { onClick() },
+            .then(if (isClickable) Modifier.clickable { onClick() } else Modifier)
+            .padding(Paddings.large),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(horizontalAlignment = Alignment.Start) {

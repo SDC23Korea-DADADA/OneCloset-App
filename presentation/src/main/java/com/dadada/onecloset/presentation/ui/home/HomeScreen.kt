@@ -64,7 +64,7 @@ fun HomeScreen(
             .padding(top = Paddings.xlarge),
     ) {
         HomeCustomCard(
-            modifier = roundedSquareLargeModifier.padding(Paddings.xlarge),
+            modifier = roundedSquareLargeModifier,
             title = stringResource(R.string.care),
             content = stringResource(R.string.home_care_guide),
             animation = R.raw.animation_course,
@@ -74,7 +74,7 @@ fun HomeScreen(
         Spacer(modifier = Modifier.size(Size.extra))
 
         HomeCustomCard(
-            modifier = roundedSquareLargeModifier.padding(Paddings.xlarge),
+            modifier = roundedSquareLargeModifier,
             title = stringResource(R.string.fitting),
             content = stringResource(R.string.home_fitting_guide),
             animation = R.raw.animation_fitting,
