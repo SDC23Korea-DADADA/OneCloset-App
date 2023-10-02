@@ -24,10 +24,10 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
-import com.dadada.onecloset.presentation.ui.components.CustomFloatingActionButton
-import com.dadada.onecloset.presentation.ui.components.CustomTabRow
+import com.dadada.onecloset.presentation.ui.components.button.CustomFloatingActionButton
+import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.components.sheet.FittingModelListBottomSheet
-import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel

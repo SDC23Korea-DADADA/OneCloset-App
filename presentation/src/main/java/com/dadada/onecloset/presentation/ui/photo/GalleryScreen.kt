@@ -53,8 +53,6 @@ import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
-private const val TAG = "GalleryScreen"
-
 @Composable
 fun GalleryScreen(
     navController: NavHostController,
@@ -69,7 +67,11 @@ fun GalleryScreen(
     }
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
     val validationState by closetViewModel.clothesValidationState.collectAsState()
-    NetworkResultHandler(state = closetAnalysisState, loadingType = LoadingType.ANALYSIS,mainViewModel = mainViewModel) {
+    NetworkResultHandler(
+        state = closetAnalysisState,
+        loadingType = LoadingType.ANALYSIS,
+        mainViewModel = mainViewModel,
+    ) {
         closetViewModel.clothesInfo.image = it.image
         closetViewModel.clothesInfo.material = it.material
         closetViewModel.clothesInfo.colorCode = it.colorCode
@@ -79,14 +81,13 @@ fun GalleryScreen(
         navController.navigate(NavigationItem.ClothAnalysisNav.route)
     }
 
-
     val pagingPhotos = photoViewModel.photoList.collectAsLazyPagingItems()
     val isCheckedIdx = photoViewModel.isCheckedIdx.collectAsState()
     var onClick by remember { mutableStateOf(false) }
 
     var showToast = remember { mutableStateOf(false) }
     if (showToast.value) {
-        ShowToast(text = "모델 등록에 약 2분이 소요돼요!")
+        ShowToast(text = "모델 등록에 약 30초가 소요돼요!")
     }
     var showDialog by remember { mutableStateOf(false) }
     if (showDialog) {
@@ -101,7 +102,7 @@ fun GalleryScreen(
                     fittingViewModel,
                     closetViewModel,
                     photoViewModel,
-                    codiViewModel
+                    codiViewModel,
                 )
                 showDialog = !showDialog
             },
@@ -110,7 +111,11 @@ fun GalleryScreen(
         )
     }
 
-    NetworkResultHandler(state = validationState, loadingType = LoadingType.VALIDATION,mainViewModel = mainViewModel) {
+    NetworkResultHandler(
+        state = validationState,
+        loadingType = LoadingType.VALIDATION,
+        mainViewModel = mainViewModel,
+    ) {
         if (it) {
             registerImage(
                 navController,
@@ -120,7 +125,7 @@ fun GalleryScreen(
                 fittingViewModel,
                 closetViewModel,
                 photoViewModel,
-                codiViewModel
+                codiViewModel,
             )
         } else {
             showDialog = !showDialog
@@ -131,7 +136,8 @@ fun GalleryScreen(
         PermissionRequester(
             permission = Permissions.cameraPermission,
             onDismissRequest = { onClick = !onClick },
-            onPermissionGranted = { navController.navigate(NavigationItem.CameraNav.route) }) {
+            onPermissionGranted = { navController.navigate(NavigationItem.CameraNav.route) },
+        ) {
             onClick = !onClick
         }
     }
@@ -155,9 +161,9 @@ fun GalleryScreen(
                 photoViewModel = photoViewModel,
                 fittingViewModel = fittingViewModel,
                 codiViewModel = codiViewModel,
-                showToast = showToast
+                showToast = showToast,
             )
-        }
+        },
     ) {
         LazyVerticalGrid(
             modifier = Modifier.padding(it),
@@ -175,7 +181,7 @@ fun GalleryScreen(
                         GalleryPhotoItem(
                             url = galleryImage.uri,
                             actualIndex,
-                            isCurrentItemChecked
+                            isCurrentItemChecked,
                         ) {
                             photoViewModel.setCheckedIndex(actualIndex)
                         }
@@ -199,7 +205,7 @@ fun GalleryHeader(
     closetViewModel: ClosetViewModel,
     photoViewModel: PhotoViewModel,
     codiViewModel: CodiViewModel,
-    showToast: MutableState<Boolean>
+    showToast: MutableState<Boolean>,
 ) {
     TopAppBar(
         modifier = Modifier.padding(vertical = 8.dp),
@@ -236,13 +242,13 @@ fun GalleryHeader(
                             navController.popBackStack()
                         }
                     }
-                }) {
+                },
+            ) {
                 Text(text = "완료", color = color, fontWeight = FontWeight.ExtraBold)
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
     )
-
 }
 
 fun registerImage(
@@ -253,7 +259,7 @@ fun registerImage(
     fittingViewModel: FittingViewModel,
     closetViewModel: ClosetViewModel,
     photoViewModel: PhotoViewModel,
-    codiViewModel: CodiViewModel
+    codiViewModel: CodiViewModel,
 ) {
     when (photoViewModel.curMode) {
         Mode.clothes -> {

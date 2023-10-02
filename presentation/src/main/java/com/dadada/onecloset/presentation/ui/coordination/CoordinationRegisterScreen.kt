@@ -22,10 +22,10 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
+import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesListTabGridView
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.TwoButtonRow
-import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
@@ -37,7 +37,7 @@ fun CoordinationRegisterScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
     codiViewModel: CodiViewModel,
-    closetViewModel: ClosetViewModel = hiltViewModel()
+    closetViewModel: ClosetViewModel = hiltViewModel(),
 ) {
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
@@ -57,7 +57,6 @@ fun CoordinationRegisterScreen(
         navHostController.navigate(NavigationItem.CoordinationNav.route) {
             popUpTo(NavigationItem.GalleryNav.route) { inclusive = true }
         }
-
     }
 
     LaunchedEffect(Unit) {
@@ -70,21 +69,18 @@ fun CoordinationRegisterScreen(
         clickedState = List(clothList.size) { false }
     }
 
-
     Box(modifier = screenModifier) {
         Column {
             RoundedSquareImageItem(
                 imageUri = codiViewModel.codiRegisterInfo.imagePath.toUri(),
-                icon = null
+                icon = null,
             ) {
-
             }
             Spacer(modifier = Modifier.size(12.dp))
-            ClothTabGridView(
+            ClothesListTabGridView(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
                     .padding(bottom = 56.dp),
-                navHostController = navHostController,
                 clothItems = clothList,
                 icon = R.drawable.ic_checked,
                 itemClickedStateList = clickedState,
@@ -92,12 +88,10 @@ fun CoordinationRegisterScreen(
                 onClickTab = { upperType ->
                     clothList =
                         if (upperType == "전체") allClothList else allClothList.filter { it.upperType == upperType }
-
                 },
-                tabs = listOf("전체", "상의", "하의", "외투", "한벌옷")
+                tabs = listOf("전체", "상의", "하의", "외투", "한벌옷"),
             )
         }
-
 
         TwoButtonRow(
             modifier = Modifier
@@ -111,7 +105,7 @@ fun CoordinationRegisterScreen(
                     allClothList.filterIndexed { index, _ -> clickedState[index] }
                         .map { it.clothesId }
                 codiViewModel.putCodi()
-            }
+            },
         )
     }
 }

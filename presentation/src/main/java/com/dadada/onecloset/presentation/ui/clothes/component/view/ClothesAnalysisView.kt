@@ -16,11 +16,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.clothes.component.row.ColorEditRow
-import com.dadada.onecloset.presentation.ui.clothes.component.row.CustomEditRow
-import com.dadada.onecloset.presentation.ui.components.SelectColorBottomSheet
-import com.dadada.onecloset.presentation.ui.components.SelectMaterialBottomSheet
-import com.dadada.onecloset.presentation.ui.components.SelectTypeBottomSheet
+import com.dadada.onecloset.presentation.ui.clothes.component.row.ClothesColorEditRow
+import com.dadada.onecloset.presentation.ui.clothes.component.row.ClothesInfoEditRow
+import com.dadada.onecloset.presentation.ui.clothes.component.sheet.SelectClothesInfoBottomSheet
+import com.dadada.onecloset.presentation.ui.clothes.component.sheet.SelectColorBottomSheet
+import com.dadada.onecloset.presentation.ui.utils.Material
+import com.dadada.onecloset.presentation.ui.utils.Type
 import com.dadada.onecloset.presentation.ui.utils.colorToHexString
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import kotlinx.coroutines.launch
@@ -39,16 +40,20 @@ fun ClothesAnalysisView(modifier: Modifier = Modifier, clothesInfo: ClothesInfo)
     var colorName by remember { mutableStateOf(clothesInfo.color) }
 
     if (typeSheetState.isVisible) {
-        SelectTypeBottomSheet(
+        SelectClothesInfoBottomSheet(
             sheetState = typeSheetState,
+            title = "종류 선택",
+            contentList = Type.getAllTypes().map { it.name },
             onDismissRequest = { scope.launch { typeSheetState.hide() } },
             onClick = { type = it },
         )
     }
 
     if (materialSheetState.isVisible) {
-        SelectMaterialBottomSheet(
+        SelectClothesInfoBottomSheet(
             sheetState = materialSheetState,
+            title = "재질 선택",
+            contentList = Material.getAllMaterial().map { it.name },
             onDismissRequest = { scope.launch { materialSheetState.hide() } },
             onClick = { material = it },
         )
@@ -68,19 +73,19 @@ fun ClothesAnalysisView(modifier: Modifier = Modifier, clothesInfo: ClothesInfo)
         modifier = modifier,
     ) {
         Spacer(modifier = Modifier.size(12.dp))
-        CustomEditRow(
+        ClothesInfoEditRow(
             stringResource(id = R.string.upper_type),
             type,
             sheetState = typeSheetState,
             onClick = { scope.launch { typeSheetState.show() } },
         )
-        CustomEditRow(
+        ClothesInfoEditRow(
             stringResource(id = R.string.material),
             material,
             sheetState = materialSheetState,
-            onClick = { scope.launch { typeSheetState.show() } },
+            onClick = { scope.launch { materialSheetState.show() } },
         )
-        ColorEditRow(
+        ClothesColorEditRow(
             stringResource(id = R.string.color),
             hexStringToColor(colorCode),
             name = colorName,

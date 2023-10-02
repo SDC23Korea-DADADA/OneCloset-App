@@ -29,38 +29,44 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.R
+import com.dadada.onecloset.presentation.ui.theme.Size
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareSmallModifier
 
 @Composable
 fun ColorIconItem(color: Color, selectedColor: MutableState<Color>) {
-    Box(modifier = Modifier
-        .padding(4.dp)
-        .clip(CircleShape)
-        .size(32.dp)
-        .background(color)
-        .clickable { selectedColor.value = color })
+    Box(
+        modifier = Modifier
+            .padding(4.dp)
+            .clip(CircleShape)
+            .size(32.dp)
+            .background(color)
+            .clickable { selectedColor.value = color },
+    )
 }
 
 @Composable
 fun GalleryPhotoItem(url: Uri, idx: Int, isChecked: Boolean, onClick: () -> Unit) {
-    Box(modifier = Modifier
-        .background(Color.White)
-        .aspectRatio(1f)
-        .border(1.dp, Color.White)
-        .clickable {
-            onClick()
-        }) {
-
+    Box(
+        modifier = Modifier
+            .background(Color.White)
+            .aspectRatio(1f)
+            .border(1.dp, Color.White)
+            .clickable {
+                onClick()
+            },
+    ) {
         AsyncImage(
             modifier = Modifier
                 .align(Alignment.Center),
             model = url,
             contentDescription = "의류 사진",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
 
         val icon = if (isChecked) R.drawable.ic_checked else R.drawable.ic_unchecked
@@ -72,19 +78,22 @@ fun GalleryPhotoItem(url: Uri, idx: Int, isChecked: Boolean, onClick: () -> Unit
             painter = painterResource(id = icon),
             contentDescription = "Checked",
         )
-
     }
 }
 
 @Composable
 fun PhotoItem(onClick: () -> Unit) {
-    Column(modifier = Modifier
-        .background(Color.White)
-        .aspectRatio(1f)
-        .border(1.dp, Color.White)
-        .clickable {
-            onClick()
-        }, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .aspectRatio(1f)
+            .border(1.dp, Color.White)
+            .clickable {
+                onClick()
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
         Image(
             modifier = Modifier
                 .padding(4.dp),
@@ -98,35 +107,36 @@ fun PhotoItem(onClick: () -> Unit) {
 @Composable
 fun CustomListItem(content: String, onClick: () -> Unit) {
     ListItem(
-        modifier = Modifier.clickable { onClick() },
+        modifier = Modifier.clickable { onClick() }.background(Color.White),
         headlineContent = { Text(content) },
         trailingContent = {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowRight,
                 contentDescription = "",
-                tint = Color.LightGray
+                tint = Color.LightGray,
             )
         },
         colors = ListItemDefaults.colors(
-            containerColor = Color.White
+            containerColor = Color.White,
         ),
     )
 }
 
 private const val TAG = "Item"
+
 @Composable
 fun CircleImageView(modifier: Modifier = Modifier, url: String) {
     Box(
         modifier = modifier
             .clip(CircleShape)
-            .background(Color.White)
+            .background(Color.White),
     ) {
         AsyncImage(
             modifier = Modifier
                 .align(Alignment.Center),
             model = url.toUri(),
             contentDescription = "사진",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
     }
 }
@@ -135,12 +145,12 @@ fun CircleImageView(modifier: Modifier = Modifier, url: String) {
 fun RoundedSquareIconItem(
     modifier: Modifier = roundedSquareSmallModifier,
     icon: Int,
-    backGroundTint: Color
+    backGroundTint: Color,
 ) {
     Box(
         modifier = modifier
             .size(48.dp)
-            .background(backGroundTint)
+            .background(backGroundTint),
     ) {
         Icon(
             modifier = Modifier
@@ -148,7 +158,7 @@ fun RoundedSquareIconItem(
                 .padding(4.dp),
             painter = painterResource(id = icon),
             contentDescription = "아이콘",
-            tint = Color.White
+            tint = Color.White,
         )
     }
 }
@@ -159,17 +169,18 @@ fun RoundedSquareIconWithTitleItem(
     title: String,
     icon: Int,
     backGroundTint: Color,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(
         modifier = modifier.clickable(onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         RoundedSquareIconItem(icon = icon, backGroundTint = backGroundTint)
-        Spacer(modifier = Modifier.size(2.dp))
+        Spacer(modifier = Modifier.size(Size.xsmall))
         Text(
             text = title,
-            style = Typography.titleSmall.copy(fontWeight = FontWeight.ExtraBold)
+            style = Typography.titleSmall,
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -180,32 +191,32 @@ fun RoundedSquareImageItem(
     imageUri: Uri,
     icon: Int?,
     isUploading: Boolean = true,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = roundedSquareSmallModifier
             .aspectRatio(1f)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
 
     ) {
         AsyncImage(
             modifier = Modifier.fillMaxSize(),
             model = imageUri,
             contentDescription = "의류 사진",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
 
         if (!isUploading) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.LightGray.copy(alpha = 0.5f))
+                    .background(Color.LightGray.copy(alpha = 0.5f)),
             ) {
                 Text(
                     text = "등록중",
                     modifier = Modifier.align(Alignment.Center),
                     color = Color.White,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             }
         }

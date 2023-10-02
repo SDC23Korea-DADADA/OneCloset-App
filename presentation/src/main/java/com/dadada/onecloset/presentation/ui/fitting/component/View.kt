@@ -26,16 +26,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.core.net.toUri
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
-import com.dadada.onecloset.presentation.ui.components.DropDownRow
 import com.dadada.onecloset.presentation.ui.components.FittingDropDownMenu
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.FittingEmptyItem
 import java.text.SimpleDateFormat
 import java.util.Date
-
-private const val TAG = "View"
 
 @Composable
 fun FittingSelectedClothListView(
@@ -51,24 +49,25 @@ fun FittingSelectedClothListView(
 
     Column(
         modifier = roundedSquareLargeModifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(modifier = Modifier.align(Alignment.End)) {
             DropDownRow(
                 component = {
                     Text(
                         text = modeTitleList[modeIdx],
-                        style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold)
+                        style = Typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
                     )
                 },
                 reverse = modeClick,
-                onClick = { modeClick = !modeClick }
+                onClick = { modeClick = !modeClick },
             )
             if (modeClick) {
                 FittingDropDownMenu(
                     expanded = modeClick,
                     modeTitleList = modeTitleList,
-                    onClick = { onClickDropDown(it) }) {
+                    onClick = { onClickDropDown(it) },
+                ) {
                     modeClick = !modeClick
                 }
             }
@@ -77,13 +76,13 @@ fun FittingSelectedClothListView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Paddings.large),
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceAround,
         ) {
             selectedItemList.forEachIndexed { index, id ->
                 if (id == -1) {
                     EmptyClothItem(
                         icon = emptyItemList.value[index].icon,
-                        content = emptyItemList.value[index].content
+                        content = emptyItemList.value[index].content,
                     )
                 } else {
                     val cloth = clothList.find { it.clothesId == id }
@@ -102,7 +101,7 @@ fun MyDatePickerDialog(
     onDateSelected: (String) -> Unit,
     onDismiss: () -> Unit,
     onPass: (String) -> Unit,
-    onPlan: (String) -> Unit
+    onPlan: (String) -> Unit,
 ) {
     val datePickerState = rememberDatePickerState()
 
@@ -115,10 +114,11 @@ fun MyDatePickerDialog(
             colors = DatePickerDefaults.colors(containerColor = Color.White),
             onDismissRequest = { onDismiss() },
             confirmButton = {
-                Button(onClick = {
-                    onPlan(selectedDate)
-                    onDismiss()
-                }
+                Button(
+                    onClick = {
+                        onPlan(selectedDate)
+                        onDismiss()
+                    },
 
                 ) {
                     Text(text = "등록하기")
@@ -131,10 +131,10 @@ fun MyDatePickerDialog(
                 }) {
                     Text(text = "건너뛰기")
                 }
-            }
+            },
         ) {
             DatePicker(
-                state = datePickerState
+                state = datePickerState,
             )
         }
     }

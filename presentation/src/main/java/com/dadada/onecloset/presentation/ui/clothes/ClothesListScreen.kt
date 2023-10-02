@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.closet
+package com.dadada.onecloset.presentation.ui.clothes
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +19,9 @@ import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.BasicHeader
 import com.dadada.onecloset.presentation.ui.closet.component.ClothHeader
-import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
-import com.dadada.onecloset.presentation.ui.components.CustomFloatingActionButton
-import com.dadada.onecloset.presentation.ui.components.SelectPhotoBottomSheet
-import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesListTabGridView
+import com.dadada.onecloset.presentation.ui.components.button.CustomFloatingActionButton
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
 import com.dadada.onecloset.presentation.ui.utils.Permissions
@@ -30,13 +29,11 @@ import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 
-private const val TAG = "ClothListScreen"
-
 @Composable
 fun ClothListScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
-    closetViewModel: ClosetViewModel
+    closetViewModel: ClosetViewModel,
 ) {
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
@@ -49,7 +46,8 @@ fun ClothListScreen(
             onDismissRequest = { clickCourse = !clickCourse },
             onPermissionGranted = {
                 navHostController.navigate(NavigationItem.GalleryNav.route)
-            }) {
+            },
+        ) {
             clickCourse = !clickCourse
         }
     }
@@ -65,7 +63,7 @@ fun ClothListScreen(
     var showToast by remember {
         mutableStateOf(false)
     }
-    if(showToast) {
+    if (showToast) {
         ShowToast(text = "옷장이 삭제됐어요.")
     }
     val closetDeleteState by closetViewModel.closetDeleteState.collectAsState()
@@ -73,17 +71,6 @@ fun ClothListScreen(
         showToast = true
         closetViewModel.resetNetworkStates()
         navHostController.popBackStack()
-    }
-
-    var showSelectPhotoBottomSheet by remember { mutableStateOf(false) }
-    if (showSelectPhotoBottomSheet) {
-        SelectPhotoBottomSheet(onClickCamera = {
-            navHostController.navigate(NavigationItem.CameraNav.route)
-        }, onClickGallery = {
-            navHostController.navigate(NavigationItem.GalleryNav.route)
-        }) {
-            showSelectPhotoBottomSheet = !showSelectPhotoBottomSheet
-        }
     }
 
     Scaffold(
@@ -95,21 +82,24 @@ fun ClothListScreen(
             }
         },
         topBar = {
-            if(!closetViewModel.isBasicCloset) {
-                ClothHeader(navController = navHostController, isEdit = false, onClickEdit = { /*TODO*/ }) {
+            if (!closetViewModel.isBasicCloset) {
+                ClothHeader(
+                    navController = navHostController,
+                    isEdit = false,
+                    onClickEdit = { /*TODO*/ },
+                ) {
                     closetViewModel.deleteCloset()
                 }
             } else {
                 BasicHeader(navController = navHostController)
             }
-        }
-    ) {
-        Column(modifier = screenModifier.padding(it)) {
-            ClothTabGridView(
-                navHostController = navHostController,
+        },
+    ) { paddingValues ->
+        Column(modifier = screenModifier.padding(paddingValues)) {
+            ClothesListTabGridView(
                 clothItems = clothList,
-                onClick = {
-                    navHostController.navigate("${NavigationItem.ClothNav.route}/${it}")
+                onClick = { id ->
+                    navHostController.navigate("${NavigationItem.ClothNav.route}/$id")
                 },
                 onClickTab = { upperType ->
                     clothList = if (upperType == "전체") {
@@ -117,7 +107,7 @@ fun ClothListScreen(
                     } else {
                         allClothList.filter { it.upperType == upperType }
                     }
-                }
+                },
             )
         }
     }

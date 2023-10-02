@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.CustomTabRow
-import com.dadada.onecloset.presentation.ui.components.TwoButtonRow
-import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
+import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.fitting.component.MyDatePickerDialog
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
@@ -29,15 +30,13 @@ import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
-private const val TAG = "FittingResultScreen"
-
 @Composable
 fun FittingResultScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
-    fittingViewModel: FittingViewModel
+    fittingViewModel: FittingViewModel,
 ) {
-    var selectedTabIndex by remember { mutableStateOf(0) }
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
     val handleTabClick = { newIndex: Int ->
         selectedTabIndex = newIndex
     }
@@ -59,7 +58,7 @@ fun FittingResultScreen(
         mutableStateOf(false)
     }
     var showToast by remember { mutableStateOf(false) }
-    if(showToast) {
+    if (showToast) {
         ShowToast(text = "피팅 결과가 저장됐어요!")
     }
     val putResultState by fittingViewModel.fittingPutState.collectAsState()
@@ -84,20 +83,19 @@ fun FittingResultScreen(
                 fittingViewModel.fittingResultForSave.fittingImg =
                     fittingViewModel.fittingResult.fittingImg
                 fittingViewModel.putFittingResultWithDate(it)
-            }
+            },
         )
     }
 
-
     Column(
-        modifier = screenModifier
+        modifier = screenModifier,
     ) {
         CustomTabRow(
             modifier = Modifier,
             tabs = tabs,
             selectedTabIndex = selectedTabIndex,
             tabWidths = tabWidths,
-            tabClick = handleTabClick
+            tabClick = handleTabClick,
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -108,7 +106,7 @@ fun FittingResultScreen(
                     .padding(Paddings.xlarge)
                     .clip(RoundedCornerShape(26.dp)),
                 model = fittingViewModel.fittingResult.originImg,
-                contentDescription = ""
+                contentDescription = "",
             )
 
             else -> AsyncImage(
@@ -117,7 +115,7 @@ fun FittingResultScreen(
                     .padding(Paddings.xlarge)
                     .clip(RoundedCornerShape(26.dp)),
                 model = fittingViewModel.fittingResult.fittingImg,
-                contentDescription = ""
+                contentDescription = "",
             )
         }
 

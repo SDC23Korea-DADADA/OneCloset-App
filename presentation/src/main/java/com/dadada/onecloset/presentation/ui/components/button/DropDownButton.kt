@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components
+package com.dadada.onecloset.presentation.ui.components.button
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -15,14 +15,15 @@ import androidx.compose.ui.draw.rotate
 fun DropDownButton(reverse: Boolean, onClick: () -> Unit) {
     val rotation by animateFloatAsState(
         targetValue = if (reverse) 180f else 0f,
-        animationSpec = tween(300), label = "" // 300ms 동안 애니메이션
+        animationSpec = tween(300),
+        label = "", // 300ms 동안 애니메이션
     )
 
     IconButton(onClick = { onClick() }) {
         Icon(
             imageVector = Icons.Default.ArrowDropDown,
             contentDescription = "목록",
-            modifier = Modifier.rotate(rotation)
+            modifier = Modifier.rotate(rotation),
         )
     }
 }

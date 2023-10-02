@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components.sheet
+package com.dadada.onecloset.presentation.ui.closet.component.sheet
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dadada.onecloset.domain.model.Closet
-import com.dadada.onecloset.presentation.ui.closet.component.ClosetListView
+import com.dadada.onecloset.presentation.ui.closet.component.view.ClosetListView
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography

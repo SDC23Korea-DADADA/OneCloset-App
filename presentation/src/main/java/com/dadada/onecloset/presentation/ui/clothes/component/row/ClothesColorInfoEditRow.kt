@@ -12,14 +12,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.components.ColorItem
-import com.dadada.onecloset.presentation.ui.components.DropDownRow
-import com.dadada.onecloset.presentation.ui.components.OtherColorItem
+import com.dadada.onecloset.presentation.ui.clothes.component.item.ColorItem
+import com.dadada.onecloset.presentation.ui.clothes.component.item.ColorMultiItem
+import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
 import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ColorEditRow(title: String, content: Color, name: String = "", sheetState: SheetState, onClick: () -> Unit) {
+fun ClothesColorEditRow(
+    title: String,
+    content: Color,
+    name: String = "",
+    sheetState: SheetState,
+    onClick: () -> Unit,
+) {
     val reverse = sheetState.isVisible
     Row(
         Modifier
@@ -31,12 +37,12 @@ fun ColorEditRow(title: String, content: Color, name: String = "", sheetState: S
         Text(
             modifier = Modifier.padding(start = 8.dp),
             text = title,
-            style = Typography.titleMedium,
+            style = Typography.titleSmall,
         )
         DropDownRow(
             component = {
                 if (name == "다채색") {
-                    OtherColorItem()
+                    ColorMultiItem()
                 } else {
                     ColorItem(color = content, name = name)
                 }

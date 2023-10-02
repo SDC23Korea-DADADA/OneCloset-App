@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.dadada.onecloset.presentation.ui.components.CustomTabRow
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.coordination.component.CodiResultView
 import com.dadada.onecloset.presentation.ui.coordination.component.EmptyView
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel

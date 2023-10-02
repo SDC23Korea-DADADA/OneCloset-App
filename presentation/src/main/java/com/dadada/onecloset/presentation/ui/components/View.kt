@@ -1,11 +1,9 @@
 package com.dadada.onecloset.presentation.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,11 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.theme.Gray
-import com.dadada.onecloset.presentation.ui.theme.PointGreen
-import com.dadada.onecloset.presentation.ui.theme.PrimaryBlue
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 
 @Composable
 fun InfoTextView(modifier: Modifier = Modifier, title: String, content: String) {
@@ -61,31 +57,6 @@ fun InfoView(
     }
 }
 
-@Composable
-fun SelectPhotoView(onClickCamera: () -> Unit, onClickGallery: () -> Unit) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp, top = 8.dp, start = 16.dp, end = 16.dp),
-        horizontalArrangement = Arrangement.SpaceAround
-    ) {
-        RoundedSquareIconWithTitleItem(
-            modifier = Modifier.size(80.dp),
-            title = "카메라",
-            icon = R.drawable.ic_camera,
-            backGroundTint = PrimaryBlue,
-            onClick = { onClickCamera() }
-        )
-
-        RoundedSquareIconWithTitleItem(
-            modifier = Modifier.size(80.dp),
-            title = "갤러리",
-            icon = R.drawable.ic_gallery,
-            backGroundTint = PointGreen,
-            onClick = { onClickGallery() }
-        )
-    }
-}
 
 
 

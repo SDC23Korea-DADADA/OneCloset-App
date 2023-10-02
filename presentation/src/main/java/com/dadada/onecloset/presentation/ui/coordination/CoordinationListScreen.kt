@@ -14,7 +14,7 @@ import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 
 @Composable

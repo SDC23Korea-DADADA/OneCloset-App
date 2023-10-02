@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -31,9 +30,9 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.closet.component.ClosetListView
-import com.dadada.onecloset.presentation.ui.components.BottomSheetAddCloset
-import com.dadada.onecloset.presentation.ui.components.CustomFloatingActionButton
+import com.dadada.onecloset.presentation.ui.closet.component.sheet.ClosetAddBottomSheet
+import com.dadada.onecloset.presentation.ui.closet.component.view.ClosetListView
+import com.dadada.onecloset.presentation.ui.components.button.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.components.InfoView
 import com.dadada.onecloset.presentation.ui.theme.Green
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
@@ -42,9 +41,7 @@ import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
-private const val TAG = "ClosetScreen"
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClosetScreen(
     navHostController: NavHostController,
@@ -77,14 +74,13 @@ fun ClosetScreen(
         scope.launch { sheetState.hide() }
     }
 
-    var showDialog by remember { mutableStateOf(false) }
     if (sheetState.isVisible) {
         ModalBottomSheet(
             sheetState = sheetState,
             onDismissRequest = { scope.launch { sheetState.hide() } },
             containerColor = Color.White,
         ) {
-            BottomSheetAddCloset(closetViewModel)
+            ClosetAddBottomSheet(closetViewModel)
             Spacer(modifier = Modifier.size(56.dp))
         }
     }
@@ -122,8 +118,8 @@ fun ClosetScreen(
             ClosetListView(
                 closetList = closetList,
                 closetViewModel,
-            ) {
-                closetViewModel.setSelectedId(it.toString())
+            ) { closetId ->
+                closetViewModel.setSelectedId(closetId.toString())
                 navHostController.navigate(NavigationItem.ClosetDetailNav.route)
             }
         }

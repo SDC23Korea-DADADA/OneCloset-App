@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components
+package com.dadada.onecloset.presentation.ui.components.row
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -29,14 +29,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 
-private const val TAG = "TabRow"
 @Composable
 fun CustomTabRow(
     modifier: Modifier,
     tabs: List<String>,
     selectedTabIndex: Int,
     tabWidths: MutableList<Dp>,
-    tabClick: (Int) -> Unit
+    tabClick: (Int) -> Unit,
 ) {
     val density = LocalDensity.current
     TabRow(
@@ -48,22 +47,22 @@ fun CustomTabRow(
                 modifier = Modifier
                     .customTabIndicatorOffset(
                         tabPositions[selectedTabIndex],
-                        tabWidths[selectedTabIndex]
+                        tabWidths[selectedTabIndex],
                     )
                     .graphicsLayer {
                         shape = RoundedCornerShape(
                             topStart = 16.dp,
                             topEnd = 16.dp,
                             bottomStart = 16.dp,
-                            bottomEnd = 16.dp
+                            bottomEnd = 16.dp,
                         )
                         clip = true
                     },
-                color = PrimaryBlack
+                color = PrimaryBlack,
             )
         },
         divider = {},
-        containerColor = Color.Transparent
+        containerColor = Color.Transparent,
     ) {
         tabs.forEachIndexed { index, title ->
             Tab(
@@ -72,36 +71,37 @@ fun CustomTabRow(
                 text = {
                     Text(
                         text = title,
-                        color = MaterialTheme.colorScheme.onSurface, //if (selectedTabIndex.value == index) PointDeepGreen else
+                        color = MaterialTheme.colorScheme.onSurface, // if (selectedTabIndex.value == index) PointDeepGreen else
                         fontWeight = if (selectedTabIndex == index) FontWeight.ExtraBold else FontWeight.Normal,
                         onTextLayout = { textLayoutResult ->
                             tabWidths[index] =
                                 with(density) { textLayoutResult.size.width.toDp() }
-                        }
+                        },
                     )
-                }
+                },
             )
         }
     }
 }
 
-
 fun Modifier.customTabIndicatorOffset(
     currentTabPosition: TabPosition,
-    tabWidth: Dp
+    tabWidth: Dp,
 ): Modifier = composed(
     inspectorInfo = debugInspectorInfo {
         name = "customTabIndicatorOffset"
         value = currentTabPosition
-    }
+    },
 ) {
     val currentTabWidth by animateDpAsState(
         targetValue = tabWidth,
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing), label = ""
+        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing),
+        label = "",
     )
     val indicatorOffset by animateDpAsState(
         targetValue = ((currentTabPosition.left + currentTabPosition.right - tabWidth) / 2),
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing), label = ""
+        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing),
+        label = "",
     )
     fillMaxWidth()
         .wrapContentSize(Alignment.BottomStart) // indicator 표시 위치

@@ -34,8 +34,8 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.components.TwoButtonDialog
-import com.dadada.onecloset.presentation.ui.components.circleShapeModifier
 import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
+import com.dadada.onecloset.presentation.ui.theme.circleShapeModifier
 import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
@@ -53,6 +53,7 @@ import kotlin.math.min
 private const val TAG = "CameraScreen"
 
 private val fileDataSource = FileDataSource()
+
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun CameraScreen(
@@ -61,7 +62,7 @@ fun CameraScreen(
     photoViewModel: PhotoViewModel = hiltViewModel(),
     closetViewModel: ClosetViewModel,
     fittingViewModel: FittingViewModel,
-    codiViewModel: CodiViewModel
+    codiViewModel: CodiViewModel,
 ) {
     DisposableEffect(Unit) {
         onDispose { closetViewModel.resetNetworkStates() }
@@ -69,11 +70,14 @@ fun CameraScreen(
     val cameraState = rememberCameraState()
     val cameraSelector by remember { mutableStateOf(CamSelector.Back) }
     val context = LocalContext.current
-    var sliderPosition by remember { mutableStateOf(1f) }
 
     val validationState by closetViewModel.clothesValidationState.collectAsState()
     val closetAnalysisState by closetViewModel.clothAnalysisState.collectAsState()
-    NetworkResultHandler(state = closetAnalysisState, loadingType = LoadingType.ANALYSIS,mainViewModel = mainViewModel) {
+    NetworkResultHandler(
+        state = closetAnalysisState,
+        loadingType = LoadingType.ANALYSIS,
+        mainViewModel = mainViewModel,
+    ) {
         closetViewModel.clothesInfo.image = it.image
         closetViewModel.clothesInfo.material = it.material
         closetViewModel.clothesInfo.colorCode = it.colorCode
@@ -95,7 +99,11 @@ fun CameraScreen(
         )
     }
 
-    NetworkResultHandler(state = validationState, loadingType = LoadingType.VALIDATION,mainViewModel = mainViewModel) {
+    NetworkResultHandler(
+        state = validationState,
+        loadingType = LoadingType.VALIDATION,
+        mainViewModel = mainViewModel,
+    ) {
         if (it) {
             closetViewModel.putClothAnalysis(closetViewModel.clothesInfo.image)
         } else {
@@ -104,63 +112,71 @@ fun CameraScreen(
     }
 
     var showToast by remember { mutableStateOf(false) }
-    if(showToast) { ShowToast(text = "모델 등록에 약 1분이 소요돼요!") }
+    if (showToast) {
+        ShowToast(text = "모델 등록에 약 30초가 소요돼요!")
+    }
 
     CameraPreview(
         cameraState = cameraState,
         camSelector = cameraSelector,
-        modifier = Modifier.padding(0.dp)
+        modifier = Modifier.padding(0.dp),
     ) {
-        DrawGuidelinesAndFilter()
+        if (photoViewModel.curMode == Mode.clothes) {
+            DrawGuidelinesAndFilter()
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 48.dp), horizontalAlignment = Alignment.CenterHorizontally
+                .padding(top = 48.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = "의류를 영역에 맞추어 찍어주세요.")
+            if (photoViewModel.curMode == Mode.clothes) {
+                Text(text = "의류를 영역에 맞추어 찍어주세요.")
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Box(modifier = circleShapeModifier
-                .size(64.dp)
-                .clickable {
-                    cameraState.takePicture(
-                        fileDataSource.imageContentValues
-                    ) {
-                        val curImagePath = fileDataSource
-                            .getLastPictureUriPostQ(context)
-                            .toString()
-                        when (photoViewModel.curMode) {
-                            Mode.clothes -> {
-                                closetViewModel.checkClothes(curImagePath)
-                                closetViewModel.clothesInfo.image = curImagePath
-                            }
+            Box(
+                modifier = circleShapeModifier
+                    .size(64.dp)
+                    .clickable {
+                        cameraState.takePicture(
+                            fileDataSource.imageContentValues,
+                        ) {
+                            val curImagePath = fileDataSource
+                                .getLastPictureUriPostQ(context)
+                                .toString()
+                            when (photoViewModel.curMode) {
+                                Mode.clothes -> {
+                                    closetViewModel.checkClothes(curImagePath)
+                                    closetViewModel.clothesInfo.image = curImagePath
+                                }
 
-                            Mode.codi -> {
-                                codiViewModel.codiRegisterInfo.imagePath = curImagePath
-                                closetViewModel.resetNetworkStates()
-                                navHostController.navigate(NavigationItem.CoordinationRegisterNav.route)
-                            }
+                                Mode.codi -> {
+                                    codiViewModel.codiRegisterInfo.imagePath = curImagePath
+                                    closetViewModel.resetNetworkStates()
+                                    navHostController.navigate(NavigationItem.CoordinationRegisterNav.route)
+                                }
 
-                            else -> {
-                                fittingViewModel.putModel(curImagePath)
-                                showToast = true
-                                closetViewModel.resetNetworkStates()
-                                navHostController.popBackStack()
+                                else -> {
+                                    fittingViewModel.putModel(curImagePath)
+                                    showToast = true
+                                    closetViewModel.resetNetworkStates()
+                                    navHostController.popBackStack()
+                                }
                             }
                         }
-                    }
-                }) {
+                    },
+            ) {
                 Icon(
                     modifier = Modifier.align(Alignment.Center),
                     painter = painterResource(id = R.drawable.ic_camera),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
 
             Spacer(modifier = Modifier.size(44.dp))
         }
-
     }
 }
 
@@ -172,7 +188,7 @@ fun DrawGuidelinesAndFilter() {
         val squareSize = min(canvasWidth, canvasHeight) * 0.95f
         val offsetX = (canvasWidth - squareSize) / 2
         val offsetY = (canvasHeight - squareSize) / 2
-        val cornerRadius = 20f  // 원하는 모서리의 반경 값을 설정합니다.
+        val cornerRadius = 20f // 원하는 모서리의 반경 값을 설정합니다.
 
         // 전체 배경에 흰색 반투명 필터를 적용합니다.
         drawRect(color = Color.White.copy(alpha = 0.5f))
@@ -185,14 +201,12 @@ fun DrawGuidelinesAndFilter() {
                     right = offsetX + squareSize,
                     bottom = offsetY + squareSize,
                     cornerRadius,
-                    cornerRadius
-                )
+                    cornerRadius,
+                ),
             )
         }
 
         // 정사각형 모양의 홀을 뚫습니다.
         drawPath(path = rectPath, color = Color.Transparent, blendMode = BlendMode.Clear)
     }
-
 }
-

@@ -27,8 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareSmallModifier
 
 @Composable
 fun AlertDialogWithTwoButton(
@@ -53,7 +55,7 @@ fun AlertDialogWithTwoButton(
                 Text("닫기")
             }
         },
-        containerColor = Color.White
+        containerColor = Color.White,
     )
 }
 
@@ -78,7 +80,7 @@ fun TwoButtonDialog(
                 Text("닫기", fontWeight = FontWeight.ExtraBold)
             }
         },
-        containerColor = Color.White
+        containerColor = Color.White,
     )
 }
 
@@ -91,7 +93,8 @@ fun SelectClosetIconDialog(
     onDismissRequest: () -> Unit,
 ) {
     var showPalette by remember { mutableStateOf(true) }
-    AlertDialog(containerColor = BackGround,
+    AlertDialog(
+        containerColor = BackGround,
         onDismissRequest = { onDismissRequest() },
         title = {
             SelectClosetIconDialogHeader(showPalette = showPalette, selectedColor = selectedColor) {
@@ -108,32 +111,32 @@ fun SelectClosetIconDialog(
             )
         },
         confirmButton = {
-
-        })
+        },
+    )
 }
 
 @Composable
 fun SelectClosetIconDialogHeader(
     showPalette: Boolean,
     selectedColor: MutableState<Color>,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             modifier = Modifier.padding(end = 4.dp),
             text = "아이콘 선택",
-            style = Typography.titleMedium
+            style = Typography.titleMedium,
         )
         DropDownRow(
             component = {
                 ColorIconItem(color = selectedColor.value, selectedColor = selectedColor)
             },
             reverse = showPalette,
-            onClick = { onClick() }
+            onClick = { onClick() },
         )
     }
 }
@@ -149,14 +152,14 @@ fun SelectClosetIconDialogBody(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight()
+            .wrapContentHeight(),
     ) {
         LazyVerticalGrid(columns = GridCells.Fixed(5)) {
             items(iconResIds.size) {
                 RoundedSquareIconItem(
                     modifier = roundedSquareSmallModifier.clickable { selectedIconIdx.value = it },
                     icon = iconResIds[it],
-                    backGroundTint = selectedColor.value
+                    backGroundTint = selectedColor.value,
                 )
             }
         }
@@ -176,4 +179,3 @@ fun SelectClosetIconDialogBody(
         }
     }
 }
-

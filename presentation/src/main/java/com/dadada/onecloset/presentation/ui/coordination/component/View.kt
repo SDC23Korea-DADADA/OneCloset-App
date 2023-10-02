@@ -29,8 +29,8 @@ import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareIconWithTitleItem
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.components.roundedSquareMediumModifier
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
 import com.dadada.onecloset.presentation.ui.theme.BackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.PointGreen

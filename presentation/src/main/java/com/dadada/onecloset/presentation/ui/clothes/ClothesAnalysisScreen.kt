@@ -12,13 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.closet.component.TipCard
-import com.dadada.onecloset.presentation.ui.clothes.component.row.AnalysisNoticeRow
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesAnalysisView
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.TwoButtonRow
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.components.card.TipCard
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Size
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler

@@ -31,10 +31,10 @@ import com.dadada.onecloset.presentation.ui.closet.component.ClothHeader
 import com.dadada.onecloset.presentation.ui.clothes.component.sheet.ClothesPutAdditionalInfoBottomSheet
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesCourseView
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesInformView
-import com.dadada.onecloset.presentation.ui.components.CustomTabRow
+import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
@@ -108,7 +108,7 @@ fun ClothScreen(
         topBar = {
             ClothHeader(
                 navController = navHostController,
-                onClickEdit = { scope.launch { sheetState.isVisible } },
+                onClickEdit = { scope.launch { sheetState.show() } },
                 onClickDelete = { closetViewModel.deleteCloth(clothId) },
             )
         },

@@ -1,7 +1,6 @@
 package com.dadada.onecloset.presentation.ui
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+// ktlint-disable no-wildcard-imports
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,12 +34,12 @@ import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem.*
 import com.dadada.onecloset.presentation.ui.account.LogInScreen
 import com.dadada.onecloset.presentation.ui.account.MyPageScreen
-import com.dadada.onecloset.presentation.ui.clothes.ClothesAnalysisScreen
 import com.dadada.onecloset.presentation.ui.clothes.ClothCourseScreen
-import com.dadada.onecloset.presentation.ui.closet.ClothListScreen
+import com.dadada.onecloset.presentation.ui.clothes.ClothListScreen
 import com.dadada.onecloset.presentation.ui.clothes.ClothScreen
-import com.dadada.onecloset.presentation.ui.components.GalaxyLoadingView
-import com.dadada.onecloset.presentation.ui.components.LoadingView
+import com.dadada.onecloset.presentation.ui.clothes.ClothesAnalysisScreen
+import com.dadada.onecloset.presentation.ui.components.loading.LoadingAnimationView
+import com.dadada.onecloset.presentation.ui.components.loading.LoadingView
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationDetailScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationFittingDetailScreen
 import com.dadada.onecloset.presentation.ui.coordination.CoordinationRegisterScreen
@@ -65,12 +63,9 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
-private const val TAG = "MainScreen"
-
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainScreen(startDestination: String) {
-    val scaffoldState = rememberScaffoldState()
     val navController = rememberAnimatedNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -81,25 +76,25 @@ fun MainScreen(startDestination: String) {
     if (loadingState) {
         when (mainViewModel.loadingType) {
             LoadingType.FITTING -> {
-                LoadingView(
+                LoadingAnimationView(
                     animation = R.raw.animation_loading_fitting,
                     text = "가상 피팅 결과에 최대 1분이 소요돼요!",
                 )
             }
 
             LoadingType.VALIDATION -> {
-                LoadingView(
+                LoadingAnimationView(
                     animation = R.raw.animation_loading_validation,
                     text = "의류 이미지가 맞나요? 확인 중이에요..",
                 )
             }
 
             LoadingType.ANALYSIS -> {
-                LoadingView(animation = R.raw.animation_loading_analysis, text = "의류를 분석 중이에요!")
+                LoadingAnimationView(animation = R.raw.animation_loading_analysis, text = "의류를 분석 중이에요!")
             }
 
             else -> {
-                GalaxyLoadingView()
+                LoadingView()
             }
         }
     }
@@ -136,8 +131,6 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(Icons.Filled.ArrowBack, contentDescription = "back")
                 }
-            } else {
-                null
             }
         },
         actions = {
@@ -151,7 +144,6 @@ fun MainHeader(navController: NavHostController, currentRoute: String?) {
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MainNavigationScreen(
@@ -173,7 +165,7 @@ fun MainNavigationScreen(
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
     ) {
-        composable(route = NavigationItem.LogInNav.route) {
+        composable(route = LogInNav.route) {
             LogInScreen(navHostController = navController, mainViewModel = mainViewModel)
         }
         composable(route = MainTabNav.route) {

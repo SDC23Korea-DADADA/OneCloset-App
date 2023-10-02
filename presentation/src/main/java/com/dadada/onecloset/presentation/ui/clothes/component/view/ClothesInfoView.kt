@@ -9,11 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.closet.component.ClothAdditionalInformView
-import com.dadada.onecloset.presentation.ui.closet.component.TipCard
-import com.dadada.onecloset.presentation.ui.components.ClothInformRow
-import com.dadada.onecloset.presentation.ui.components.ColorInformRow
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.clothes.component.row.ClothesInfoRow
+import com.dadada.onecloset.presentation.ui.components.card.TipCard
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 
@@ -23,9 +21,9 @@ fun ClothesInformView(cloth: ClothesInfo, onClick: () -> Unit = {}) {
         Column(
             modifier = roundedSquareLargeModifier.padding(vertical = Paddings.large),
         ) {
-            ClothInformRow(stringResource(R.string.upper_type), cloth.type)
-            ClothInformRow(title = stringResource(R.string.material), content = cloth.material)
-            ColorInformRow(
+            ClothesInfoRow(stringResource(R.string.upper_type), cloth.type)
+            ClothesInfoRow(title = stringResource(R.string.material), content = cloth.material)
+            ClothesInfoRow(
                 title = stringResource(R.string.color),
                 content = hexStringToColor(cloth.colorCode),
                 colorName = cloth.color,
@@ -35,7 +33,7 @@ fun ClothesInformView(cloth: ClothesInfo, onClick: () -> Unit = {}) {
         if (cloth.isEmptyAdditionalInfo()) {
             TipCard(content = "추가 정보를 입력해\n더 스마트한 의류 관리를 경험해 보세요!") { onClick() }
         } else {
-            ClothAdditionalInformView(cloth)
+            ClothesAdditionalInformView(cloth)
         }
     }
 }

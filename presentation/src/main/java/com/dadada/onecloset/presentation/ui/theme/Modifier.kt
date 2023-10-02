@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components
+package com.dadada.onecloset.presentation.ui.theme
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,9 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.theme.Paddings
 
-val screenModifier = Modifier.fillMaxSize().padding(horizontal = Paddings.xlarge)
+val screenModifier = Modifier
+    .fillMaxSize()
+    .padding(horizontal = Paddings.xlarge)
 
 val roundedSquareLargeModifier = Modifier
     .fillMaxWidth()
@@ -28,4 +29,7 @@ val roundedSquareSmallModifier = Modifier
     .padding(Paddings.small)
     .clip(RoundedCornerShape(14.dp))
 
-val circleShapeModifier = Modifier.padding(Paddings.small).clip(CircleShape).background(Color.White)
+val circleShapeModifier = Modifier
+    .padding(Paddings.small)
+    .clip(CircleShape)
+    .background(Color.White)

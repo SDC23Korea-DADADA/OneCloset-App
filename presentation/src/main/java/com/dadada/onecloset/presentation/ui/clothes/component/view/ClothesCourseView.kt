@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.components.RoundedSquare
+import com.dadada.onecloset.presentation.ui.clothes.component.row.ClothesCourseInfoRow
 
 @Composable
 fun ClothesCourseView(titleList: List<String>, contentList: List<String>) {
@@ -20,7 +20,7 @@ fun ClothesCourseView(titleList: List<String>, contentList: List<String>) {
         Spacer(modifier = Modifier.weight(1f))
         Column {
             titleList.forEachIndexed { index, title ->
-                RoundedSquare(title = title, content = contentList[index])
+                ClothesCourseInfoRow(title = title, content = contentList[index])
                 Spacer(modifier = Modifier.size(12.dp))
             }
         }

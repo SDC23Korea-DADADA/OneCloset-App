@@ -25,7 +25,7 @@ import com.dadada.onecloset.presentation.ui.account.component.AccountSingleLineS
 import com.dadada.onecloset.presentation.ui.account.component.AccountText
 import com.dadada.onecloset.presentation.ui.components.CircleImageView
 import com.dadada.onecloset.presentation.ui.components.TwoButtonDialog
-import com.dadada.onecloset.presentation.ui.components.screenModifier
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler

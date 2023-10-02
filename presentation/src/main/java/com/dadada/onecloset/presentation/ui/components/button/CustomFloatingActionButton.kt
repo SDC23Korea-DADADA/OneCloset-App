@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components
+package com.dadada.onecloset.presentation.ui.components.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -22,18 +22,18 @@ fun CustomFloatingActionButton(
     modifier: Modifier = Modifier,
     title: String = "",
     icon: ImageVector,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     FloatingActionButton(
         modifier = modifier,
         contentColor = Color.White,
         containerColor = PrimaryBlack,
-        onClick = { onClick() }
+        onClick = { onClick() },
     ) {
         Row(
             modifier = Modifier.padding(horizontal = Paddings.medium),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceAround,
         ) {
             Icon(modifier = Modifier.size(18.dp), imageVector = icon, contentDescription = "fab")
             Text(text = title, fontWeight = FontWeight.Bold)

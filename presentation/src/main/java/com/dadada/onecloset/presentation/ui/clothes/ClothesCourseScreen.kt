@@ -24,12 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.RoundedSquare
+import com.dadada.onecloset.presentation.ui.clothes.component.row.ClothesCourseInfoRow
 import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.TwoButtonRow
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.components.screenModifier
-import com.dadada.onecloset.presentation.ui.components.sheet.ClosetListBottomSheet
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
+import com.dadada.onecloset.presentation.ui.closet.component.sheet.ClosetListBottomSheet
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
@@ -38,8 +38,6 @@ import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import kotlinx.coroutines.launch
 
-private const val TAG = "ClothCourseScreen"
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClothCourseScreen(
@@ -47,7 +45,7 @@ fun ClothCourseScreen(
     mainViewModel: MainViewModel,
     closetViewModel: ClosetViewModel,
 ) {
-    val list = listOf("세탁", "건조", "에어드레서")
+    val courseList = listOf("세탁", "건조", "에어드레서")
     val contentList = listOf(
         closetViewModel.clothesInfo.laundry,
         closetViewModel.clothesInfo.dryer,
@@ -99,9 +97,9 @@ fun ClothCourseScreen(
             }
             Spacer(modifier = Modifier.size(Paddings.xlarge))
             Spacer(modifier = Modifier.weight(1f))
-            Column() {
-                list.forEachIndexed { index, s ->
-                    RoundedSquare(title = s, content = contentList[index])
+            Column {
+                courseList.forEachIndexed { index, s ->
+                    ClothesCourseInfoRow(title = s, content = contentList[index])
                     Spacer(modifier = Modifier.size(12.dp))
                 }
             }

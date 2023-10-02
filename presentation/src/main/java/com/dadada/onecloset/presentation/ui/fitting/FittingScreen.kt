@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -20,9 +21,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.closet.component.ClothTabGridView
-import com.dadada.onecloset.presentation.ui.components.TwoButtonRow
-import com.dadada.onecloset.presentation.ui.components.SelectPhotoBottomSheet
+import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesListTabGridView
+import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
 import com.dadada.onecloset.presentation.ui.fitting.component.FittingSelectedClothListView
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.FittingEmptyItem
@@ -32,31 +32,28 @@ import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
 import com.dadada.onecloset.presentation.viewmodel.fitting.FittingViewModel
 
-private const val TAG = "FittingScreen"
-
 @Composable
 fun FittingScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
     fittingViewModel: FittingViewModel,
-    closetViewModel: ClosetViewModel = hiltViewModel()
+    closetViewModel: ClosetViewModel = hiltViewModel(),
 ) {
     val fittingResultState by fittingViewModel.fittingResultState.collectAsState()
     val clothListState by closetViewModel.clothListState.collectAsState()
     var clothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
     var allClothList by remember { mutableStateOf(listOf<ClothesInfo>()) }
 
-
-    var modeIdx by remember { mutableStateOf(0) }
+    var modeIdx by remember { mutableIntStateOf(0) }
 
     val emptyItemList: List<List<FittingEmptyItem>> = FittingEmptyItem.getList()
-    var curEmptyItemList = remember(modeIdx) { mutableStateOf(emptyItemList[modeIdx]) }
+    val curEmptyItemList = remember(modeIdx) { mutableStateOf(emptyItemList[modeIdx]) }
 
     val tabsList = listOf(listOf("상의"), listOf("하의"), listOf("한벌옷"), listOf("상의", "하의"))
     var tabsListState by remember { mutableStateOf(tabsList[modeIdx]) }
 
-    var selectedItemOne by remember { mutableStateOf(-1) }
-    var selectedItemTwo by remember { mutableStateOf(-1) }
+    var selectedItemOne by remember { mutableIntStateOf(-1) }
+    var selectedItemTwo by remember { mutableIntStateOf(-1) }
 
     LaunchedEffect(key1 = modeIdx) {
         clothList = allClothList.filter { it.upperType == tabsList[modeIdx][0] }
@@ -77,42 +74,34 @@ fun FittingScreen(
     NetworkResultHandler(
         state = fittingResultState,
         loadingType = LoadingType.FITTING,
-        mainViewModel = mainViewModel
+        mainViewModel = mainViewModel,
     ) {
         fittingViewModel.fittingResult = it
         fittingViewModel.resetNetworkStates()
         navHostController.navigate(NavigationItem.FittingResultNav.route)
     }
 
-
-    var showSelectPhotoBottomSheet by remember { mutableStateOf(false) }
-    if (showSelectPhotoBottomSheet) {
-        SelectPhotoBottomSheet(onClickCamera = {
-            navHostController.navigate(NavigationItem.CameraNav.route)
-        }, onClickGallery = {
-            navHostController.navigate(NavigationItem.GalleryNav.route)
-        }) {
-            showSelectPhotoBottomSheet = !showSelectPhotoBottomSheet
-        }
-    }
     Box(modifier = Modifier.padding(16.dp)) {
-        Column() {
+        Column {
             FittingSelectedClothListView(
                 clothList = allClothList,
                 modeIdx = modeIdx,
                 emptyItemList = curEmptyItemList,
-                selectedItemList = if (modeIdx == 3) listOf(
-                    selectedItemOne,
-                    selectedItemTwo
-                ) else listOf(selectedItemOne)
+                selectedItemList = if (modeIdx == 3) {
+                    listOf(
+                        selectedItemOne,
+                        selectedItemTwo,
+                    )
+                } else {
+                    listOf(selectedItemOne)
+                },
             ) { modeIdx = it }
             Spacer(modifier = Modifier.size(12.dp))
 
-            ClothTabGridView(
+            ClothesListTabGridView(
                 modifier = Modifier
                     .align(alignment = Alignment.CenterHorizontally)
                     .padding(bottom = 56.dp),
-                navHostController = navHostController,
                 clothItems = clothList,
                 isSearch = false,
                 onClick = { newId ->
@@ -136,7 +125,7 @@ fun FittingScreen(
                 onClickTab = { upperType ->
                     clothList = allClothList.filter { it.upperType == upperType }
                 },
-                tabs = tabsList[modeIdx]
+                tabs = tabsList[modeIdx],
             )
         }
 
@@ -148,13 +137,9 @@ fun FittingScreen(
             right = "다음",
             onClickLeft = { navHostController.popBackStack() },
             onClickRight = {
-                val curSelectItem = listOf<Int>(selectedItemOne, selectedItemTwo).filter { it != -1 }
+                val curSelectItem =
+                    listOf(selectedItemOne, selectedItemTwo).filter { it != -1 }
                 when (modeIdx) {
-//                    0 -> {
-//                        fittingViewModel.setFittingInfoTopId(selectedItemList[0].clothesId.toString())
-//                        fittingViewModel.setFittingInfoBottomId(selectedItemList[1].clothesId.toString())
-//                    }
-
                     0 -> {
                         fittingViewModel.setFittingInfoTopId(selectedItemOne.toString())
                     }
@@ -166,6 +151,7 @@ fun FittingScreen(
                     2 -> {
                         fittingViewModel.setFittingInfoOneId(selectedItemOne.toString())
                     }
+
                     else -> {
                         fittingViewModel.setFittingInfoTopId(selectedItemOne.toString())
                         fittingViewModel.setFittingInfoBottomId(selectedItemTwo.toString())
@@ -173,7 +159,7 @@ fun FittingScreen(
                 }
                 fittingViewModel.fittingResultForSave.clothesIdList = curSelectItem
                 fittingViewModel.getFittingResult()
-            }
+            },
         )
     }
 }

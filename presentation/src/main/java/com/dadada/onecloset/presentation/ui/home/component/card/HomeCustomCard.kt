@@ -7,18 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.components.LottieLoader
-import com.dadada.onecloset.presentation.ui.components.roundedSquareLargeModifier
+import com.dadada.onecloset.presentation.ui.utils.LottieLoader
 import com.dadada.onecloset.presentation.ui.theme.Corner
 import com.dadada.onecloset.presentation.ui.theme.LottieBackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
@@ -33,7 +29,9 @@ fun HomeCustomCard(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = modifier.clickable { onClick() }.padding(Paddings.xlarge),
+        modifier = modifier
+            .clickable { onClick() }
+            .padding(Paddings.xlarge),
     ) {
         Column(modifier = Modifier.padding(Paddings.medium)) {
             Text(text = title, style = Typography.titleMedium)
