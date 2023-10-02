@@ -22,9 +22,9 @@ import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
-import com.dadada.onecloset.presentation.ui.theme.screenModifier
-import com.dadada.onecloset.presentation.ui.fitting.component.MyDatePickerDialog
+import com.dadada.onecloset.presentation.ui.fitting.component.dialog.FittingDatePickerDialog
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
@@ -71,7 +71,7 @@ fun FittingResultScreen(
     }
 
     if (showDatePicker) {
-        MyDatePickerDialog(
+        FittingDatePickerDialog(
             onDateSelected = { date = it },
             onDismiss = { showDatePicker = false },
             onPass = {

@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.fitting.component
+package com.dadada.onecloset.presentation.ui.fitting.component.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,10 +27,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.core.net.toUri
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.components.FittingDropDownMenu
-import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
+import com.dadada.onecloset.presentation.ui.fitting.component.item.FittingEmptyClothesItem
+import com.dadada.onecloset.presentation.ui.fitting.component.item.FittingSelectedClothesItem
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
+import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.utils.FittingEmptyItem
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -45,7 +47,7 @@ fun FittingSelectedClothListView(
     onClickDropDown: (Int) -> Unit,
 ) {
     var modeClick by remember { mutableStateOf(false) }
-    val modeTitleList = listOf<String>("상의", "하의", "한벌옷", "상하의")
+    val modeTitleList = listOf("상의", "하의", "한벌옷", "상하의")
 
     Column(
         modifier = roundedSquareLargeModifier,
@@ -80,14 +82,17 @@ fun FittingSelectedClothListView(
         ) {
             selectedItemList.forEachIndexed { index, id ->
                 if (id == -1) {
-                    EmptyClothItem(
+                    FittingEmptyClothesItem(
                         icon = emptyItemList.value[index].icon,
                         content = emptyItemList.value[index].content,
                     )
                 } else {
                     val cloth = clothList.find { it.clothesId == id }
                     if (cloth != null) {
-                        SelectClothItem(imageUri = cloth.thumnailUrl.toUri(), onClick = {})
+                        FittingSelectedClothesItem(
+                            imageUri = cloth.thumnailUrl.toUri(),
+                            onClick = {},
+                        )
                     }
                 }
             }
@@ -95,52 +100,3 @@ fun FittingSelectedClothListView(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MyDatePickerDialog(
-    onDateSelected: (String) -> Unit,
-    onDismiss: () -> Unit,
-    onPass: (String) -> Unit,
-    onPlan: (String) -> Unit,
-) {
-    val datePickerState = rememberDatePickerState()
-
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
-    } ?: ""
-
-    MaterialTheme(colorScheme = com.dadada.onecloset.presentation.ui.theme.LightColorScheme.copy()) {
-        DatePickerDialog(
-            colors = DatePickerDefaults.colors(containerColor = Color.White),
-            onDismissRequest = { onDismiss() },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        onPlan(selectedDate)
-                        onDismiss()
-                    },
-
-                ) {
-                    Text(text = "등록하기")
-                }
-            },
-            dismissButton = {
-                Button(onClick = {
-                    onPass(selectedDate)
-                    onDismiss()
-                }) {
-                    Text(text = "건너뛰기")
-                }
-            },
-        ) {
-            DatePicker(
-                state = datePickerState,
-            )
-        }
-    }
-}
-
-private fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("yyyy-MM-dd")
-    return formatter.format(Date(millis))
-}
