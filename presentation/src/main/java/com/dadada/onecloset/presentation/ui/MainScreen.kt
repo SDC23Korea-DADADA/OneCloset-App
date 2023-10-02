@@ -55,7 +55,7 @@ import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.LoadingType
 import com.dadada.onecloset.presentation.ui.utils.Mode
-import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
+import com.dadada.onecloset.presentation.ui.utils.ShowToast
 import com.dadada.onecloset.presentation.viewmodel.MainViewModel
 import com.dadada.onecloset.presentation.viewmodel.PhotoViewModel
 import com.dadada.onecloset.presentation.viewmodel.closet.ClosetViewModel
@@ -160,7 +160,8 @@ fun MainNavigationScreen(
     val codiViewModel: CodiViewModel = hiltViewModel()
     val putFittingModelState by fittingViewModel.modelPutState.collectAsState()
     if (putFittingModelState is NetworkResult.Success) {
-
+        ShowToast(text = "모델 등록이 완료됐어요!")
+        fittingViewModel.resetPutModelNetworkResult()
     }
     AnimatedNavHost(
         modifier = Modifier.padding(innerPaddings),

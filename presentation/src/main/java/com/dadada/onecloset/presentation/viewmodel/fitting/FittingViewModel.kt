@@ -20,9 +20,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
-import java.nio.file.Path
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +30,7 @@ class FittingViewModel @Inject constructor(
     private val deleteModelUseCase: DeleteModelUseCase,
     private val putFittingResultUseCase: PutFittingResultUseCase,
     private val putFittingResultWithDateUseCase: PutFittingResultWithDateUseCase,
-    private val deleteFittingUseCase: DeleteFittingUseCase
+    private val deleteFittingUseCase: DeleteFittingUseCase,
 ) : ViewModel() {
     private lateinit var fittingInfo: FittingInfo
     var fittingResult: FittingResult = FittingResult()
@@ -45,10 +42,12 @@ class FittingViewModel @Inject constructor(
     private val _modelDeleteState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
     val modelDeleteState = _modelDeleteState.asStateFlow()
 
-    private val _modelListState = MutableStateFlow<NetworkResult<List<FittingModelInfo>>>(NetworkResult.Idle)
+    private val _modelListState =
+        MutableStateFlow<NetworkResult<List<FittingModelInfo>>>(NetworkResult.Idle)
     val modelListState = _modelListState.asStateFlow()
 
-    private val _fittingResultState = MutableStateFlow<NetworkResult<FittingResult>>(NetworkResult.Idle)
+    private val _fittingResultState =
+        MutableStateFlow<NetworkResult<FittingResult>>(NetworkResult.Idle)
     val fittingResultState = _fittingResultState.asStateFlow()
 
     private val _fittingPutState = MutableStateFlow<NetworkResult<Unit>>(NetworkResult.Idle)
@@ -78,13 +77,13 @@ class FittingViewModel @Inject constructor(
     }
 
     fun putFittingResult() = viewModelScope.launch {
-        fittingResultForSave.clothesIdList= fittingResultForSave.clothesIdList.filter { it != -1 }
+        fittingResultForSave.clothesIdList = fittingResultForSave.clothesIdList.filter { it != -1 }
         _fittingPutState.value = NetworkResult.Loading
         _fittingPutState.emit(putFittingResultUseCase.invoke(fittingResultForSave))
     }
 
     fun putFittingResultWithDate(date: String) = viewModelScope.launch {
-        fittingResultForSave.clothesIdList= fittingResultForSave.clothesIdList.filter { it != -1 }
+        fittingResultForSave.clothesIdList = fittingResultForSave.clothesIdList.filter { it != -1 }
         _fittingPutState.value = NetworkResult.Loading
         _fittingPutState.emit(putFittingResultWithDateUseCase.invoke(date, fittingResultForSave))
     }
@@ -103,7 +102,6 @@ class FittingViewModel @Inject constructor(
 
     fun setFittingInfoBottomId(bottomId: String) {
         fittingInfo.bottomId = bottomId
-
     }
 
     fun setFittingInfoTopId(topId: String) {
@@ -123,5 +121,7 @@ class FittingViewModel @Inject constructor(
         _fittingDeleteState.value = NetworkResult.Idle
     }
 
-
+    fun resetPutModelNetworkResult() {
+        _modelPutState.value = NetworkResult.Idle
+    }
 }
