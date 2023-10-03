@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components.loading
+package com.dadada.onecloset.presentation.ui.common.loading
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode

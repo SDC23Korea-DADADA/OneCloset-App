@@ -12,7 +12,7 @@ import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Fitting
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.common.item.BasicImageItem
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel
 
@@ -32,7 +32,7 @@ fun CoordiFittingListView(
                 columns = GridCells.Fixed(3),
             ) {
                 items(itemList.size) {
-                    RoundedSquareImageItem(
+                    BasicImageItem(
                         imageUri = itemList[it].fittingThumbnailImg.toUri(),
                         icon = null,
                         onClick = {

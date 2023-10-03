@@ -33,7 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.dialog.TwoButtonDialog
+import com.dadada.onecloset.presentation.ui.common.dialog.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.photo.datasource.FileDataSource
 import com.dadada.onecloset.presentation.ui.theme.circleShapeModifier
 import com.dadada.onecloset.presentation.ui.utils.LoadingType

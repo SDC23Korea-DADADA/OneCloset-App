@@ -17,15 +17,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.domain.model.Closet
 import com.dadada.onecloset.presentation.ui.closet.component.dialog.SelectClosetIconDialog
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareIconItem
-import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
+import com.dadada.onecloset.presentation.ui.closet.component.item.ClosetIconItem
+import com.dadada.onecloset.presentation.ui.common.row.DropDownRow
 import com.dadada.onecloset.presentation.ui.theme.Blue
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.utils.ColorEnum
@@ -78,7 +77,7 @@ fun ClosetAddBottomSheet(closetViewModel: ClosetViewModel) {
         ) {
             Text(text = "대표 아이콘", style = Typography.titleSmall.copy(fontWeight = FontWeight.Bold))
             DropDownRow(component = {
-                RoundedSquareIconItem(
+                ClosetIconItem(
                     icon = iconResIds[selectedIconIdx.value],
                     backGroundTint = selectedColor.value,
                 )

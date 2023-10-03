@@ -19,7 +19,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.components.sheet.FittingModelListBottomSheet
+import com.dadada.onecloset.presentation.ui.common.sheet.FittingModelListBottomSheet
 import com.dadada.onecloset.presentation.ui.home.component.card.HomeCustomCard
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Size

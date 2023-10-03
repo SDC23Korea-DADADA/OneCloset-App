@@ -34,7 +34,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.fitting.FittingModelInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.model.SignInButton
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.common.item.BasicImageItem
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.Paddings
@@ -149,13 +149,13 @@ fun ModelListView(
         ) {
             items(modelList.size) {
                 if(modelList[it].regist) {
-                    RoundedSquareImageItem(imageUri = modelList[it].modelImg.toUri(), icon = null) {
+                    BasicImageItem(imageUri = modelList[it].modelImg.toUri(), icon = null) {
                         fittingViewModel.setFittingInfoModelId(modelList[it].modelId.toString())
                         scope.launch { sheetState.hide() }
                         navHostController.navigate(NavigationItem.FittingNav.route)
                     }
                 } else {
-                    RoundedSquareImageItem(isUploading = modelList[it].regist, imageUri = modelList[it].modelImg.toUri(), icon = null) {
+                    BasicImageItem(isUploading = modelList[it].regist, imageUri = modelList[it].modelImg.toUri(), icon = null) {
 
                     }
                 }

@@ -24,9 +24,9 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Codi
 import com.dadada.onecloset.domain.model.codi.CodiList
 import com.dadada.onecloset.domain.model.codi.Fitting
-import com.dadada.onecloset.presentation.ui.components.button.CustomFloatingActionButton
-import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
-import com.dadada.onecloset.presentation.ui.components.sheet.FittingModelListBottomSheet
+import com.dadada.onecloset.presentation.ui.common.button.CustomFloatingActionButton
+import com.dadada.onecloset.presentation.ui.common.row.CustomTabRow
+import com.dadada.onecloset.presentation.ui.common.sheet.FittingModelListBottomSheet
 import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiCalendarView
 import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiCodiListView
 import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiFittingListView

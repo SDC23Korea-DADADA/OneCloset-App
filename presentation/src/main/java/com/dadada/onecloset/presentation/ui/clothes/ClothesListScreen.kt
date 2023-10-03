@@ -18,8 +18,8 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesListTabGridView
-import com.dadada.onecloset.presentation.ui.components.button.CustomFloatingActionButton
-import com.dadada.onecloset.presentation.ui.components.header.CustomHeader
+import com.dadada.onecloset.presentation.ui.common.button.CustomFloatingActionButton
+import com.dadada.onecloset.presentation.ui.common.header.CustomHeader
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester

@@ -36,9 +36,9 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.dadada.onecloset.domain.model.Photo
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.GalleryPhotoItem
-import com.dadada.onecloset.presentation.ui.components.PhotoItem
-import com.dadada.onecloset.presentation.ui.components.dialog.TwoButtonDialog
+import com.dadada.onecloset.presentation.ui.common.dialog.TwoButtonDialog
+import com.dadada.onecloset.presentation.ui.photo.component.item.GalleryCameraItem
+import com.dadada.onecloset.presentation.ui.photo.component.item.GalleryPhotoItem
 import com.dadada.onecloset.presentation.ui.theme.Gray
 import com.dadada.onecloset.presentation.ui.theme.PrimaryBlack
 import com.dadada.onecloset.presentation.ui.utils.LoadingType
@@ -172,7 +172,7 @@ fun GalleryScreen(
             items(pagingPhotos.itemCount + 1) { index ->
                 // 인덱스 0에는 카메라 아이콘을 표시
                 if (index == 0) {
-                    PhotoItem { onClick = !onClick }
+                    GalleryCameraItem { onClick = !onClick }
                 } else {
                     // 0이 아닌 다른 인덱스에는 GalleryPhotoItem 표시
                     val actualIndex = index - 1

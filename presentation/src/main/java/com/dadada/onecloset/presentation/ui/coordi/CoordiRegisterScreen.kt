@@ -23,8 +23,8 @@ import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesListTabGridView
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
+import com.dadada.onecloset.presentation.ui.common.item.BasicImageItem
+import com.dadada.onecloset.presentation.ui.common.row.TwoButtonRow
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
@@ -71,7 +71,7 @@ fun CoordiRegisterScreen(
 
     Box(modifier = screenModifier) {
         Column {
-            RoundedSquareImageItem(
+            BasicImageItem(
                 imageUri = codiViewModel.codiRegisterInfo.imagePath.toUri(),
                 icon = null,
             ) {

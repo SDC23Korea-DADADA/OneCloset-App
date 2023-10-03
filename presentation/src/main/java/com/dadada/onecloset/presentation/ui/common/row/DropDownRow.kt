@@ -1,10 +1,10 @@
-package com.dadada.onecloset.presentation.ui.components.row
+package com.dadada.onecloset.presentation.ui.common.row
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.dadada.onecloset.presentation.ui.components.button.DropDownButton
+import com.dadada.onecloset.presentation.ui.common.button.DropDownButton
 
 @Composable
 fun DropDownRow(

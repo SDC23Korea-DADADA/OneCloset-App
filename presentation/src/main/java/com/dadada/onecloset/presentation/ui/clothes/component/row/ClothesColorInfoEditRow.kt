@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.presentation.ui.clothes.component.item.ColorItem
 import com.dadada.onecloset.presentation.ui.clothes.component.item.ColorMultiItem
-import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
+import com.dadada.onecloset.presentation.ui.common.row.DropDownRow
 import com.dadada.onecloset.presentation.ui.theme.Typography
 
 @OptIn(ExperimentalMaterial3Api::class)

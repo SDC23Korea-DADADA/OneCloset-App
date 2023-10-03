@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components.sheet
+package com.dadada.onecloset.presentation.ui.common.sheet
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size

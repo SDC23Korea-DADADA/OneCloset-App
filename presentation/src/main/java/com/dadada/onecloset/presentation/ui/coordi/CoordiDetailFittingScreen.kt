@@ -27,9 +27,9 @@ import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.header.CustomHeader
-import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
+import com.dadada.onecloset.presentation.ui.common.item.BasicImageItem
+import com.dadada.onecloset.presentation.ui.common.header.CustomHeader
+import com.dadada.onecloset.presentation.ui.common.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
@@ -94,12 +94,12 @@ fun CoordiDetailFittingScreen(
                 )
 
                 when (selectedTabIndex) {
-                    0 -> RoundedSquareImageItem(
+                    0 -> BasicImageItem(
                         imageUri = codiViewModel.curFittingItem.originImg.toUri(),
                         icon = null,
                     ) {}
 
-                    else -> RoundedSquareImageItem(
+                    else -> BasicImageItem(
                         imageUri = codiViewModel.curFittingItem.fittingImg.toUri(),
                         icon = null,
                     ) {}
@@ -119,7 +119,7 @@ fun CoordiDetailFittingScreen(
                     columns = GridCells.Fixed(3),
                 ) {
                     items(codiViewModel.curFittingItem.clothesList.size) {
-                        RoundedSquareImageItem(
+                        BasicImageItem(
                             modifier = roundedSquareMediumModifier,
                             imageUri = codiViewModel.curFittingItem.clothesList[it].thumbnailImg.toUri(),
                             icon = null,

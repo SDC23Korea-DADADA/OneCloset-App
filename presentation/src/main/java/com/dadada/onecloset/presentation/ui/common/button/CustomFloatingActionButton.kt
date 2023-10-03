@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components.button
+package com.dadada.onecloset.presentation.ui.common.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

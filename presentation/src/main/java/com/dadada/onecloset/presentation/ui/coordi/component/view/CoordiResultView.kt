@@ -19,7 +19,7 @@ import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.codi.Clothes
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.common.item.BasicImageItem
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
 
@@ -29,7 +29,7 @@ fun CoordiResultView(
     clothesList: List<Clothes>,
     navController: NavHostController,
 ) {
-    RoundedSquareImageItem(imageUri = imagePath.toUri(), icon = null) {
+    BasicImageItem(imageUri = imagePath.toUri(), icon = null) {
         val encodedPath = Uri.encode(imagePath)
         navController.navigate("${NavigationItem.PhotoNav.route}/$encodedPath")
     }
@@ -47,7 +47,7 @@ fun CoordiResultView(
             columns = GridCells.Fixed(3),
         ) {
             items(clothesList.size) {
-                RoundedSquareImageItem(
+                BasicImageItem(
                     modifier = roundedSquareMediumModifier,
                     imageUri = clothesList[it].thumbnailImg.toUri(),
                     icon = null,

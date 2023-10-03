@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.presentation.ui.components.card.TipCard
-import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
+import com.dadada.onecloset.presentation.ui.common.card.TipCard
+import com.dadada.onecloset.presentation.ui.common.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiResultView
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.viewmodel.codi.CodiViewModel

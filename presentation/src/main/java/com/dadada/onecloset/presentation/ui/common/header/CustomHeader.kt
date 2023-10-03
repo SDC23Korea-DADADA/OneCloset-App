@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components.header
+package com.dadada.onecloset.presentation.ui.common.header
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.presentation.ui.components.DropDownMenu
+import com.dadada.onecloset.presentation.ui.common.menu.CustomDropDownMenu
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +54,7 @@ fun CustomHeader(
                         Icon(Icons.Filled.MoreVert, contentDescription = "more options")
                     }
                     if (expandDropDown) {
-                        DropDownMenu(
+                        CustomDropDownMenu(
                             modifier = roundedSquareMediumModifier,
                             isEdit = isEdit,
                             expanded = expandDropDown,

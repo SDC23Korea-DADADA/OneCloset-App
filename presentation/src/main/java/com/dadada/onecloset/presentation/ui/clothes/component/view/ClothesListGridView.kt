@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.R
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.common.item.BasicImageItem
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareMediumModifier
 
 @Composable
@@ -31,7 +31,7 @@ fun ClothesListGridView(
                 curIcon =
                     if (itemClickedStateList[it]) R.drawable.ic_checked else R.drawable.ic_unchecked
             }
-            RoundedSquareImageItem(
+            BasicImageItem(
                 modifier = roundedSquareMediumModifier,
                 imageUri = clothItems[it].thumnailUrl.toUri(),
                 icon = curIcon,

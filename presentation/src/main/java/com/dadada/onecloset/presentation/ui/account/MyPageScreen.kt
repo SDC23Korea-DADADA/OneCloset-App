@@ -23,10 +23,10 @@ import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.account.component.AccountMultiLineSection
 import com.dadada.onecloset.presentation.ui.account.component.AccountSingleLineSection
 import com.dadada.onecloset.presentation.ui.account.component.AccountText
-import com.dadada.onecloset.presentation.ui.components.CircleImageView
-import com.dadada.onecloset.presentation.ui.components.dialog.TwoButtonDialog
-import com.dadada.onecloset.presentation.ui.theme.screenModifier
+import com.dadada.onecloset.presentation.ui.account.component.item.ProfileImageItem
+import com.dadada.onecloset.presentation.ui.common.dialog.TwoButtonDialog
 import com.dadada.onecloset.presentation.ui.theme.Paddings
+import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.Mode
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.PermissionRequester
@@ -102,7 +102,7 @@ fun MyPageScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         accountInfo?.let {
-            CircleImageView(
+            ProfileImageItem(
                 modifier = Modifier.size(120.dp),
                 url = it.profileImg,
             )

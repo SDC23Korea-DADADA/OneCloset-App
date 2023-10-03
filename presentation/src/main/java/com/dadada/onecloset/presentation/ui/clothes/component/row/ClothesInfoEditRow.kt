@@ -13,8 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
+import com.dadada.onecloset.presentation.ui.common.row.DropDownRow
 import com.dadada.onecloset.presentation.ui.theme.Green
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.Typography

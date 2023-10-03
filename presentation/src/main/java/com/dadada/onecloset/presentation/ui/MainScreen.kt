@@ -39,8 +39,8 @@ import com.dadada.onecloset.presentation.ui.clothes.ClothCourseScreen
 import com.dadada.onecloset.presentation.ui.clothes.ClothListScreen
 import com.dadada.onecloset.presentation.ui.clothes.ClothScreen
 import com.dadada.onecloset.presentation.ui.clothes.ClothesAnalysisScreen
-import com.dadada.onecloset.presentation.ui.components.loading.LoadingAnimationView
-import com.dadada.onecloset.presentation.ui.components.loading.LoadingView
+import com.dadada.onecloset.presentation.ui.common.loading.LoadingAnimationView
+import com.dadada.onecloset.presentation.ui.common.loading.LoadingView
 import com.dadada.onecloset.presentation.ui.coordi.CoordiDetailCalendarScreen
 import com.dadada.onecloset.presentation.ui.coordi.CoordiDetailDailyScreen
 import com.dadada.onecloset.presentation.ui.coordi.CoordiDetailFittingScreen

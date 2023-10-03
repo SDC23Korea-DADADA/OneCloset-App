@@ -30,9 +30,9 @@ import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.clothes.component.sheet.ClothesPutAdditionalInfoBottomSheet
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesCourseView
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesInformView
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
-import com.dadada.onecloset.presentation.ui.components.header.CustomHeader
-import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
+import com.dadada.onecloset.presentation.ui.common.item.BasicImageItem
+import com.dadada.onecloset.presentation.ui.common.header.CustomHeader
+import com.dadada.onecloset.presentation.ui.common.row.CustomTabRow
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
@@ -115,7 +115,7 @@ fun ClothScreen(
     ) {
         Box(modifier = screenModifier.padding(it)) {
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                RoundedSquareImageItem(
+                BasicImageItem(
                     modifier = roundedSquareLargeModifier,
                     imageUri = cloth.image.toUri(),
                     icon = null,

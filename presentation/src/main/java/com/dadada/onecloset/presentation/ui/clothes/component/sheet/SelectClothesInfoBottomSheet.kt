@@ -18,8 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.components.CustomListItem
-import com.dadada.onecloset.presentation.ui.theme.BackGround
+import com.dadada.onecloset.presentation.ui.common.item.BasicListItem
 import com.dadada.onecloset.presentation.ui.theme.BackGroundGray
 import com.dadada.onecloset.presentation.ui.theme.Typography
 
@@ -53,7 +52,7 @@ fun SelectClothesInfoBottomSheet(
                     .background(Color.White),
             ) {
                 items(contentList.size) {
-                    CustomListItem(
+                    BasicListItem(
                         content = contentList[it],
                         onClick = {
                             onClick(contentList[it])

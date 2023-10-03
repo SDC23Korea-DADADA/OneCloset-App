@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.clothes.component.view.ClothesListTabGridView
-import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
+import com.dadada.onecloset.presentation.ui.common.row.TwoButtonRow
 import com.dadada.onecloset.presentation.ui.fitting.component.view.FittingSelectedClothListView
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.utils.FittingEmptyItem

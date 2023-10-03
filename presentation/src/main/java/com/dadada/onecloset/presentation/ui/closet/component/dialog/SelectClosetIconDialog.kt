@@ -23,9 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.dadada.onecloset.presentation.ui.components.ColorIconItem
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareIconItem
-import com.dadada.onecloset.presentation.ui.components.row.DropDownRow
+import com.dadada.onecloset.presentation.ui.closet.component.item.ClosetIconItem
+import com.dadada.onecloset.presentation.ui.closet.component.item.ColorItem
+import com.dadada.onecloset.presentation.ui.common.row.DropDownRow
 import com.dadada.onecloset.presentation.ui.theme.BackGround
 import com.dadada.onecloset.presentation.ui.theme.Typography
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareSmallModifier
@@ -79,7 +79,7 @@ fun SelectClosetIconDialogHeader(
         )
         DropDownRow(
             component = {
-                ColorIconItem(color = selectedColor.value, selectedColor = selectedColor)
+                ColorItem(color = selectedColor.value, selectedColor = selectedColor)
             },
             reverse = showPalette,
             onClick = { onClick() },
@@ -102,7 +102,7 @@ fun SelectClosetIconDialogBody(
     ) {
         LazyVerticalGrid(columns = GridCells.Fixed(5)) {
             items(iconResIds.size) {
-                RoundedSquareIconItem(
+                ClosetIconItem(
                     modifier = roundedSquareSmallModifier.clickable { selectedIconIdx.value = it },
                     icon = iconResIds[it],
                     backGroundTint = selectedColor.value,
@@ -113,13 +113,13 @@ fun SelectClosetIconDialogBody(
         if (showPalette) {
             LazyVerticalGrid(columns = GridCells.Fixed(6)) {
                 items(colors.size) {
-                    ColorIconItem(color = colors[it], selectedColor)
+                    ColorItem(color = colors[it], selectedColor)
                 }
             }
         } else {
             LazyVerticalGrid(columns = GridCells.Fixed(6)) {
                 items(colors.size) {
-                    ColorIconItem(color = BackGround, selectedColor)
+                    ColorItem(color = BackGround, selectedColor)
                 }
             }
         }

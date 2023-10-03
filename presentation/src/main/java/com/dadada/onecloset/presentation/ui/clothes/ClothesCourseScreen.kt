@@ -25,9 +25,9 @@ import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.clothes.component.row.ClothesCourseInfoRow
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareImageItem
+import com.dadada.onecloset.presentation.ui.common.item.BasicImageItem
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
-import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
+import com.dadada.onecloset.presentation.ui.common.row.TwoButtonRow
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.closet.component.sheet.ClosetListBottomSheet
 import com.dadada.onecloset.presentation.ui.theme.BackGround
@@ -89,7 +89,7 @@ fun ClothCourseScreen(
                 .padding(bottom = 56.dp)
                 .verticalScroll(rememberScrollState()),
         ) {
-            RoundedSquareImageItem(
+            BasicImageItem(
                 modifier = roundedSquareLargeModifier,
                 imageUri = closetViewModel.clothesInfo.image.toUri(),
                 icon = null,

@@ -1,4 +1,4 @@
-package com.dadada.onecloset.presentation.ui.components.loading
+package com.dadada.onecloset.presentation.ui.common.loading
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures

@@ -45,7 +45,10 @@ fun ClothesAnalysisView(modifier: Modifier = Modifier, clothesInfo: ClothesInfo)
             title = "종류 선택",
             contentList = Type.getAllTypes().map { it.name },
             onDismissRequest = { scope.launch { typeSheetState.hide() } },
-            onClick = { type = it },
+            onClick = {
+                type = it
+                clothesInfo.type = it
+            },
         )
     }
 
@@ -55,7 +58,10 @@ fun ClothesAnalysisView(modifier: Modifier = Modifier, clothesInfo: ClothesInfo)
             title = "재질 선택",
             contentList = Material.getAllMaterial().map { it.name },
             onDismissRequest = { scope.launch { materialSheetState.hide() } },
-            onClick = { material = it },
+            onClick = {
+                material = it
+                clothesInfo.material = material
+            },
         )
     }
 
@@ -66,6 +72,8 @@ fun ClothesAnalysisView(modifier: Modifier = Modifier, clothesInfo: ClothesInfo)
         ) {
             colorCode = colorToHexString(it.color)
             colorName = it.name
+            clothesInfo.colorCode = colorCode
+            clothesInfo.color = colorName
         }
     }
 

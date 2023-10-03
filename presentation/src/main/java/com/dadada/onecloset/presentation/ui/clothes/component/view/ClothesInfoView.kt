@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.presentation.R
 import com.dadada.onecloset.presentation.ui.clothes.component.row.ClothesInfoRow
-import com.dadada.onecloset.presentation.ui.components.card.TipCard
+import com.dadada.onecloset.presentation.ui.common.card.TipCard
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor

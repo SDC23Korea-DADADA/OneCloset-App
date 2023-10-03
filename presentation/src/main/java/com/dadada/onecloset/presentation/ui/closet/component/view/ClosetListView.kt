@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dadada.onecloset.domain.model.Closet
-import com.dadada.onecloset.presentation.ui.components.RoundedSquareIconWithTitleItem
+import com.dadada.onecloset.presentation.ui.closet.component.item.ClosetItem
 import com.dadada.onecloset.presentation.ui.theme.roundedSquareLargeModifier
 import com.dadada.onecloset.presentation.ui.utils.hexStringToColor
 import com.dadada.onecloset.presentation.ui.utils.iconHandler
@@ -30,7 +30,7 @@ fun ClosetListView(
             columns = GridCells.Fixed(3),
         ) {
             items(closetList.size) {
-                RoundedSquareIconWithTitleItem(
+                ClosetItem(
                     modifier = Modifier.padding(24.dp),
                     title = closetList[it].name,
                     icon = iconHandler(closetList[it].icon),

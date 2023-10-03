@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.dadada.onecloset.presentation.ui.NavigationItem
-import com.dadada.onecloset.presentation.ui.components.row.CustomTabRow
-import com.dadada.onecloset.presentation.ui.components.row.TwoButtonRow
+import com.dadada.onecloset.presentation.ui.common.row.CustomTabRow
+import com.dadada.onecloset.presentation.ui.common.row.TwoButtonRow
 import com.dadada.onecloset.presentation.ui.fitting.component.dialog.FittingDatePickerDialog
 import com.dadada.onecloset.presentation.ui.theme.Paddings
 import com.dadada.onecloset.presentation.ui.theme.screenModifier

@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
-import com.dadada.onecloset.presentation.ui.components.header.CustomHeader
+import com.dadada.onecloset.presentation.ui.common.header.CustomHeader
 import com.dadada.onecloset.presentation.ui.coordi.component.view.CoordiResultView
 import com.dadada.onecloset.presentation.ui.theme.screenModifier
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler

@@ -33,7 +33,7 @@ import com.dadada.onecloset.presentation.ui.NavigationItem
 import com.dadada.onecloset.presentation.ui.closet.component.sheet.ClosetAddBottomSheet
 import com.dadada.onecloset.presentation.ui.closet.component.view.ClosetListView
 import com.dadada.onecloset.presentation.ui.coordi.component.card.CodiCard
-import com.dadada.onecloset.presentation.ui.components.button.CustomFloatingActionButton
+import com.dadada.onecloset.presentation.ui.common.button.CustomFloatingActionButton
 import com.dadada.onecloset.presentation.ui.theme.Green
 import com.dadada.onecloset.presentation.ui.utils.NetworkResultHandler
 import com.dadada.onecloset.presentation.ui.utils.ShowToast
