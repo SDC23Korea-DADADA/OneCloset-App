@@ -1,28 +1,30 @@
 package com.dadada.onecloset.data.mapper
 
-import android.content.ContentResolver
 import android.content.Context
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 object Converter {
 
-
     fun createMultipartBodyPart(context: Context, imagePath: String): MultipartBody.Part {
         val inputStream = context.contentResolver.openInputStream(Uri.parse(imagePath))
-        val bitmap = BitmapFactory.decodeStream(inputStream)
+        var bitmap = BitmapFactory.decodeStream(inputStream)
+
+        // 이미지의 Orientation 정보를 얻어옴
+        val orientation = getOrientation(context, Uri.parse(imagePath))
+
+        // 이미지를 적절히 회전
+        bitmap = rotateBitmap(bitmap, orientation)
+
         val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val byteArray = baos.toByteArray()
 
         val imageRequestBody = RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)
@@ -30,18 +32,32 @@ object Converter {
         return MultipartBody.Part.createFormData("image", "filename.jpg", imageRequestBody)
     }
 
-    fun getRealPathFromUriOrNull(context: Context, uri: Uri): String? {
-        val contentResolver: ContentResolver = context.contentResolver
-        val cursor: Cursor? = contentResolver.query(uri, null, null, null, null)
-        return if (cursor == null) {
-            uri.path
-        } else {
-            cursor.moveToFirst()
-            val index: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-            val realPath: String = cursor.getString(index)
-            cursor.close()
-            Log.d("TEST", "getRealPathFromUriOrNull: $realPath")
-            realPath
+    fun getOrientation(context: Context, photoUri: Uri): Int {
+        val cursor = context.contentResolver.query(
+            photoUri,
+            arrayOf(MediaStore.Images.ImageColumns.ORIENTATION),
+            null,
+            null,
+            null,
+        )
+        if (cursor == null || cursor.count != 1) {
+            cursor?.close()
+            return -1
         }
+
+        cursor.moveToFirst()
+        val orientation = cursor.getInt(0)
+        cursor.close()
+        return orientation
+    }
+
+    fun rotateBitmap(bitmap: Bitmap, orientation: Int): Bitmap {
+        val matrix = Matrix()
+        when (orientation) {
+            90 -> matrix.postRotate(90f)
+            180 -> matrix.postRotate(180f)
+            270 -> matrix.postRotate(270f)
+        }
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 }

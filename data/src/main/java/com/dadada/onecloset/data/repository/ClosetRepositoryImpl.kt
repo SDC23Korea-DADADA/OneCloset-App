@@ -1,7 +1,6 @@
 package com.dadada.onecloset.data.repository
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import com.dadada.onecloset.data.datasource.remote.ClosetService
@@ -9,10 +8,10 @@ import com.dadada.onecloset.data.datasource.remote.handleApi
 import com.dadada.onecloset.data.mapper.Converter
 import com.dadada.onecloset.data.mapper.toDomain
 import com.dadada.onecloset.domain.model.Closet
-import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.domain.model.ClothAnalysis
 import com.dadada.onecloset.domain.model.ClothCareCourse
 import com.dadada.onecloset.domain.model.NetworkResult
+import com.dadada.onecloset.domain.model.clothes.ClothesInfo
 import com.dadada.onecloset.domain.repository.ClosetRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -24,7 +23,7 @@ private const val TAG = "ClosetRepositoryImpl"
 
 class ClosetRepositoryImpl @Inject constructor(
     private val closetService: ClosetService,
-    private val context: Context
+    private val context: Context,
 ) : ClosetRepository {
     override suspend fun getClosetList(): NetworkResult<List<Closet>> {
         return handleApi { closetService.getClosetList().toDomain() }
@@ -46,7 +45,6 @@ class ClosetRepositoryImpl @Inject constructor(
         return handleApi { closetService.getBasicClothList().toDomain() }
     }
 
-
     override suspend fun getClothList(id: String): NetworkResult<List<ClothesInfo>> {
         return handleApi { closetService.getClothList(id).toDomain() }
     }
@@ -64,17 +62,14 @@ class ClosetRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getClothAnalysis(image: String): NetworkResult<ClothAnalysis> {
-        val inputStream = context.contentResolver.openInputStream(Uri.parse(image))
-        val bitmap = BitmapFactory.decodeStream(inputStream)
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val byteArray = baos.toByteArray()
-
-        val imageRequestBody = RequestBody.create("image/jpeg".toMediaTypeOrNull(), byteArray)
-        val imagePart = MultipartBody.Part.createFormData("image", "filename.jpg", imageRequestBody)
-
-
-        return handleApi { closetService.putAnalysisImage(imagePart).toDomain() }
+        return handleApi {
+            closetService.putAnalysisImage(
+                Converter.createMultipartBodyPart(
+                    context,
+                    image,
+                ),
+            ).toDomain()
+        }
     }
 
     override suspend fun getClothCareCourse(material: String): NetworkResult<ClothCareCourse> {
@@ -86,6 +81,13 @@ class ClosetRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkClothes(image: String): NetworkResult<Boolean> {
-        return handleApi { closetService.checkClothes(Converter.createMultipartBodyPart(context, image)).data }
+        return handleApi {
+            closetService.checkClothes(
+                Converter.createMultipartBodyPart(
+                    context,
+                    image,
+                ),
+            ).data
+        }
     }
 }

@@ -5,8 +5,8 @@ import com.dadada.onecloset.domain.model.NetworkResult
 import com.dadada.onecloset.domain.repository.ClosetRepository
 import javax.inject.Inject
 
-class GetClothAnalysisUseCase  @Inject constructor(
-    private val closetRepository: ClosetRepository
+class GetClothAnalysisUseCase @Inject constructor(
+    private val closetRepository: ClosetRepository,
 ) {
     suspend operator fun invoke(image: String): NetworkResult<ClothAnalysis> {
         return closetRepository.getClothAnalysis(image)
