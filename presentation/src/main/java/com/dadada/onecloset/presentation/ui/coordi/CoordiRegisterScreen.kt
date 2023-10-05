@@ -45,10 +45,13 @@ fun CoordiRegisterScreen(
 
     var clickedState by remember { mutableStateOf(listOf<Boolean>()) }
 
-    val handleItemClick = { newIndex: Int ->
-        val newClickedState = clickedState.toMutableList()
-        newClickedState[newIndex] = !newClickedState[newIndex]
-        clickedState = newClickedState
+    val handleItemClick = { clothId: Int ->
+        val index = clothList.indexOfFirst { it.clothesId == clothId }
+        if (index != -1) {
+            val newClickedState = clickedState.toMutableList()
+            newClickedState[index] = !newClickedState[index]
+            clickedState = newClickedState
+        }
     }
 
     val codiPutState by codiViewModel.codiPutState.collectAsState()
